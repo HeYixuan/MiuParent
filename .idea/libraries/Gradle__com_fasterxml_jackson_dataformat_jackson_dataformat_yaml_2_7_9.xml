@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="Gradle: com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.7.9">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.dataformat/jackson-dataformat-yaml/2.7.9/163a1bd63ace592d2a449023a1c07056b885ff12/jackson-dataformat-yaml-2.7.9.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.dataformat/jackson-dataformat-yaml/2.7.9/7a9e810018d0fc966aae0a089f4cb3fa3afc2ddc/jackson-dataformat-yaml-2.7.9-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

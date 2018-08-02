@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/Miu-Web/Miu-Web.iml" filepath="$PROJECT_DIR$/.idea/modules/Miu-Web/Miu-Web.iml" group="Miu-Web" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/Miu-Web/Miu-Web_main.iml" filepath="$PROJECT_DIR$/.idea/modules/Miu-Web/Miu-Web_main.iml" group="Miu-Web" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/Miu-Web/Miu-Web_test.iml" filepath="$PROJECT_DIR$/.idea/modules/Miu-Web/Miu-Web_test.iml" group="Miu-Web" />
+      <module fileurl="file://$PROJECT_DIR$/MiuParent.iml" filepath="$PROJECT_DIR$/MiuParent.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/common-utils/common-utils.iml" filepath="$PROJECT_DIR$/.idea/modules/common-utils/common-utils.iml" group="common-utils" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/common-utils/common-utils_main.iml" filepath="$PROJECT_DIR$/.idea/modules/common-utils/common-utils_main.iml" group="common-utils" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/common-utils/common-utils_test.iml" filepath="$PROJECT_DIR$/.idea/modules/common-utils/common-utils_test.iml" group="common-utils" />
+    </modules>
+  </component>
+</project>
