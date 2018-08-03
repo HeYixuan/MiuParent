@@ -1,15 +1,12 @@
 package org.igetwell.web.pay;
 
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.codec.digest.DigestUtils;
 import org.igetwell.common.utils.CheckoutUtil;
 import org.igetwell.web.BaseController;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/Wx")
