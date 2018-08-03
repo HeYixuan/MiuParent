@@ -8,4 +8,4 @@
  */
 
 rootProject.name = 'MiuParent'
-include 'common-utils' , 'Miu-Web'
+include 'common-utils' , 'Miu-Web' , 'Miu-Entity' , 'Miu-Mapper' , 'Miu-Service'

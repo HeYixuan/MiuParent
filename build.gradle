@@ -85,7 +85,9 @@ subprojects {
         compile "org.springframework.boot:spring-boot-starter-data-redis:${springBootVersion}"
         compile 'org.apache.zookeeper:zookeeper:3.4.9'
         compile 'com.zaxxer:HikariCP:3.2.0'
-        compile 'mysql:mysql-connector-java:8.0.12'
+//        compile 'mysql:mysql-connector-java:8.0.12'
+        compile 'mysql:mysql-connector-java:5.1.42'
+
         compileOnly 'org.projectlombok:lombok:1.18.2'
 
         //        compile group: 'io.springside', name: 'springside-utils', version: '5.0.0-RC1'

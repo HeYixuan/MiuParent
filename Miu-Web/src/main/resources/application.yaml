@@ -9,7 +9,7 @@ spring:
   datasource:
     hikari:
       driver-class-name: com.mysql.jdbc.Driver
-      jdbc-url: jdbc:mysql://rm-2ze1oz4pi4woc067s.mysql.rds.aliyuncs.com:3306/unified_test?useUnicode=true&characterEncoding=UTF8&zeroDateTimeBehavior=convertToNull
+      jdbc-url: jdbc:mysql://rm-2ze1oz4pi4woc067syo.mysql.rds.aliyuncs.com:3306/miu?useUnicode=true&characterEncoding=UTF8&zeroDateTimeBehavior=convertToNull
       username: root
       password: sfOPFwf$#%^&*
       pool-name: DatebookHikariCP
@@ -24,7 +24,7 @@ spring:
     driver-class-name: com.mysql.jdbc.Driver
     username: root
     password: sfOPFwf$#%^&*
-    url: jdbc:mysql://rm-2ze1oz4pi4woc067s.mysql.rds.aliyuncs.com:3306/unified_test?useUnicode=true&characterEncoding=UTF8&zeroDateTimeBehavior=convertToNull
+    url: jdbc:mysql://rm-2ze1oz4pi4woc067syo.mysql.rds.aliyuncs.com:3306/miu?useUnicode=true&characterEncoding=UTF8&zeroDateTimeBehavior=convertToNull
 
 
 defaultAppId: wx097eb9f69920db49

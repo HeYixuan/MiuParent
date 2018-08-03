@@ -1,0 +1,53 @@
+apply plugin: 'java'
+apply plugin: 'idea'
+apply plugin: 'eclipse'
+//apply plugin: 'org.springframework.boot'
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+archivesBaseName = 'Miu-Entity'
+buildDir = 'target'
+
+//bootRepackage{
+//    enabled = false
+//}
+
+buildscript {
+
+    ext {
+        oauth2Version = '2.1.0.RELEASE'
+    }
+
+    repositories {
+        mavenLocal()
+        maven { url "http://maven.aliyun.com/nexus/content/groups/public" }
+        maven { url "http://repo.spring.io/snapshot" }
+        maven { url "http://repo.spring.io/milestone" }
+        jcenter()
+    }
+
+    dependencies {
+        //classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+    }
+
+}
+
+repositories {
+    mavenCentral()
+}
+
+//mybaitis
+configurations {
+    /*all*.exclude group: "ch.qos.logback"
+    all*.exclude module: "log4j-over-slf4j"*/
+}
+
+dependencies {
+
+    // 依赖 core 模块
+//    compile project(":common-util")
+//    compile project(":entity")
+    //mybatis generator starts
+
+}
