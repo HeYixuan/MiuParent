@@ -1,6 +1,7 @@
 package org.igetwell.service.impl;
 
 import lombok.extern.slf4j.Slf4j;
+import org.igetwell.common.constans.LoginType;
 import org.igetwell.common.utils.WeChatUtils;
 import org.igetwell.service.IUserService;
 import org.igetwell.system.domain.User;
@@ -32,6 +33,7 @@ public class UserServiceImpl implements IUserService {
                     user.setOpenId(WeChatUtils.WeChatInfo.getOpenId());
                     user.setNickName(WeChatUtils.WeChatInfo.getNickName());
                     user.setAvatar(WeChatUtils.WeChatInfo.getAvatar());
+                    user.setLoginType(LoginType.WECHAT.getValue());
                     userMapper.insert(user);
                 }
             }
