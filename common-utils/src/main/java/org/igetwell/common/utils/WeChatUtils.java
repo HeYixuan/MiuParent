@@ -62,6 +62,12 @@ public class WeChatUtils {
      */
     private static final String API_AUTHORIZE_ACCESS_TOKEN = "https://api.weixin.qq.com/sns/oauth2/access_token?appid=%s&secret=%s&code=%s&grant_type=authorization_code";
 
+    /**
+     * 微信授权拉取用户信息
+     * %s access_token
+     * %s openid
+     */
+    private static final String API_USER_INFO = "https://api.weixin.qq.com/sns/userinfo?access_token=%s&openid=%s&lang=zh_CN";
 
     /**
      * http客户端
@@ -71,7 +77,8 @@ public class WeChatUtils {
     private static final Logger LOG = LoggerFactory.getLogger(WeChatUtils.class);
 
     private static WeChatCache cache = new WeChatCache();
-    private static WXOauth2Token oauth2Token = new WXOauth2Token();
+    public static WXOauth2Token oauth2Token = new WXOauth2Token();
+    public static WeChatInfo WeChatInfo = new WeChatInfo();
 
     /**
      * 获得通用接口访问令牌
@@ -223,6 +230,38 @@ public class WeChatUtils {
         }
     }
 
+
+    public static void getUserInfo(String accessToken, String openId) throws Exception{
+        //HttpGet get = new HttpGet(String.format(API_USER_INFO, accessToken, openId));
+
+        try {
+            String responseData = HttpClientUtils.getInstance().sendHttpGet(String.format(API_USER_INFO, accessToken, openId));
+            LOG.debug("获得微信UserInfo responseData: {}", responseData);
+
+            JSONObject data = JSONObject.parseObject(responseData);
+            String openid = data.getString("openid");
+            String nickName = data.getString("nickname");
+            String avatar = data.getString("headimgurl");
+            int sex = data.getIntValue("sex");
+            String country = data.getString("country");
+            String province = data.getString("province");
+            String city = data.getString("city");
+            String unionId = data.getString("unionid");
+
+            WeChatInfo.setOpenId(openid);
+            WeChatInfo.setNickName(nickName);
+            WeChatInfo.setAvatar(avatar);
+            WeChatInfo.setSex(sex);
+            WeChatInfo.setCountry(country);
+            WeChatInfo.setProvince(province);
+            WeChatInfo.setCity(city);
+            WeChatInfo.setUnionId(unionId);
+        } catch (Exception e) {
+            LOG.error("获得微信用户信息异常", e);
+            throw e;
+        }
+
+    }
 
 
     public static String getSignature(String jsApiTicket, String noncestr, long timestamp, String url) throws Exception{
