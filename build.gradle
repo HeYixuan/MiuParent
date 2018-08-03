@@ -9,7 +9,7 @@ ext {
     springBootVersion = '2.0.4.RELEASE'
 }
 
-//buildDir = 'target'
+buildDir = 'target'
 
 // 所有子项目的通用配置
 subprojects {
@@ -82,11 +82,13 @@ subprojects {
         // 通用依赖
 
         compile "org.springframework.boot:spring-boot-starter-web:${springBootVersion}"
-        compile "org.springframework.boot:spring-boot-starter-security:${springBootVersion}"
         compile "org.springframework.boot:spring-boot-starter-data-redis:${springBootVersion}"
         compile 'org.apache.zookeeper:zookeeper:3.4.9'
-//        compile group: 'io.springside', name: 'springside-utils', version: '5.0.0-RC1'
+        compile 'com.zaxxer:HikariCP:3.2.0'
+        compile 'mysql:mysql-connector-java:8.0.12'
         compileOnly 'org.projectlombok:lombok:1.18.2'
+
+        //        compile group: 'io.springside', name: 'springside-utils', version: '5.0.0-RC1'
         //compile group: 'org.springframework.boot', name: 'spring-boot-starter-log4j2', version: '1.5.4.RELEASE'
         //compile group: 'org.slf4j', name: 'slf4j-api', version: '1.7.25'
         //compile group: 'org.slf4j', name: 'slf4j-log4j12', version: '1.7.25'

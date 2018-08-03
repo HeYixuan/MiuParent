@@ -1,0 +1,40 @@
+server:
+  port: 9090
+
+spring:
+  profiles:
+    active: dev
+
+
+  datasource:
+    hikari:
+      driver-class-name: com.mysql.jdbc.Driver
+      jdbc-url: jdbc:mysql://rm-2ze1oz4pi4woc067s.mysql.rds.aliyuncs.com:3306/unified_test?useUnicode=true&characterEncoding=UTF8&zeroDateTimeBehavior=convertToNull
+      username: root
+      password: sfOPFwf$#%^&*
+      pool-name: DatebookHikariCP
+      minimum-idle: 5
+      maximum-pool-size: 15
+      auto-commit: true
+      idle-timeout: 30000
+      max-lifetime: 1800000
+      connection-timeout: 30000
+      connection-test-query: SELECT 1
+    type: com.zaxxer.hikari.HikariDataSource
+    driver-class-name: com.mysql.jdbc.Driver
+    username: root
+    password: sfOPFwf$#%^&*
+    url: jdbc:mysql://rm-2ze1oz4pi4woc067s.mysql.rds.aliyuncs.com:3306/unified_test?useUnicode=true&characterEncoding=UTF8&zeroDateTimeBehavior=convertToNull
+
+
+defaultAppId: wx097eb9f69920db49
+paterKey: 123fdsaJHYUTREWQOKLJGCCBNM654389
+mchId: 1503679961
+attach: stg
+domain: insdate.free.ngrok.cc
+
+aliyun:
+  oss:
+    endpoint: oss-cn-beijing.aliyuncs.com
+    accessKeyId: LTAIHn6oIue9yxds
+    accessKeySecret: 38R8crqNQKNP5AT6H7ZOLy9IZ7sQRG

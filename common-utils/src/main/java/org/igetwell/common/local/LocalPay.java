@@ -267,7 +267,7 @@ public class LocalPay {
      */
     private static String pushOrder(Map<String, String> params) {
         final String unifiedOrderUrl = "https://api.mch.weixin.qq.com/pay/unifiedorder";
-        return HttpClientUtil.getInstance().sendHttpPost(unifiedOrderUrl, BeanUtils.mapBean2Xml(params), "UTF-8");
+        return HttpClientUtils.getInstance().sendHttpPost(unifiedOrderUrl, BeanUtils.mapBean2Xml(params), "UTF-8");
     }
 
     /**
