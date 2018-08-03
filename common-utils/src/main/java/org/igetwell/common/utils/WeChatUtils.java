@@ -20,14 +20,16 @@ public class WeChatUtils {
     /**
      * APP ID 应用ID
      */
-    private static final String APP_ID = "wx893db98985206df6";
+//    private static final String APP_ID = "wx893db98985206df6";
     //private static final String APP_ID = "wx20082c1a905540a7";
+    private static final String APP_ID = "wx2ffe2417c6b42f78";
 
     /**
      * App Secret 应用密钥
      */
-    private static final String APP_SECRET = "a7681bcfbd70c0beb497715bfa1fb35a";
+//    private static final String APP_SECRET = "a7681bcfbd70c0beb497715bfa1fb35a";
     //private static final String APP_SECRET = "931ff3e147646e2b259d4e3a73d383ac";
+    private static final String APP_SECRET = "2c3b915dd8360206d7a0688c0b59a234";
 
     /**
      * 获得 Access Token
