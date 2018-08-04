@@ -36,7 +36,7 @@ public class WxController extends BaseController {
     public void WxAuthorizedLogin(String code) {
         try {
             userService.WxAuthorizedLogin(code);
-            String uri = "http://api.insdate.cn/wxauth/auth?appId=wx1d9cd4ca04a17cd0&page=/";
+            String uri = "http://www.igetwell.org/";
             response.get().sendRedirect(uri);
         } catch (Exception e) {
             log.error("获取微信授权登录AccessToken异常.", e);
