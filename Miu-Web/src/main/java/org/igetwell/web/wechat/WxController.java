@@ -1,14 +1,12 @@
-package org.igetwell.web.pay;
+package org.igetwell.web.wechat;
 
 import lombok.extern.slf4j.Slf4j;
 import org.igetwell.common.utils.CheckoutUtil;
-import org.igetwell.common.utils.WXOauth2Token;
-import org.igetwell.common.utils.WeChatInfo;
 import org.igetwell.common.utils.WeChatUtils;
 import org.igetwell.service.IUserService;
 import org.igetwell.web.BaseController;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -48,7 +46,9 @@ public class WxController extends BaseController {
     @RequestMapping("/callback")
     public void callback(String signature, String echostr, String timestamp, String nonce) {
         String token = "HeYixuan";
-
+        if (StringUtils.isEmpty(signature) || StringUtils.isEmpty(echostr) || StringUtils.isEmpty(timestamp) || StringUtils.isEmpty(nonce)){
+            return;
+        }
         boolean bool = CheckoutUtil.checkSignature(signature, timestamp, nonce);
         System.err.println(bool);
         if (bool){

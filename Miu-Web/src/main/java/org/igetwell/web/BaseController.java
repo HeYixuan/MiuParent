@@ -1,5 +1,6 @@
 package org.igetwell.web;
 
+import com.jfinal.weixin.sdk.msg.out.OutTextMsg;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.catalina.servlet4preview.http.HttpServletRequest;
 import org.slf4j.Logger;
@@ -8,6 +9,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.io.IOException;
 
 /**
  * 基础类控制器
@@ -24,9 +26,27 @@ public class BaseController {
     protected static ThreadLocal<HttpSession> session = new ThreadLocal<HttpSession>();
 
     @ModelAttribute
-    private void setReqAndResp(HttpSession session, HttpServletRequest request, HttpServletResponse response) {
+    private void init(HttpSession session, HttpServletRequest request, HttpServletResponse response) {
         this.session.set(session);
         this.request.set(request);
         this.response.set(response);
     }
+
+
+    public void renderReturn(String renderText){
+        try {
+            response.get().getWriter().write(renderText);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void renderReturn(OutTextMsg outTextMsg){
+        try {
+            response.get().getWriter().print(outTextMsg);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 }

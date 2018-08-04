@@ -1,4 +1,4 @@
-package org.igetwell.web.pay;
+package org.igetwell.web.wechat.pay;
 
 import org.igetwell.common.enums.JsApiType;
 import org.igetwell.common.local.HttpKit;
@@ -59,17 +59,5 @@ public class WxPayController extends BaseController {
         }
 
     }
-
-
-    public void renderReturn(String renderText){
-        try {
-            response.get().getWriter().write(renderText);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-
-
 
 }
