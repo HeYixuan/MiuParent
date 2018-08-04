@@ -5,6 +5,7 @@ import com.thoughtworks.xstream.XStream;
 import org.igetwell.common.event.FollowEventMessage;
 
 import java.util.Date;
+import java.util.Map;
 
 public class MessageUtils {
 
@@ -46,11 +47,29 @@ public class MessageUtils {
         return object2Xml(eventMessage);
     }
 
+    public static String callbackMessage(Map<String, String> resultMap){
+        String fromUserName = resultMap.get("FromUserName");
+        String toUserName = resultMap.get("ToUserName");
+        String msgType = resultMap.get("MsgType");
+        String message = null;
+        //判断请求是否事件类型 event
+        if(msgType.equals(MESSAGE_EVENT)){
+            String eventType = resultMap.get("Event");
+            //若是关注事件subscribe
+            if(eventType.equals(EVENT_SUB)){
+                message = initText(toUserName, fromUserName, menuText());
+            }
+        }
+        if (msgType.equals(MESSAGE_TEXT)){
+            message = initText(toUserName, fromUserName, menuText());
+        }
+        return message;
+    }
+
     public static String object2Xml(FollowEventMessage eventMessage){
         XStream xstream = new XStream();
         xstream.alias("xml", eventMessage.getClass());
         return xstream.toXML(eventMessage);
-
     }
 
 }

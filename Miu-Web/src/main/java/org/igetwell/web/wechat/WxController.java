@@ -1,16 +1,15 @@
 package org.igetwell.web.wechat;
 
 import lombok.extern.slf4j.Slf4j;
+import org.igetwell.common.enums.HttpStatus;
 import org.igetwell.common.utils.CheckoutUtil;
+import org.igetwell.common.utils.ResponseEntity;
 import org.igetwell.common.utils.WeChatUtils;
 import org.igetwell.service.IUserService;
 import org.igetwell.web.BaseController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 
@@ -23,7 +22,7 @@ public class WxController extends BaseController {
     private IUserService userService;
 
 
-    @PostMapping("/WxAuthorizedLogin")
+    @GetMapping("/WxAuthorizedLogin")
     public void WxAuthorizedLogin() {
         String redirect_uri = "http://insdate.free.ngrok.cc/Wx/WxAuthorizedLoginCallback";
         try {
@@ -35,11 +34,18 @@ public class WxController extends BaseController {
     }
 
     @GetMapping("/WxAuthorizedLoginCallback")
-    public void WxAuthorizedLogin(String code) {
+    @ResponseBody
+    public ResponseEntity WxAuthorizedLogin(String code) {
         try {
             userService.WxAuthorizedLogin(code);
+            return new ResponseEntity(null);
+            //String page = request.get().getParameter("page");
+            /*if (!StringUtils.isEmpty(page)){
+                response.get().sendRedirect(page);
+            }*/
         } catch (Exception e) {
             log.error("获取微信授权登录AccessToken异常.", e);
+            return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
         }
     }
 
@@ -57,7 +63,7 @@ public class WxController extends BaseController {
             try {
                 response.get().getWriter().write(echostr);
             } catch (IOException e) {
-                e.printStackTrace();
+                log.error("校验微信服务器异常.", e);
             }
         }
     }
