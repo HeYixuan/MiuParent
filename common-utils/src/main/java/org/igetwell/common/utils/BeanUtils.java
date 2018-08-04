@@ -80,7 +80,6 @@ public class BeanUtils {
         Element root = document.getDocumentElement();
         Map<String, String> params = new HashMap();
         NodeList list = root.getChildNodes();
-
         for(int i = 0; i < list.getLength(); ++i) {
             Node node = list.item(i);
             params.put(node.getNodeName(), node.getTextContent());
