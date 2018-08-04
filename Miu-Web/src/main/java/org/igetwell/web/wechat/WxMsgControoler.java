@@ -22,25 +22,12 @@ import java.util.Map;
 @RequestMapping("/WxMsg")
 public class WxMsgControoler extends BaseController {
 
-    /*public void processInFollowEvent() {
-        Map<String, String> params = BeanUtils.xmlBean2Map(xmlStr);
-
-        *//*if (InFollowEvent.EVENT_INFOLLOW_SUBSCRIBE.equalsIgnoreCase(event.getEvent()))
-        {
-        }
-        // 如果为取消关注事件，将无法接收到传回的信息
-        if (InFollowEvent.EVENT_INFOLLOW_UNSUBSCRIBE.equals(event.getEvent()))
-        {
-            log.debug("取消关注：" + event.getFromUserName());
-        }*//*
-    }*/
-
     @PostMapping(value = "follow", produces = {"application/xml"})
     public void processInFollowEvent() {
         String xmlStr = HttpKit.readData(request.get());
         Map<String, String> resultMap = BeanUtils.xmlBean2Map(xmlStr);
-        String toUserName = resultMap.get("ToUserName");
         String fromUserName = resultMap.get("FromUserName");
+        String toUserName = resultMap.get("ToUserName");
         String msgType = resultMap.get("MsgType");
 
         //判断请求是否事件类型 event
@@ -48,10 +35,10 @@ public class WxMsgControoler extends BaseController {
             String eventType = resultMap.get("Event");
             //若是关注事件  subscribe
             if(MessageUtils.EVENT_SUB.equals(eventType)){
-                String mycontent = MessageUtils.menuText();
-                String message = MessageUtils.initText(toUserName, fromUserName, mycontent);
+                String text = MessageUtils.menuText();
+                String message = MessageUtils.initText(toUserName, fromUserName, text);
                 System.err.println(message);
-                renderReturn(message);
+                render(message);
             }
         }
     }

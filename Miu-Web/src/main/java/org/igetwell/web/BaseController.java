@@ -41,9 +41,9 @@ public class BaseController {
         }
     }
 
-    public void renderReturn(OutTextMsg outTextMsg){
+    public void render(String renderText){
         try {
-            response.get().getWriter().print(outTextMsg);
+            response.get().getWriter().print(renderText);
         } catch (IOException e) {
             e.printStackTrace();
         }

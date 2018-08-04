@@ -7,6 +7,8 @@ import org.igetwell.service.IUserService;
 import org.igetwell.web.BaseController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -21,7 +23,7 @@ public class WxController extends BaseController {
     private IUserService userService;
 
 
-    @RequestMapping("/WxAuthorizedLogin")
+    @PostMapping("/WxAuthorizedLogin")
     public void WxAuthorizedLogin() {
         String redirect_uri = "http://insdate.free.ngrok.cc/Wx/WxAuthorizedLoginCallback";
         try {
@@ -32,7 +34,7 @@ public class WxController extends BaseController {
         }
     }
 
-    @RequestMapping("/WxAuthorizedLoginCallback")
+    @GetMapping("/WxAuthorizedLoginCallback")
     public void WxAuthorizedLogin(String code) {
         try {
             userService.WxAuthorizedLogin(code);
@@ -42,27 +44,13 @@ public class WxController extends BaseController {
     }
 
 
-
-    @RequestMapping("/callback")
+    //62df0725f11697cb
+    //http://insdate.free.ngrok.cc
+    @PostMapping("/callback")
     public void callback(String signature, String echostr, String timestamp, String nonce) {
-        String token = "HeYixuan";
         if (StringUtils.isEmpty(signature) || StringUtils.isEmpty(echostr) || StringUtils.isEmpty(timestamp) || StringUtils.isEmpty(nonce)){
             return;
         }
-        boolean bool = CheckoutUtil.checkSignature(signature, timestamp, nonce);
-        System.err.println(bool);
-        if (bool){
-            try {
-                response.get().getWriter().write(echostr);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-    //62df0725f11697cb
-    //http://insdate.free.ngrok.cc
-    public void callbacka(String signature, String echostr, String timestamp, String nonce){
         boolean bool = CheckoutUtil.checkSignature(signature, timestamp, nonce);
         System.err.println(bool);
         if (bool){
