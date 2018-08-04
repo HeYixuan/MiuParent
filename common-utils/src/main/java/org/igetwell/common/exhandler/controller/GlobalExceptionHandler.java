@@ -1,4 +1,4 @@
-package org.igetwell.common.exhandler.ctroller;
+package org.igetwell.common.exhandler.controller;
 
 import lombok.extern.slf4j.Slf4j;
 import org.igetwell.common.enums.HttpStatus;
