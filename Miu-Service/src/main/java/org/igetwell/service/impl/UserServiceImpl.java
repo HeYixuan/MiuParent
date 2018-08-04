@@ -2,6 +2,7 @@ package org.igetwell.service.impl;
 
 import lombok.extern.slf4j.Slf4j;
 import org.igetwell.common.constans.LoginType;
+import org.igetwell.common.utils.RedisUtils;
 import org.igetwell.common.utils.WeChatUtils;
 import org.igetwell.service.IUserService;
 import org.igetwell.system.domain.User;
@@ -17,6 +18,9 @@ public class UserServiceImpl implements IUserService {
 
     @Autowired
     private UserMapper userMapper;
+
+    @Autowired
+    private RedisUtils redis;
 
     @Transactional(rollbackFor = RuntimeException.class)
     public void WxAuthorizedLogin(String code) {

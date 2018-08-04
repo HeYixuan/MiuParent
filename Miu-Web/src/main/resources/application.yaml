@@ -24,7 +24,21 @@ spring:
     driver-class-name: com.mysql.jdbc.Driver
     username: root
     password: sfOPFwf$#%^&*
-    url: jdbc:mysql://rm-2ze1oz4pi4woc067syo.mysql.rds.aliyuncs.com:3306/miu?useUnicode=true&characterEncoding=UTF8&zeroDateTimeBehavior=convertToNull
+    url: jdbc:mysql://rm-2ze1oz4pi4woc067syo.mysql.rds.aliyuncs.com:3306/miu?useUnicode=true&characterEncoding=UTF8&zeroDateTimeBehavior=
+
+
+  redis:
+    host: 127.0.0.1
+    port: 6379
+    jedis:
+      pool:
+        max-active: 8
+        max-wait: 1ms
+        max-idle: 1
+        min-idle: 8
+    timeout: 1000ms
+
+
 
 
 defaultAppId: wx097eb9f69920db49

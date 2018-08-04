@@ -232,7 +232,6 @@ public class WeChatUtils {
 
 
     public static void getUserInfo(String accessToken, String openId) throws Exception{
-        //HttpGet get = new HttpGet(String.format(API_USER_INFO, accessToken, openId));
 
         try {
             String responseData = HttpClientUtils.getInstance().sendHttpGet(String.format(API_USER_INFO, accessToken, openId));
