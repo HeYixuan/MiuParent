@@ -1,9 +1,7 @@
 package org.igetwell.web.wechat;
 
 import lombok.extern.slf4j.Slf4j;
-import org.igetwell.common.enums.HttpStatus;
 import org.igetwell.common.utils.CheckoutUtil;
-import org.igetwell.common.utils.ResponseEntity;
 import org.igetwell.common.utils.WeChatUtils;
 import org.igetwell.service.IUserService;
 import org.igetwell.web.BaseController;
@@ -35,17 +33,13 @@ public class WxController extends BaseController {
 
     @GetMapping("/WxAuthorizedLoginCallback")
     @ResponseBody
-    public ResponseEntity WxAuthorizedLogin(String code) {
+    public void WxAuthorizedLogin(String code) {
         try {
             userService.WxAuthorizedLogin(code);
-            return new ResponseEntity(null);
-            //String page = request.get().getParameter("page");
-            /*if (!StringUtils.isEmpty(page)){
-                response.get().sendRedirect(page);
-            }*/
+            String uri = "http://api.insdate.cn/wxauth/auth?appId=wx1d9cd4ca04a17cd0&page=/";
+            response.get().sendRedirect(uri);
         } catch (Exception e) {
             log.error("获取微信授权登录AccessToken异常.", e);
-            return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
         }
     }
 
