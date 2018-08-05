@@ -18,7 +18,7 @@ import java.util.Map;
 @Slf4j
 @RestController
 @RequestMapping("/WxMsg")
-public class WxMsgControoler extends BaseController {
+public class WxMsgController extends BaseController {
 
     @PostMapping(value = "/follow", produces = {"application/xml"})
     public void processInFollowEvent() {

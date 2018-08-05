@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.igetwell.system.mapper_new.UserInfoMapper">
+  <resultMap id="BaseResultMap" type="org.igetwell.system.domain.UserInfo">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="ID" jdbcType="INTEGER" property="id" />
+    <result column="OPEN_ID" jdbcType="VARCHAR" property="openId" />
+    <result column="SCHOOL" jdbcType="VARCHAR" property="school" />
+    <result column="COMPANY_NAME" jdbcType="VARCHAR" property="companyName" />
+    <result column="EDUCATION" jdbcType="INTEGER" property="education" />
+    <result column="HEIGHT" jdbcType="INTEGER" property="height" />
+    <result column="WEIGHT" jdbcType="INTEGER" property="weight" />
+    <result column="MARITAL_STATUS" jdbcType="INTEGER" property="maritalStatus" />
+    <result column="WAGE_STATUS" jdbcType="INTEGER" property="wageStatus" />
+    <result column="ID_CERT" jdbcType="INTEGER" property="idCert" />
+    <result column="EDUCATION_CERT" jdbcType="INTEGER" property="educationCert" />
+    <result column="CORPORATE_CERT" jdbcType="INTEGER" property="corporateCert" />
+    <result column="PROPERTY_CERT" jdbcType="INTEGER" property="propertyCert" />
+    <result column="VEHICLE_CERT" jdbcType="INTEGER" property="vehicleCert" />
+  </resultMap>
+</mapper>

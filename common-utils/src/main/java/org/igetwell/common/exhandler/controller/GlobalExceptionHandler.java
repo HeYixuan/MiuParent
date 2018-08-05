@@ -4,6 +4,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.igetwell.common.enums.HttpStatus;
 import org.igetwell.common.exhandler.exception.BaseException;
 import org.igetwell.common.utils.ResponseEntity;
+import org.springframework.validation.ObjectError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
@@ -45,6 +47,11 @@ public class GlobalExceptionHandler {
         } else if (e instanceof BaseException){
             //服务器异常
             return new ResponseEntity<String>(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
+        }
+        if (e instanceof MethodArgumentNotValidException){
+            for (ObjectError error : ((MethodArgumentNotValidException) e).getBindingResult().getFieldErrors()){
+                return new ResponseEntity(HttpStatus.BAD_REQUEST, error.getDefaultMessage());
+            }
         }
 
         if (log.isErrorEnabled()){

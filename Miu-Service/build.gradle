@@ -47,6 +47,7 @@ dependencies {
 
     // 依赖 core 模块
     compile project(":common-utils")
+    compile project(":Miu-Entity")
     compile project(":Miu-Mapper")
     //mybatis generator starts
 

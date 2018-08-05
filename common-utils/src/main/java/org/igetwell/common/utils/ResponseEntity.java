@@ -72,4 +72,10 @@ public class ResponseEntity<T> implements Serializable {
         this.timestamp = new Date();
     }
 
+    public ResponseEntity() {
+        this.status = HttpStatus.OK.value();
+        this.message = HttpStatus.OK.getMessage();
+        this.timestamp = new Date();
+    }
+
 }
