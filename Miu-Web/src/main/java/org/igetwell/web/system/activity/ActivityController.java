@@ -1,4 +1,4 @@
-package org.igetwell.web.org.igetwell.web.system.activity;
+package org.igetwell.web.system.activity;
 
 import org.igetwell.common.utils.ResponseEntity;
 import org.igetwell.system.Pagination;

@@ -15,11 +15,13 @@ public enum HttpStatus {
     GONE(410, "Gone"),
     PAYLOAD_TOO_LARGE(413, "Payload Too Large"),
     TOO_MANY_REQUESTS(429, "Too Many Requests"),
+    REQUEST_HEADER_FIELDS_TOO_LARGE(431, "Request Header Fields Too Large"),
     INTERNAL_SERVER_ERROR(500, "Internal Server Error"),
     NOT_IMPLEMENTED(501, "Not Implemented"),
     BAD_GATEWAY(502, "Bad Gateway"),
     SERVICE_UNAVAILABLE(503, "Service Unavailable"),
     GATEWAY_TIMEOUT(504, "Gateway Timeout");
+
     private final int value;
     private final String message;
 

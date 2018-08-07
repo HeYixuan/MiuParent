@@ -1,4 +1,4 @@
-package org.igetwell.system.users.service;
+package org.igetwell.system;
 
 import lombok.extern.slf4j.Slf4j;
 import org.igetwell.common.lock.DistributedLockHandler;
