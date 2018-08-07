@@ -49,6 +49,8 @@ dependencies {
     compile project(":common-utils")
     compile project(":Miu-Entity")
     compile project(":Miu-Mapper")
+
+    compile "com.google.guava:guava:26.0-jre"
     //mybatis generator starts
 
 }
