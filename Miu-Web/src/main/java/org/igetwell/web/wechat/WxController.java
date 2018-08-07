@@ -3,7 +3,7 @@ package org.igetwell.web.wechat;
 import lombok.extern.slf4j.Slf4j;
 import org.igetwell.common.utils.CheckoutUtil;
 import org.igetwell.common.utils.WeChatUtils;
-import org.igetwell.service.IUserService;
+import org.igetwell.system.users.service.IUserService;
 import org.igetwell.web.BaseController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;

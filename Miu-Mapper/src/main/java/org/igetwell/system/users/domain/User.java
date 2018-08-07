@@ -1,4 +1,4 @@
-package org.igetwell.system.domain;
+package org.igetwell.system.users.domain;
 
 import javax.persistence.*;
 

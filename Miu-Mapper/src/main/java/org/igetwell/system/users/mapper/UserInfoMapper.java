@@ -1,6 +1,6 @@
-package org.igetwell.system.mapper;
+package org.igetwell.system.users.mapper;
 
-import org.igetwell.system.domain.UserInfo;
+import org.igetwell.system.users.domain.UserInfo;
 import tk.mybatis.mapper.common.Mapper;
 
 public interface UserInfoMapper extends Mapper<UserInfo> {

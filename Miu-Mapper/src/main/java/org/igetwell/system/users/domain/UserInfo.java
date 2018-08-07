@@ -1,9 +1,12 @@
-package org.igetwell.system.domain;
+package org.igetwell.system.users.domain;
 
 import javax.persistence.*;
 
 @Table(name = "user_info")
 public class UserInfo {
+    /**
+     * 主键
+     */
     @Id
     @Column(name = "ID")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -88,14 +91,18 @@ public class UserInfo {
     private Integer vehicleCert;
 
     /**
-     * @return ID
+     * 获取主键
+     *
+     * @return ID - 主键
      */
     public Integer getId() {
         return id;
     }
 
     /**
-     * @param id
+     * 设置主键
+     *
+     * @param id 主键
      */
     public void setId(Integer id) {
         this.id = id;

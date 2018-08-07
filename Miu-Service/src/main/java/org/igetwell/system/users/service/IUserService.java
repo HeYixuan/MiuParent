@@ -1,4 +1,4 @@
-package org.igetwell.service;
+package org.igetwell.system.users.service;
 
 
 public interface IUserService {

@@ -5,7 +5,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-@MapperScan("org.igetwell.*.mapper")
+@MapperScan("org.igetwell.system.*.mapper")
 public class WebApplication {
 
     public static void main(String[] args) {

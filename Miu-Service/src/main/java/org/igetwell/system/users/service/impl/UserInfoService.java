@@ -1,12 +1,12 @@
-package org.igetwell.service.impl;
+package org.igetwell.system.users.service.impl;
 
 import lombok.extern.slf4j.Slf4j;
 import org.igetwell.common.local.LocalSnowflakeService;
 import org.igetwell.common.utils.ResponseEntity;
-import org.igetwell.service.IUserInfoService;
-import org.igetwell.system.domain.UserInfo;
-import org.igetwell.system.mapper.UserInfoMapper;
-import org.igetwell.user.update.UserInfoUpdate;
+import org.igetwell.system.users.service.IUserInfoService;
+import org.igetwell.system.users.domain.UserInfo;
+import org.igetwell.system.users.mapper.UserInfoMapper;
+import org.igetwell.system.user.update.UserInfoUpdate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,7 +14,7 @@ import org.springframework.validation.annotation.Validated;
 
 @Slf4j
 @Service
-public class UserInfoServiceImpl implements IUserInfoService {
+public class UserInfoService implements IUserInfoService {
 
     @Autowired
     private UserInfoMapper userInfoMapper;

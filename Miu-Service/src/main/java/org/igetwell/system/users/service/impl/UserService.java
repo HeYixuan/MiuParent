@@ -1,12 +1,12 @@
-package org.igetwell.service.impl;
+package org.igetwell.system.users.service.impl;
 
 import lombok.extern.slf4j.Slf4j;
 import org.igetwell.common.constans.LoginType;
 import org.igetwell.common.utils.RedisUtils;
 import org.igetwell.common.utils.WeChatUtils;
-import org.igetwell.service.IUserService;
-import org.igetwell.system.domain.User;
-import org.igetwell.system.mapper.UserMapper;
+import org.igetwell.system.users.service.IUserService;
+import org.igetwell.system.users.domain.User;
+import org.igetwell.system.users.mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,7 +14,7 @@ import org.springframework.util.StringUtils;
 
 @Slf4j
 @Service
-public class UserServiceImpl implements IUserService {
+public class UserService implements IUserService {
 
     @Autowired
     private UserMapper userMapper;

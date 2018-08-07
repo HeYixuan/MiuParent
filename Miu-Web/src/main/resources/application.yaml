@@ -39,6 +39,9 @@ spring:
     timeout: 1000ms
 
 
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+
 
 
 defaultAppId: wx097eb9f69920db49
@@ -52,3 +55,12 @@ aliyun:
     endpoint: oss-cn-beijing.aliyuncs.com
     accessKeyId: LTAIHn6oIue9yxds
     accessKeySecret: 38R8crqNQKNP5AT6H7ZOLy9IZ7sQRG
+
+
+
+#分页设置
+pagehelper:
+  helper-dialect: mysql
+  reasonable: true
+  support-methods-arguments: true
+  params: count=countSql

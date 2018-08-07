@@ -1,8 +1,8 @@
-package org.igetwell.web.org.igetwell.web.user;
+package org.igetwell.web.org.igetwell.web.system.user;
 
 import org.igetwell.common.utils.ResponseEntity;
-import org.igetwell.service.IUserInfoService;
-import org.igetwell.user.update.UserInfoUpdate;
+import org.igetwell.system.users.service.IUserInfoService;
+import org.igetwell.system.user.update.UserInfoUpdate;
 import org.igetwell.web.BaseController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;

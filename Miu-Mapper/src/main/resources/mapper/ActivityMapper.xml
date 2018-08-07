@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.igetwell.system.activity.mapper.ActivityMapper">
+  <resultMap id="baseMap" type="org.igetwell.system.activity.domain.Activity">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="ID" jdbcType="INTEGER" property="id" />
+    <result column="TITLE" jdbcType="VARCHAR" property="title" />
+    <result column="ENROLL_START_TIME" jdbcType="TIMESTAMP" property="enrollStartTime" />
+    <result column="ENROLL_END_TIME" jdbcType="TIMESTAMP" property="enrollEndTime" />
+    <result column="ACTIVITY_START_TIME" jdbcType="TIMESTAMP" property="activityStartTime" />
+    <result column="ACTIVITY_END_TIME" jdbcType="TIMESTAMP" property="activityEndTime" />
+    <result column="ACTIVITY_COVER" jdbcType="VARCHAR" property="activityCover" />
+    <result column="ACTIVITY_DESC" jdbcType="LONGVARCHAR" property="activityDesc" />
+    <result column="DISPLAY_LOCATION" jdbcType="VARCHAR" property="displayLocation" />
+    <result column="FEE_TYPE" jdbcType="INTEGER" property="feeType" />
+    <result column="ACTIVITY_FEE" jdbcType="INTEGER" property="activityFee" />
+    <result column="VIEWS" jdbcType="INTEGER" property="views" />
+    <result column="ACTIVITY_STATUS" jdbcType="INTEGER" property="activityStatus" />
+    <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime" />
+  </resultMap>
+
+  <sql id="baseSql">
+    ACT.ID as id,
+    ACT.TITLE as title,
+    ACT.ENROLL_START_TIME as enrollStartTime,
+    ACT.ENROLL_END_TIME as enrollEndTime,
+    ACT.ACTIVITY_START_TIME as activityStartTime,
+    ACT.ACTIVITY_END_TIME as activityEndTime,
+    ACT.ACTIVITY_COVER as activityCover,
+    ACT.ACTIVITY_DESC as activityDesc,
+    ACT.DISPLAY_LOCATION as displayLocation,
+    ACT.FEE_TYPE as feeType,
+    ACT.ACTIVITY_FEE as activityFee,
+    ACT.VIEWS as views,
+    ACT.ACTIVITY_STATUS as activityStatus,
+    ACT.CREATE_TIME as createTime
+  </sql>
+
+
+  <select id="getList" resultType="org.igetwell.system.activity.domain.Activity">
+    SELECT
+        <include refid="baseSql" />
+    FROM ACTIVITY as ACT
+  </select>
+</mapper>
