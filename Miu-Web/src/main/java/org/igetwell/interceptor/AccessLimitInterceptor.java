@@ -18,7 +18,7 @@ import java.lang.reflect.Method;
 import java.util.concurrent.TimeUnit;
 
 /**
- * 高并发限流拦截器
+ * 高并发限流策略拦截器
  */
 public class AccessLimitInterceptor implements HandlerInterceptor {
 
