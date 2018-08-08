@@ -15,6 +15,13 @@ public interface IActivityService {
     ResponseEntity<Pagination<Activity>> getList();
 
     /**
+     * 获取活动详情
+     * @param activityId
+     * @return
+     */
+    ResponseEntity<Activity> getActivity(Integer activityId);
+
+    /**
      * 报名活动
      * @param activityEnrollQuery
      * @return

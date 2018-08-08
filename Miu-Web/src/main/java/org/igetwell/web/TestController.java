@@ -2,6 +2,7 @@ package org.igetwell.web;
 
 import org.igetwell.annotation.AccessLimit;
 import org.igetwell.common.utils.ResponseEntity;
+import org.igetwell.system.activity.service.IActivityEnrollService;
 import org.igetwell.system.limit.service.IRateLimitService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,6 +15,9 @@ public class TestController {
 
     @Autowired
     private IRateLimitService rateLimitService;
+
+    @Autowired
+    private IActivityEnrollService activityEnrollService;
 
     @RequestMapping("/seckill")
     @ResponseBody
@@ -28,6 +32,13 @@ public class TestController {
     @AccessLimit(limit = 4, sec = 10)  //加上自定义注解即可
     public ResponseEntity testReq (){
         return new ResponseEntity("啦啦啦啦");
+    }
+
+    @RequestMapping("/apply")
+    @ResponseBody
+    @AccessLimit(limit = 4, sec = 10)  //加上自定义注解即可
+    public ResponseEntity apply (){
+        return activityEnrollService.save();
     }
 
 

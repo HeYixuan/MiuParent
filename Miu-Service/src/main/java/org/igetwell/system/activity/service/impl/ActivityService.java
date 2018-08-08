@@ -1,15 +1,12 @@
 package org.igetwell.system.activity.service.impl;
 
 import com.github.pagehelper.PageHelper;
-import org.igetwell.common.constans.LoginType;
-import org.igetwell.common.enums.FeeType;
-import org.igetwell.common.enums.HttpStatus;
-import org.igetwell.common.enums.PayStatus;
-import org.igetwell.common.enums.PayType;
+import org.igetwell.common.enums.*;
 import org.igetwell.common.utils.DateUtils;
 import org.igetwell.common.utils.ResponseEntity;
 import org.igetwell.system.Pagination;
 import org.igetwell.system.activity.domain.Activity;
+import org.igetwell.system.activity.domain.ActivityEnroll;
 import org.igetwell.system.activity.mapper.ActivityEnrollMapper;
 import org.igetwell.system.activity.mapper.ActivityMapper;
 import org.igetwell.system.activity.retrieve.ActivityEnrollQuery;
@@ -17,11 +14,14 @@ import org.igetwell.system.activity.service.IActivityService;
 import org.igetwell.system.pay.domain.Payment;
 import org.igetwell.system.pay.mapper.PaymentMapper;
 import org.igetwell.system.pay.retrieve.PaymentQuery;
+import org.igetwell.system.pay.service.impl.LocalPay;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Collection;
+import java.util.Map;
 
 @Service
 public class ActivityService implements IActivityService {
@@ -35,6 +35,9 @@ public class ActivityService implements IActivityService {
     @Autowired
     private PaymentMapper paymentMapper;
 
+    @Autowired
+    private LocalPay localPay;
+
     /**
      * 获取活动列表
      * @return
@@ -44,6 +47,19 @@ public class ActivityService implements IActivityService {
         Collection<Activity> activities = activityMapper.getList();
         Pagination<Activity> pagination = new Pagination<Activity>(activities);
         return new ResponseEntity<Pagination<Activity>>(pagination);
+    }
+
+    /**
+     * 获取活动详情
+     * @param activityId
+     * @return
+     */
+    @Override
+    public ResponseEntity<Activity> getActivity(Integer activityId) {
+        if (null == activityId){
+            return new ResponseEntity<Activity>(HttpStatus.BAD_REQUEST, "活动ID不能为空");
+        }
+        return new ResponseEntity<Activity>(activityMapper.selectByPrimaryKey(activityId));
     }
 
     /**
@@ -81,17 +97,20 @@ public class ActivityService implements IActivityService {
 
         //免费
         if (FeeType.FREE.value() == activity.getFeeType()){
-
-
-
+            ActivityEnroll activityEnroll = new ActivityEnroll();
+            activityEnroll.setOpenId(enroll.getOpenId());
+            activityEnroll.setActivityId(enroll.getActivityId());
+            activityEnrollMapper.insert(activityEnroll);
         }else{
             PaymentQuery paymentQuery = new PaymentQuery();
             paymentQuery.setOpenId(enroll.getOpenId());
             paymentQuery.setPayStatus(PayStatus.WAITPAY.value());
-            paymentQuery.setPayType(PayType.AUTH.value());
+            paymentQuery.setPayType(PayType.ACTIVITY.value());
             Payment payment = paymentMapper.get(paymentQuery);
             if (!StringUtils.isEmpty(payment)){
                 //TODO:如果有存在未支付的记录，对这个未支付的记录做处理
+            } else {
+
             }
 
         }
@@ -100,5 +119,28 @@ public class ActivityService implements IActivityService {
 
 
         return null;
+    }
+
+    private ResponseEntity apply(HttpServletRequest request, ActivityEnroll enroll){
+        PaymentQuery paymentQuery = new PaymentQuery();
+        paymentQuery.setOpenId(enroll.getOpenId());
+        paymentQuery.setPayType(PayType.ACTIVITY.value());
+        Payment payment = paymentMapper.get(paymentQuery);
+        if (!StringUtils.isEmpty(payment)){
+            //TODO:如果有记录，对这个记录做已支付和未支付处理
+            if (null != payment.getPayStatus() && PayStatus.WAITPAY.value() == payment.getPayStatus()){
+                return new ResponseEntity<>(HttpStatus.ACCEPTED, "有待支付订单,请尽快处理.");
+            }
+            if (null != payment.getPayStatus() && PayStatus.PAY.value() == payment.getPayStatus()){
+                //防止已支付,没有报名成功处理
+                ActivityEnroll activityEnroll = new ActivityEnroll();
+                activityEnroll.setOpenId(enroll.getOpenId());
+                activityEnroll.setActivityId(enroll.getActivityId());
+                activityEnrollMapper.insert(activityEnroll);
+            }
+        }
+        //TODO:如果没有记录，开始报名
+        Map<String, String> params = localPay.preOrder(request, "",JsApiType.NATIVE, PayType.ACTIVITY, PayType.ACTIVITY.getMessage(), String.valueOf(enroll.getActivityId()), String.valueOf(10));
+        return new ResponseEntity<>(params);
     }
 }

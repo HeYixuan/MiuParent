@@ -239,7 +239,7 @@ public class LocalPay {
      * @return
      * @throws Exception
      */
-    public Map<String, String> prePay(Map<String, String> hashMap, SignType signType) throws Exception{
+    private Map<String, String> prePay(Map<String, String> hashMap, SignType signType) throws Exception{
         hashMap.put("appId", defaultAppId);
         hashMap.put("mchId", mchId);
 

@@ -23,4 +23,10 @@ public class ActivityController extends BaseController {
     public ResponseEntity<Pagination<Activity>> getList(){
         return activityService.getList();
     }
+
+    @PostMapping("/getActivity")
+    @ResponseBody
+    public ResponseEntity<Activity> getActivity(Integer activityId){
+        return activityService.getActivity(activityId);
+    }
 }
