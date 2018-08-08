@@ -1,18 +1,30 @@
-package org.igetwell.common.local;
+package org.igetwell.system.pay.service.impl;
 
+import org.igetwell.common.constans.LoginType;
 import org.igetwell.common.enums.JsApiType;
+import org.igetwell.common.enums.PayStatus;
+import org.igetwell.common.enums.PayType;
 import org.igetwell.common.enums.SignType;
+import org.igetwell.common.local.IpKit;
+import org.igetwell.common.local.LocalSnowflakeService;
 import org.igetwell.common.utils.*;
+import org.igetwell.system.pay.domain.Payment;
+import org.igetwell.system.pay.mapper.PaymentMapper;
+import org.igetwell.system.pay.retrieve.PaymentQuery;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+@Component
 public class LocalPay {
 
     private static final Logger logger = LoggerFactory.getLogger(LocalPay.class);
@@ -35,6 +47,9 @@ public class LocalPay {
 
     @Autowired
     private LocalSnowflakeService localSnowflakeService;
+
+    @Autowired
+    private PaymentMapper paymentMapper;
 
 
     /**
@@ -148,7 +163,8 @@ public class LocalPay {
      * @param fee
      * @return
      */
-    public Map<String, String> preOrder(HttpServletRequest request, String openId, JsApiType jsApiType, String productName, String productId, String fee){
+    @Transactional(rollbackFor = RuntimeException.class)
+    public Map<String, String> preOrder(HttpServletRequest request, String openId, JsApiType jsApiType, PayType payType, String productName, String productId, String fee){
         String nonceStr = UUID.randomUUID().toString().replace("-", "");
         String timestamp = String.valueOf(System.currentTimeMillis()/1000);
         String tradeNo = attach + localSnowflakeService.nextId();
@@ -163,11 +179,25 @@ public class LocalPay {
                 .put("timestamp",timestamp)
                 .put("clientIp", clientIp)
                 .put("tradeType", jsApiType.toString())
-                .put("notifyUrl","//WxPay/payNotify")
+                .put("notifyUrl","/WxPay/payNotify")
                 .getData();
         try {
+
             Map<String, String> resultXml = this.prePay(paraMap, SignType.MD5);
+            //调用统一下单支付结束方法
             String prepayId = parseXml(resultXml);
+
+            Payment payment = new Payment();
+            payment.setOpenId(openId);
+            payment.setProductId(productId);
+            payment.setTradeNo(tradeNo);
+            payment.setPrepayId(prepayId);
+            payment.setFee(Integer.valueOf(fee));
+            payment.setLoginType(LoginType.WECHAT.getValue());
+            payment.setPayStatus(PayStatus.WAITPAY.value());
+            payment.setPayType(payType.value());
+            paymentMapper.insert(payment);
+
             Map<String, String> packageMap = new HashMap<>();
             if (JsApiType.APP.equals(jsApiType)){
                 packageMap.put("appid", defaultAppId);
@@ -198,8 +228,8 @@ public class LocalPay {
 
         } catch (Exception e) {
             logger.error("商户交易号：{} 预支付失败！", tradeNo, e);
+            throw new RuntimeException("创建预支付订单失败！", e);
         }
-        return null;
     }
 
     /**
@@ -307,26 +337,43 @@ public class LocalPay {
         notifyBean.setFee(resultXml.get("total_fee")); // 获取支付金额
         notifyBean.setTradeNo(resultXml.get("out_trade_no"));//获取商户交易号
         notifyBean.setTransactionId(resultXml.get("transaction_id"));//获取微信支付订单号
+        notifyBean.setPayTime(resultXml.get("time_end"));//获取微信支付完成时间
 
 
         try {
-            //TODO:需要做数据库记录交易订单号
             boolean bool = SignUtils.checkSign(resultXml, paterKey, SignType.MD5);
             if (!bool){
                 logger.error("微信支付回调验证签名错误！");
                 return failXml.replace("${return_msg}", "微信支付回调验证签名错误！");
-                //throw new RuntimeException("微信支付回调验证签名错误！");
             }
             String returnCode = resultXml.get("return_code");
             String resultCode = resultXml.get("result_code");
             boolean isSuccess = "SUCCESS".equalsIgnoreCase(returnCode) && "SUCCESS".equalsIgnoreCase(resultCode);
             if (isSuccess){
-                logger.info("用户公众ID：{} , 订单号：{} , 交易号：{} 微信支付成功！",
-                        notifyBean.getOpenId(), notifyBean.getTradeNo(), notifyBean.getTransactionId());
+
+                //TODO:需要做数据库记录交易订单号
+                PaymentQuery paymentQuery = new PaymentQuery();
+                paymentQuery.setOpenId(notifyBean.getOpenId());
+                paymentQuery.setTradeNo(notifyBean.getTradeNo());
+                paymentQuery.setPayStatus(PayStatus.WAITPAY.value());
+
+                Payment payment = paymentMapper.get(paymentQuery);
+                if (!StringUtils.isEmpty(payment)){
+                    payment.setPaymentNo(notifyBean.getTransactionId());
+                    payment.setPayStatus(PayStatus.PAY.value());
+                    payment.setPayTime(notifyBean.getPayTime());
+                    paymentMapper.updateByPrimaryKey(payment);
+                    logger.info("用户公众ID：{} , 订单号：{} , 交易号：{} 微信支付成功！",
+                            notifyBean.getOpenId(), notifyBean.getTradeNo(), notifyBean.getTransactionId());
+                }else{
+                    logger.error("调用微信支付回调方法异常,商户订单号：{}. 微信支付订单号：{}. ", notifyBean.getTradeNo(), notifyBean.getTransactionId());
+                    throw new RuntimeException("调用微信支付回调方法异常！");
+                }
                 return successXml;
             }
         } catch (Exception e) {
             logger.error("调用微信支付回调方法异常,商户订单号：{}. 微信支付订单号：{}. ", notifyBean.getTradeNo(), notifyBean.getTransactionId(), e);
+            throw new RuntimeException("调用微信支付回调方法异常！", e);
         }
 
         return successXml;

@@ -4,7 +4,7 @@ import lombok.Data;
 import java.util.Date;
 
 @Data
-public class Activity {
+public class ActivityQuery {
 
     /**
      * 主键

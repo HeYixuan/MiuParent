@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.igetwell.system.pay.mapper.PaymentMapper">
+  <resultMap id="baseResultMap" type="org.igetwell.system.pay.domain.Payment">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="ID" jdbcType="INTEGER" property="id" />
+    <result column="OPEN_ID" jdbcType="VARCHAR" property="openId" />
+    <result column="PRODUCT_ID" jdbcType="VARCHAR" property="productId" />
+    <result column="TRADE_NO" jdbcType="VARCHAR" property="tradeNo" />
+    <result column="PREPAY_ID" jdbcType="VARCHAR" property="prepayId" />
+    <result column="PAYMENT_NO" jdbcType="VARCHAR" property="paymentNo" />
+    <result column="FEE" jdbcType="INTEGER" property="fee" />
+    <result column="PAY_TYPE" jdbcType="INTEGER" property="payType" />
+    <result column="PAY_STATUS" jdbcType="INTEGER" property="payStatus" />
+    <result column="LOGIN_TYPE" jdbcType="INTEGER" property="loginType" />
+    <result column="PAY_TIME" jdbcType="VARCHAR" property="payTime" />
+    <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime" />
+  </resultMap>
+
+  <sql id="baseSql">
+    PAY.ID as id,
+    PAY.OPEN_ID as openId,
+    PAY.PRODUCT_ID as productId,
+    PAY.TRADE_NO as tradeNo,
+    PAY.PREPAY_ID as prepayId,
+    PAY.PAYMENT_NO as paymentNo,
+    PAY.FEE as fee,
+    PAY.PAY_TYPE as payType,
+    PAY.PAY_STATUS as payStatus,
+    PAY.LOGIN_TYPE as loginType,
+    PAY.PAY_TIME as payTime,
+    PAY.CREATE_TIME as createTime
+  </sql>
+
+  <select id="get" resultType="org.igetwell.system.pay.domain.Payment" parameterType="org.igetwell.system.pay.retrieve.PaymentQuery">
+    SELECT
+        <include refid="baseSql" />
+    FROM PAYMENT as PAY
+    <where>
+      <if test="openId != null and openId != ''">
+        AND PAY.OPEN_ID = #{openId}
+      </if>
+
+      <if test="tradeNo != null and tradeNo != ''">
+        AND PAY.TRADE_NO = #{tradeNo}
+      </if>
+
+      <if test="paymentNo != null and paymentNo != ''">
+        AND PAY.PAYMENT_NO = #{paymentNo}
+      </if>
+
+      <if test="payType != null">
+        AND PAY.PAY_TYPE as payType = #{payStatus}
+      </if>
+
+      <if test="payStatus != null">
+        AND PAY.PAY_STATUS = #{payStatus}
+      </if>
+    </where>
+  </select>
+</mapper>

@@ -1,8 +1,9 @@
 package org.igetwell.web.wechat.pay;
 
 import org.igetwell.common.enums.JsApiType;
+import org.igetwell.common.enums.PayType;
 import org.igetwell.common.local.HttpKit;
-import org.igetwell.common.local.LocalPay;
+import org.igetwell.system.pay.service.impl.LocalPay;
 import org.igetwell.web.BaseController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -39,7 +40,7 @@ public class WxPayController extends BaseController {
     @PostMapping("/preOrder")
     @ResponseBody
     public Map<String, String> preOrder() {
-        return localPay.preOrder(request.get(), null, JsApiType.APP,"官网费用","GW201807162055","1");
+        return localPay.preOrder(request.get(), "ojhc61KyGnCepGMIpcZI-YCPce30", JsApiType.NATIVE, PayType.AUTH,"官网费用","GW201807162055","1");
     }
 
 

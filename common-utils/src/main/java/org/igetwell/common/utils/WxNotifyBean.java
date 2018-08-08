@@ -1,5 +1,7 @@
 package org.igetwell.common.utils;
 
+import java.util.Date;
+
 public class WxNotifyBean {
 
     /**
@@ -34,6 +36,11 @@ public class WxNotifyBean {
      * 扫码支付(NATIVE)
      */
     private String jsApiType;
+
+    /**
+     * 微信交易完成时间
+     */
+    private String payTime;
 
 
     private WxNotifyBean(){}
@@ -95,5 +102,13 @@ public class WxNotifyBean {
 
     public void setJsApiType(String jsApiType) {
         this.jsApiType = jsApiType;
+    }
+
+    public String getPayTime() {
+        return payTime;
+    }
+
+    public void setPayTime(String payTime) {
+        this.payTime = payTime;
     }
 }

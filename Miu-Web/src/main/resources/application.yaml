@@ -64,3 +64,8 @@ pagehelper:
   reasonable: true
   support-methods-arguments: true
   params: count=countSql
+
+
+#log
+logging:
+  config: classpath:logback.xml
