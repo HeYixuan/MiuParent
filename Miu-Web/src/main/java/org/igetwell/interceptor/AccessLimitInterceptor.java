@@ -3,6 +3,7 @@ package org.igetwell.interceptor;
 import org.igetwell.annotation.AccessLimit;
 import org.igetwell.common.enums.HttpStatus;
 import org.igetwell.common.local.IpKit;
+import org.igetwell.system.limit.service.IRateLimitService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.method.HandlerMethod;
@@ -24,8 +25,18 @@ public class AccessLimitInterceptor implements HandlerInterceptor {
     @Autowired
     private RedisTemplate redisTemplate;
 
+    @Autowired
+    private IRateLimitService rateLimitService;
+
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+
+        boolean bool = rateLimitService.tryAcquire();
+
+        if (!bool){
+            output(response, "当前请求过多，请稍后尝试!");
+        }
+
         if (handler instanceof HandlerMethod) {
             HandlerMethod handlerMethod = (HandlerMethod) handler;
             Method method = handlerMethod.getMethod();
@@ -45,9 +56,8 @@ public class AccessLimitInterceptor implements HandlerInterceptor {
             } else if (maxLimit < limit) {
                 redisTemplate.opsForValue().set(key, maxLimit + 1, sec, TimeUnit.SECONDS);
             } else {
-                //response.setStatus(HttpStatus.TOO_MANY_REQUESTS.value());
-                //response.getWriter().print("请求太频繁!");
                 output(response, "请求太频繁!");
+                //output(response,new ResponseEntity<>(HttpStatus.TOO_MANY_REQUESTS, "请求太频繁!"));
                 return false;
             }
         }
@@ -61,6 +71,21 @@ public class AccessLimitInterceptor implements HandlerInterceptor {
         try {
             outputStream = response.getOutputStream();
             outputStream.write(msg.getBytes("UTF-8"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            outputStream.flush();
+            outputStream.close();
+        }
+    }
+
+    public void output(HttpServletResponse response, Object obj) throws IOException {
+        response.setContentType("application/json;charset=UTF-8");
+        response.setStatus(HttpStatus.TOO_MANY_REQUESTS.value());
+        ServletOutputStream outputStream = null;
+        try {
+            outputStream = response.getOutputStream();
+            outputStream.print(obj.toString());
         } catch (IOException e) {
             e.printStackTrace();
         } finally {

@@ -13,7 +13,7 @@ public class ThreadTest extends Thread {
     public void run() {
         RedisLock lock = new RedisLock();
 
-      lock.lock("lock", "3000");
+        lock.lock("lock", "3000");
 //        String identifier = lock.lockWithTimeout("resource", 5000, 1000);
         System.out.println(Thread.currentThread().getName() + "获得了锁");
         n = --n;

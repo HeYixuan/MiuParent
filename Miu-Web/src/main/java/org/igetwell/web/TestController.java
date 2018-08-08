@@ -27,7 +27,7 @@ public class TestController {
     @ResponseBody
     @AccessLimit(limit = 4, sec = 10)  //加上自定义注解即可
     public ResponseEntity testReq (){
-        return rateLimitService.tryAcquire();
+        return new ResponseEntity("啦啦啦啦");
     }
 
 
