@@ -42,6 +42,5 @@ public class AtomicExample1 {
 
     private static void add() {
         count.incrementAndGet();
-        //count.getAndIncrement();
     }
 }

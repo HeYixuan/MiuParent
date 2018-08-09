@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api")
-public class TestController {
+public class TestController extends BaseController {
 
     @Autowired
     private IRateLimitService rateLimitService;
@@ -42,8 +42,11 @@ public class TestController {
     }
 
 
-
-
+    @RequestMapping("/queueAdd")
+    @ResponseBody
+    public ResponseEntity add(){
+        return new ResponseEntity();
+    }
 
     /*@RequestMapping(value = "/download", method = RequestMethod.GET)
     *//*@RequiresPermissions(permissionValue="download")*//*
