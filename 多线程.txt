@@ -1,0 +1,142 @@
+CountDownLatch 用一个 AQS状态代表信号量数
+CountDownLatch被初始化为一个给定的数量count。await方法阻塞，直到其他线程或自己，
+调用#countDown方法，使count达到零为止；当count达到0时，所有await的线程，将被立刻
+released唤醒。CountDownLatch是一次性的，不能被复位。如果需要将count，重置为初始值，
+可以考虑用CyclicBarrier。
+
+
+
+//获取信号量   尝试以公平的方式，获取锁，当锁状态为0，则返回1，否则为-1
+        protected int tryAcquireShared(int acquires) {
+            return (getState() == 0) ? 1 : -1;
+        }
+       //释放信号量  尝试释放共享锁
+        protected boolean tryReleaseShared(int releases) {
+            // Decrement count; signal when transition to zero
+            for (;;) {
+	//自旋尝试释放共享锁
+                int c = getState();
+	//如果锁状态为0，则释放失败
+                if (c == 0)
+                    return false;
+                int nextc = c-1;
+	//以CAS方式，修改锁状态，减1
+                if (compareAndSetState(c, nextc))
+                    return nextc == 0;
+            }
+        }
+
+
+CyclicBarrier barrier;//屏障锁
+一个集合线程，等待每一个线程达到共同的屏障点。
+CyclicBarriers对一个复杂的线程集合必须互相等待完成任务，场景非常有用。
+同步工具的屏障可以循环利用，因为在所有等待线程释放锁时，他可以被重新使用。
+
+CyclicBarrier的构造函数中，有一个带Runnable，在所有线程到达屏障点，并且共享锁没有完全释放，
+这个功能，对于在其他线程继续执行任务前，更新共享状态非常有用
+
+
+信号量Semaphore
+信号量维护一个许可集，可通过acquire()获取许可（若无可用许可则阻塞），通过release()释放许可，从而可能唤醒一个阻塞等待许可的线程。
+与互斥锁类似，信号量限制了同一时间访问临界资源的线程的个数，并且信号量也分公平信号量与非公平信号量。而不同的是，
+互斥锁保证同一时间只会有一个线程访问临界资源，而信号量可以允许同一时间多个线程访问特定资源。所以信号量并不能保证原子性。
+信号量的一个典型使用场景是限制系统访问量。每个请求进来后，处理之前都通过acquire获取许可，若获取许可成功则处理该请求，
+若获取失败则等待处理或者直接不处理该请求。
+
+信号量的使用方法
+acquire(int permits) 申请permits（必须为非负数）个许可，若获取成功，则该方法返回并且当前可用许可数减permits；
+若当前可用许可数少于permits指定的个数，则继续等待可用许可数大于等于permits；若等待过程中当前线程被中断，则抛出InterruptedException。
+acquire() 等价于acquire(1)。
+
+acquireUninterruptibly(int permits) 申请permits（必须为非负数）个许可，若获取成功，则该方法返回并且当前可用许可数减permits；
+若当前许可数少于permits，则继续等待可用许可数大于等于permits；若等待过程中当前线程被中断，继续等待可用许可数大于等于permits，
+并且获取成功后设置线程中断状态。
+acquireUninterruptibly() 等价于acquireUninterruptibly(1)。
+drainPermits() 获取所有可用许可，并返回获取到的许可个数，该方法不阻塞
+tryAcquire(int permits) 尝试获取permits个可用许可，如果当前许可个数大于等于permits，则返回true并且可用许可数减permits；
+否则返回false并且可用许可数不变。
+tryAcquire() 等价于tryAcquire(1)。
+tryAcquire(int permits, long timeout, TimeUnit unit) 尝试获取permits（必须为非负数）个许可，若在指定时间内获取成功则返回true
+并且可用许可数减permits；若指定时间内当前线程被中断，则抛出InterruptedException；若指定时间内可用许可数均小于permits，则返回false。
+tryAcquire(long timeout, TimeUnit unit) 等价于tryAcquire(1, long timeout, TimeUnit unit)
+release(int permits) 释放permits个许可，该方法不阻塞并且某线程调用release方法前并不需要先调用acquire方法。
+release() 等价于release(1)。
+
+注意：与wait/notify和await/signal不同，acquire/release完全与锁无关，因此acquire等待过程中，可用许可满足要求时acquire可立即返回，
+而不用像锁的wait和条件变量的await那样重新获取锁才能返回。或者可以理解成，只要可用许可满足需求，就已经获得了锁。
+
+
+AbstractQueuedSynchronizer(同步器)主要是依赖于FIFO等待队列，提供阻塞锁，和相关同步(信号量，事件等)
+框架。AQS用一个原子的int值表示状态state，是多种同步器或锁的基础。
+子类必须定义一个protected方法，用于改变状态state，此状态state以为着，
+一个对象（锁）是否获取或释放。其他的方法，用于队列操作和阻塞机制。
+子类可以通过setState和getState，#compareAndSetState方法，以原子，获取，改变state值。
+
+AQS支持独占锁和共享锁模式。当一个线程持有独占锁，在其没释放之前，其他线程
+ 尝试获取锁，则不能成功获取。共享锁可以被多个线程所持有。最大的不同是，
+ 共享锁模式下，当一个线程成功获取锁，下一个等待线程必须确定其是否可以获取
+ 锁。不同模式锁下等待的线程，在同一个FIFO队列中。子类可以实现两种模式中的
+ 一种，也可以都实现，比如读写锁ReadWriteLock。子类如果只提供一种模式的锁，
+ 不必实现另一种模式下的方法。
+
+tryAcquire尝试获取独占锁,成功则返回true，失败则返回false。内部实现：addWaiter()将该线程加入等待队列的尾部，并标记为独占模式  acquireQueued()使线程在等待队列中获取资源，一直获取到资源后才返回。如果在整个等待过程中被中断过，则返回true，否则返回false
+tryRelease尝试释放独占锁,成功则返回true，失败则返回false
+tryAcquireShared尝试获取共享锁,成功则返回true，失败则返回false。
+tryReleaseShared尝试释放共享锁,负数表示失败；0表示成功，但没有剩余可用资源；正数表示成功，且有剩余资源。
+isHeldExclusively是否持有独占锁
+
+ 在进入队列，进行获取锁检查时，一个新的获取锁线程也许会优先于，阻塞在队列中的
+ 线程获取锁。如果不想出现这种情况，可以选择通过tryAcquire和tryAcquireShared方法，
+ 通过一个或多个诊断方法，屏蔽这种情况，鉴于这种情况，提供一个精度较高的
+ FIFO队列。在一些特殊情况下，大部分同步器的#hasQueuedPredecessors方法（专为公平锁设计的方法）
+ 返回true时，可以定义tryAcquire方法返回false，来保证公平性。
+
+非公平锁（贪婪模式或闯入者模式）拥有一个相对较高的稳定性和吞吐量，强烈建议
+ 使用这种模式的锁，这种模式不能保证公平性或饥渴度平衡树，先入队列的线程，允许在
+ 后进入队列的线程之前竞争锁，每个竞争者与刚进来的线程拥有公平的机会，成功竞争锁。
+ 一般情况下，在线程阻塞前，竞争者会自旋，多次执行tryAcquire方法，尽最大可能获取锁。
+自旋对于锁的持有者有利，而对于获取者没有任务坏处。如果竞争者不可能获取锁，但同时
+有强烈的愿望持有锁，则可以在acquire方法前，通过#hasContended或hasQueuedThreads方法，
+检查或预检查锁。
+
+AQS利用获取和释放原子的int state，内部FIFO等待队列为同步器提供有效和稳定的基础。
+ 当AQS性能不好时，可以利用Atomic和自己实现的Queue，和LockSupport，实现自己的锁机制。
+
+
+
+ReentrantLock （可重入锁 是独占锁)
+可重入锁，依赖于同步Sync，同步是基于AQS的实现；同步Sync
+有两种实现一种是公平锁，一种是非公平锁；用AQS state表示，锁的状态。
+ //根据公平锁与非公平锁标志，创建相应的锁
+    public ReentrantLock(boolean fair) {
+        sync = fair ? new FairSync() : new NonfairSync();
+    }
+
+在非公平锁的尝试获取锁方法中，会调用nonfairTryAcquire
+acquires为尝试获取次数，一般为1
+尝试获取锁，如果获取成功，则设置锁的持有者，为当前线程，返回ture。 setExclusiveOwnerThread(current);
+
+公平所 如果获取锁失败，则添加独占模式节点到队列中，自旋，队列头部节点尝试获取锁，如果获取成功，设置当前节点为头节点；
+如果尝试获取失败，检查是否可以中断当前线程，如果可以，则中断当前线程。
+
+比较非公平锁的尝试获取锁nonfairTryAcquire与公平锁TryAcquire的区别在与
+非公平尝试获取锁时，如果锁为打开状态，则锁住锁；而公平锁，则先看有没有前驱节点
+，有前驱，则不能锁住锁，没有则可锁住。
+
+
+
+ReadWriteLock
+ReadWriteLock与ReentrantLock有着相似的性质
+不强调读写锁获取的顺序，但支持公平策略选型
+ReadWriteLock默认情况下，是非公平锁，线程获取读写锁的顺序是不确定的，主要是
+ 根据可重入策略。非公平锁，会持续的竞争锁，也许会推迟其他线程获取读写锁，但是
+ ，非公平策略的吞度量比公平锁要高。
+
+ 当一个线程尝试获取一个非重入的读锁，如果其他线程持有写锁，或有线程等待写锁，
+ 将会阻塞。直到等待最久的写线程获取写锁，并释放，等待非重入读锁的线程才能获取锁。
+ 当一个等待写线程取消等待，同时又一个或多个线程读线程等待读锁，写锁释放，那么这些
+ 读线程将获取读锁。
+
+当一个线程尝试获取非重入的写锁时，除非写锁和读锁都没有线程在等待，
+ 否则将会阻塞。非阻塞的读锁和写锁尝试获取锁的时候，并不是完全公平，
+ 如果可能，将忽略等待线程，获取锁。

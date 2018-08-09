@@ -9,14 +9,14 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupp
 public class MyWebConfig extends WebMvcConfigurationSupport {
 
 
-    /*@Bean
+    @Bean
     public AccessLimitInterceptor getAccessLimitInterceptor(){
         return new AccessLimitInterceptor();
-    }*/
+    }
 
-    /*@Override
+    @Override
     protected void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(getAccessLimitInterceptor()).addPathPatterns("/**");
         super.addInterceptors(registry);
-    }*/
+    }
 }
