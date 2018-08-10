@@ -1,5 +1,9 @@
 server:
   port: 9090
+  tomcat:
+    max-threads: 2000
+    max-connections: 2000
+  connection-timeout: 30000ms
 
 spring:
   profiles:
