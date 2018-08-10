@@ -140,3 +140,36 @@ ReadWriteLock默认情况下，是非公平锁，线程获取读写锁的顺序�
 当一个线程尝试获取非重入的写锁时，除非写锁和读锁都没有线程在等待，
  否则将会阻塞。非阻塞的读锁和写锁尝试获取锁的时候，并不是完全公平，
  如果可能，将忽略等待线程，获取锁。
+
+
+
+ ReentrantReadWriteLock  可重入读写锁实现了 ReadWriteLock 默认创建的是非公平锁
+     public ReentrantReadWriteLock() {
+         //默认创建的是非公平锁
+         this(false);
+     }
+
+     /**
+      * Creates a new {@code ReentrantReadWriteLock} with
+      * the given fairness policy.
+      *带公平性参数的构造
+      * @param fair {@code true} if this lock should use a fair ordering policy
+      */
+     public ReentrantReadWriteLock(boolean fair) {
+         sync = fair ? new FairSync() : new NonfairSync();
+         readerLock = new ReadLock(this);
+         writerLock = new WriteLock(this);
+     }
+
+     读写锁常量，锁的状态将一个int分成两部分，低16表示互斥写锁可持有的数量，
+     高16位表示共享读锁，可持有的数量。
+
+     static final int SHARED_SHIFT   = 16;
+     static final int SHARED_UNIT    = (1 << SHARED_SHIFT);
+     static final int MAX_COUNT      = (1 << SHARED_SHIFT) - 1;//65535
+     static final int EXCLUSIVE_MASK = (1 << SHARED_SHIFT) - 1;//65535
+
+     /** Returns the number of shared holds represented in count 共享读 锁数量 */
+     static int sharedCount(int c)    { return c >>> SHARED_SHIFT; }
+     /** Returns the number of exclusive holds represented in count  互斥写锁数量*/
+     static int exclusiveCount(int c) { return c & EXCLUSIVE_MASK; }
