@@ -67,7 +67,7 @@ public class ActivityService implements IActivityService {
      * @param enroll
      * @return
      */
-    public ResponseEntity apply(ActivityEnrollQuery enroll){
+    public ResponseEntity apply(HttpServletRequest request, ActivityEnrollQuery enroll){
         boolean bool = activityEnrollMapper.getTotal(enroll);
         if (bool){
             return new ResponseEntity(HttpStatus.GONE,"已报名");
@@ -94,34 +94,24 @@ public class ActivityService implements IActivityService {
             return new ResponseEntity(HttpStatus.GONE,"报名已截止");
         }
 
-
         //免费
         if (FeeType.FREE.value() == activity.getFeeType()){
-            ActivityEnroll activityEnroll = new ActivityEnroll();
-            activityEnroll.setOpenId(enroll.getOpenId());
-            activityEnroll.setActivityId(enroll.getActivityId());
-            activityEnrollMapper.insert(activityEnroll);
+            return this.applyEnroll(enroll);
         }else{
-            PaymentQuery paymentQuery = new PaymentQuery();
-            paymentQuery.setOpenId(enroll.getOpenId());
-            paymentQuery.setPayStatus(PayStatus.WAITPAY.value());
-            paymentQuery.setPayType(PayType.ACTIVITY.value());
-            Payment payment = paymentMapper.get(paymentQuery);
-            if (!StringUtils.isEmpty(payment)){
-                //TODO:如果有存在未支付的记录，对这个未支付的记录做处理
-            } else {
-
-            }
-
+            return this.applyPay(request, enroll);
         }
-
-
-
-
-        return null;
     }
 
-    private ResponseEntity apply(HttpServletRequest request, ActivityEnroll enroll){
+    /**
+     * 判断是否支付
+     * 未支付但存在订单，去处理
+     * 已支付但未报名成功，去处理
+     * 支付记录没有则调起微信支付
+     * @param request
+     * @param enroll
+     * @return
+     */
+    private ResponseEntity applyPay(HttpServletRequest request, ActivityEnrollQuery enroll){
         PaymentQuery paymentQuery = new PaymentQuery();
         paymentQuery.setOpenId(enroll.getOpenId());
         paymentQuery.setPayType(PayType.ACTIVITY.value());
@@ -133,14 +123,25 @@ public class ActivityService implements IActivityService {
             }
             if (null != payment.getPayStatus() && PayStatus.PAY.value() == payment.getPayStatus()){
                 //防止已支付,没有报名成功处理
-                ActivityEnroll activityEnroll = new ActivityEnroll();
-                activityEnroll.setOpenId(enroll.getOpenId());
-                activityEnroll.setActivityId(enroll.getActivityId());
-                activityEnrollMapper.insert(activityEnroll);
+                return this.applyEnroll(enroll);
             }
         }
-        //TODO:如果没有记录，开始报名
-        Map<String, String> params = localPay.preOrder(request, "",JsApiType.NATIVE, PayType.ACTIVITY, PayType.ACTIVITY.getMessage(), String.valueOf(enroll.getActivityId()), String.valueOf(10));
+        //TODO:如果没有记录，调用微信支付，支付成功跳转成功页面，开始报名
+        Map<String, String> params = localPay.preOrder(request, enroll.getOpenId(),JsApiType.NATIVE, PayType.ACTIVITY, PayType.ACTIVITY.getMessage(), String.valueOf(enroll.getActivityId()), String.valueOf(10));
         return new ResponseEntity<>(params);
+    }
+
+
+    /**
+     * 插入用户活动报名记录
+     * @param enroll
+     * @return
+     */
+     private ResponseEntity applyEnroll(ActivityEnrollQuery enroll){
+        ActivityEnroll activityEnroll = new ActivityEnroll();
+        activityEnroll.setOpenId(enroll.getOpenId());
+        activityEnroll.setActivityId(enroll.getActivityId());
+        activityEnrollMapper.insert(activityEnroll);
+        return new ResponseEntity();
     }
 }

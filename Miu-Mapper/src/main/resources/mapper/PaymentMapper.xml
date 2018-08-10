@@ -52,7 +52,7 @@
       </if>
 
       <if test="payType != null">
-        AND PAY.PAY_TYPE as payType = #{payStatus}
+        AND PAY.PAY_TYPE = #{payType}
       </if>
 
       <if test="payStatus != null">

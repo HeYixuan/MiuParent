@@ -6,6 +6,8 @@ import org.igetwell.system.Pagination;
 import org.igetwell.system.activity.domain.Activity;
 import org.igetwell.system.activity.retrieve.ActivityEnrollQuery;
 
+import javax.servlet.http.HttpServletRequest;
+
 public interface IActivityService {
 
     /**
@@ -26,5 +28,5 @@ public interface IActivityService {
      * @param activityEnrollQuery
      * @return
      */
-    ResponseEntity apply(ActivityEnrollQuery activityEnrollQuery);
+    ResponseEntity apply(HttpServletRequest request, ActivityEnrollQuery activityEnrollQuery);
 }

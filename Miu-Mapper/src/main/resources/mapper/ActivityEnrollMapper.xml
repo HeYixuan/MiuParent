@@ -11,7 +11,7 @@
     <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime" />
   </resultMap>
 
-  <select id="getTotal" parameterType="org.igetwell.system.activity.retrieve.ActivityEnrollQuery">
+  <select id="getTotal" resultType="boolean" parameterType="org.igetwell.system.activity.retrieve.ActivityEnrollQuery">
     SELECT COUNT(ID) FROM ACTIVITY_ENROLL WHERE OPEN_ID = #{openId} AND ACTIVITY_ID = #{activityId}
   </select>
 </mapper>
