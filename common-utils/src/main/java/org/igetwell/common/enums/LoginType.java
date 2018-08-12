@@ -2,7 +2,7 @@ package org.igetwell.common.constans;
 
 public enum LoginType {
 
-    WECHAT(1), ALI_PAY(2);
+    WECHAT(1), ALI_PAY(2), WEB_LOGIN(3);
 
     LoginType(int value) {
         this.value = value;

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.igetwell.system.activity.mapper_new.LabelMapper">
+  <resultMap id="BaseResultMap" type="org.igetwell.system.activity.domain.Label">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="ID" jdbcType="INTEGER" property="id" />
+    <result column="LABEL_NAME" jdbcType="VARCHAR" property="labelName" />
+    <result column="LABEL_TYPE" jdbcType="INTEGER" property="labelType" />
+  </resultMap>
+</mapper>

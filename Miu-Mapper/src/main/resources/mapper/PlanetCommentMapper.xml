@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.igetwell.system.planet.mapper_new.PlanetCommentMapper">
+  <resultMap id="BaseResultMap" type="org.igetwell.system.planet.domain.PlanetComment">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="ID" jdbcType="INTEGER" property="id" />
+    <result column="PLANET_ID" jdbcType="INTEGER" property="planetId" />
+    <result column="OPEN_ID" jdbcType="VARCHAR" property="openId" />
+    <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="TEXT" jdbcType="LONGVARCHAR" property="text" />
+  </resultMap>
+</mapper>
