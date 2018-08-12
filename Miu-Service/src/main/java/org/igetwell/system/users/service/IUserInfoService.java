@@ -1,7 +1,7 @@
 package org.igetwell.system.users.service;
 
 import org.igetwell.common.utils.ResponseEntity;
-import org.igetwell.system.user.update.UserInfoUpdate;
+import org.igetwell.system.users.update.UserInfoUpdate;
 
 public interface IUserInfoService {
 

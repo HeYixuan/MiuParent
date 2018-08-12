@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="org.igetwell.system.activity.mapper_new.LabelMapper">
-  <resultMap id="BaseResultMap" type="org.igetwell.system.activity.domain.Label">
+<mapper namespace="org.igetwell.system.users.mapper.LabelMapper">
+
+  <!--标签库-->
+  <resultMap id="labelMap" type="org.igetwell.system.users.domain.Label">
     <!--
       WARNING - @mbg.generated
     -->
@@ -9,4 +11,15 @@
     <result column="LABEL_NAME" jdbcType="VARCHAR" property="labelName" />
     <result column="LABEL_TYPE" jdbcType="INTEGER" property="labelType" />
   </resultMap>
+
+  <select id="getLabels" resultType="java.lang.String" parameterType="org.igetwell.system.users.retrieve.UserLabelQuery">
+    SELECT L.LABEL_NAME FROM USER_LABEL UL, LABEL L WHERE UL.LABEL_ID = L.ID
+    <if test="openId != null and openId != ''">
+      AND UL.OPEN_ID = #{OPEN_ID};
+    </if>
+
+    <if test="labelType != null">
+      AND L.LABEL_TYPE = #{labelType};
+    </if>
+  </select>
 </mapper>

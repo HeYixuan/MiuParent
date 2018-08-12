@@ -10,7 +10,27 @@
     <result column="LABEL_NAME" jdbcType="VARCHAR" property="labelName" />
     <result column="AXIS" jdbcType="VARCHAR" property="axis" />
     <result column="LIKE" jdbcType="INTEGER" property="like" />
-    <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime" />
     <result column="TEXT" jdbcType="LONGVARCHAR" property="text" />
+    <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime" />
   </resultMap>
+
+  <sql id="planetSql">
+      U.OPEN_ID as openId,
+      P.ID as said,
+      U.NICK_NAME as nickName,
+      U.AVATAR as avatar,
+      P.ID as said,
+      P.LABEL_NAME as labelName,
+      P.TEXT as text,
+      P.AXIS as axis,
+      P.`LIKE` as likeCount,
+      P.CREATE_TIME as createTime
+  </sql>
+
+  <select id="getList" resultType="org.igetwell.system.planet.dto.PlanetDTO" parameterType="org.igetwell.system.planet.retrieve.PlanetQuery">
+    SELECT
+        <include refid="planetSql" />
+    FROM USER U, PLANET_SAID P
+    WHERE U.OPEN_ID = P.OPEN_ID ORDER BY P.CREATE_TIME DESC
+  </select>
 </mapper>

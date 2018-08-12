@@ -1,4 +1,4 @@
-package org.igetwell.system.label.domain;
+package org.igetwell.system.users.domain;
 
 import javax.persistence.Column;
 import javax.persistence.GeneratedValue;

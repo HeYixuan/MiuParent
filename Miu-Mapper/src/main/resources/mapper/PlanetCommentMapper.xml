@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="org.igetwell.system.planet.mapper_new.PlanetCommentMapper">
+<mapper namespace="org.igetwell.system.planet.mapper.PlanetCommentMapper">
   <resultMap id="BaseResultMap" type="org.igetwell.system.planet.domain.PlanetComment">
     <!--
       WARNING - @mbg.generated
@@ -8,7 +8,27 @@
     <id column="ID" jdbcType="INTEGER" property="id" />
     <result column="PLANET_ID" jdbcType="INTEGER" property="planetId" />
     <result column="OPEN_ID" jdbcType="VARCHAR" property="openId" />
-    <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="PARENT_ID" jdbcType="VARCHAR" property="parentId" />
+    <result column="PARENT_NAME" jdbcType="VARCHAR" property="parentName" />
     <result column="TEXT" jdbcType="LONGVARCHAR" property="text" />
+    <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime" />
   </resultMap>
+
+  <sql id="commentSql">
+    U.OPEN_ID as openId,
+    P.PLANET_ID as said,
+    U.NICK_NAME as nickName,
+    P.PARENT_ID as parentId,
+    P.PARENT_NAME as parentName,
+    P.TEXT as text,
+    P.CREATE_TIME as createTime
+  </sql>
+
+  <select id="getList" resultType="org.igetwell.system.planet.dto.PlanetCommentDTO" parameterType="org.igetwell.system.planet.retrieve.PlanetCommentQuery">
+    SELECT
+        <include refid="commentSql" />
+    FROM PLANET_COMMENT P, USER U
+    WHERE U.OPEN_ID = P.OPEN_ID AND P.PLANET_ID = #{said}
+  </select>
+
 </mapper>

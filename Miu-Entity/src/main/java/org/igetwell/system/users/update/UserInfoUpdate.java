@@ -1,4 +1,4 @@
-package org.igetwell.system.user.update;
+package org.igetwell.system.users.update;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;

@@ -1,4 +1,4 @@
-package org.igetwell.common.constans;
+package org.igetwell.common.enums;
 
 public enum LoginType {
 

@@ -1,4 +1,4 @@
-package org.igetwell.system.user.retrieve;
+package org.igetwell.system.users.retrieve;
 
 import lombok.Data;
 

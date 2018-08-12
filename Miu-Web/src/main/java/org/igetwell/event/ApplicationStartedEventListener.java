@@ -19,11 +19,11 @@ public class ApplicationStartedEventListener implements ApplicationListener<Appl
     public void onApplicationEvent(ApplicationStartedEvent applicationStartedEvent) {
         System.err.println(applicationStartedEvent.getSpringApplication().getMainApplicationClass().getName() + "服务启动完毕...");
 
-        ApplicationStartedEventListener listener = new ApplicationStartedEventListener();
+        /*ApplicationStartedEventListener listener = new ApplicationStartedEventListener();
         for (int i = 0; i < 50; i++) {
             ThreadA threadA = new ThreadA(listener);
             threadA.start();
-        }
+        }*/
     }
 
     class ThreadA extends Thread {

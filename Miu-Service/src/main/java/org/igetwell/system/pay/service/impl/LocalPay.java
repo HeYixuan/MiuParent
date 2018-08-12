@@ -1,6 +1,6 @@
 package org.igetwell.system.pay.service.impl;
 
-import org.igetwell.common.constans.LoginType;
+import org.igetwell.common.enums.LoginType;
 import org.igetwell.common.enums.JsApiType;
 import org.igetwell.common.enums.PayStatus;
 import org.igetwell.common.enums.PayType;

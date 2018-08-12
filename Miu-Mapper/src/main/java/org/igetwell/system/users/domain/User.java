@@ -48,13 +48,25 @@ public class User {
     private String birthDay;
 
     /**
+     * 性别: 0未知 1男 2女
+     */
+    @Column(name = "SEX")
+    private Integer sex;
+
+    /**
      * 手机号码
      */
     @Column(name = "PHONE")
     private String phone;
 
     /**
-     * 登陆类型：1微信  2支付宝
+     * 账户密码：手机账户注册时填写该字段
+     */
+    @Column(name = "SECRET")
+    private String secret;
+
+    /**
+     * 登陆类型：1微信  2支付宝 3手机号登陆
      */
     @Column(name = "LOGIN_TYPE")
     private Integer loginType;
@@ -186,6 +198,24 @@ public class User {
     }
 
     /**
+     * 获取性别: 0未知 1男 2女
+     *
+     * @return SEX - 性别: 0未知 1男 2女
+     */
+    public Integer getSex() {
+        return sex;
+    }
+
+    /**
+     * 设置性别: 0未知 1男 2女
+     *
+     * @param sex 性别: 0未知 1男 2女
+     */
+    public void setSex(Integer sex) {
+        this.sex = sex;
+    }
+
+    /**
      * 获取手机号码
      *
      * @return PHONE - 手机号码
@@ -204,18 +234,36 @@ public class User {
     }
 
     /**
-     * 获取登陆类型：1微信  2支付宝
+     * 获取账户密码：手机账户注册时填写该字段
      *
-     * @return LOGIN_TYPE - 登陆类型：1微信  2支付宝
+     * @return SECRET - 账户密码：手机账户注册时填写该字段
+     */
+    public String getSecret() {
+        return secret;
+    }
+
+    /**
+     * 设置账户密码：手机账户注册时填写该字段
+     *
+     * @param secret 账户密码：手机账户注册时填写该字段
+     */
+    public void setSecret(String secret) {
+        this.secret = secret == null ? null : secret.trim();
+    }
+
+    /**
+     * 获取登陆类型：1微信  2支付宝 3手机号登陆
+     *
+     * @return LOGIN_TYPE - 登陆类型：1微信  2支付宝 3手机号登陆
      */
     public Integer getLoginType() {
         return loginType;
     }
 
     /**
-     * 设置登陆类型：1微信  2支付宝
+     * 设置登陆类型：1微信  2支付宝 3手机号登陆
      *
-     * @param loginType 登陆类型：1微信  2支付宝
+     * @param loginType 登陆类型：1微信  2支付宝 3手机号登陆
      */
     public void setLoginType(Integer loginType) {
         this.loginType = loginType;

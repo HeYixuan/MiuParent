@@ -1,7 +1,7 @@
 package org.igetwell.system.users.service.impl;
 
 import lombok.extern.slf4j.Slf4j;
-import org.igetwell.common.constans.LoginType;
+import org.igetwell.common.enums.LoginType;
 import org.igetwell.common.utils.RedisUtils;
 import org.igetwell.common.utils.WeChatUtils;
 import org.igetwell.system.users.service.IUserService;
