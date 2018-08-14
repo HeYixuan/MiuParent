@@ -2,8 +2,11 @@ package org.igetwell.web.system.planet;
 
 import org.igetwell.common.utils.ResponseEntity;
 import org.igetwell.system.Pagination;
+import org.igetwell.system.planet.dto.MyPlanetDTO;
+import org.igetwell.system.planet.dto.MyPlanetDetailDTO;
 import org.igetwell.system.planet.dto.PlanetCommentDTO;
 import org.igetwell.system.planet.dto.PlanetDTO;
+import org.igetwell.system.planet.retrieve.MyPlanetQuery;
 import org.igetwell.system.planet.retrieve.PlanetCommentQuery;
 import org.igetwell.system.planet.retrieve.PlanetQuery;
 import org.igetwell.system.planet.service.IPlanetService;
@@ -38,5 +41,23 @@ public class PlanetController extends BaseController {
     @PostMapping("/planetCommentList")
     public ResponseEntity<Pagination<PlanetCommentDTO>> getList(@RequestBody @Validated PlanetCommentQuery query){
         return planetService.getList(query);
+    }
+
+    /**
+     * 查询我的星球说列表(分页)
+     * @return
+     */
+    @PostMapping("/myPlanet")
+    public ResponseEntity<Pagination<MyPlanetDTO>> getMyPlanet(@RequestBody @Validated MyPlanetQuery query){
+        return planetService.getMyPlanet(query);
+    }
+
+    /**
+     * 查询我的星球说详情
+     * @return
+     */
+    @PostMapping("/myPlanetDetail")
+    public ResponseEntity<MyPlanetDetailDTO> myPlanetDetail(Integer said){
+        return planetService.getMyPlanetDetail(said);
     }
 }

@@ -5,7 +5,7 @@ import lombok.Data;
 import java.util.Date;
 
 @Data
-public class PlanetDTO {
+public class MyPlanetDetailDTO {
 
     /**
      * 发表星球说用户OPEN
@@ -15,17 +15,6 @@ public class PlanetDTO {
      * 星球说ID
      */
     private Integer said;
-
-    /**
-     * 发表星球说用户昵称
-     */
-    private String nickName;
-
-    /**
-     * 发表星球说用户头像
-     */
-    private String avatar;
-
     /**
      * 星球说标签
      */
@@ -50,5 +39,4 @@ public class PlanetDTO {
      * 星球说发表时间
      */
     private Date createTime;
-
 }

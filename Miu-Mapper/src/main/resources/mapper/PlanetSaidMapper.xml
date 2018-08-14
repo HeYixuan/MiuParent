@@ -14,7 +14,8 @@
     <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime" />
   </resultMap>
 
-  <sql id="planetSql">
+    <!-- 星球说Sql -->
+    <sql id="planetSql">
       U.OPEN_ID as openId,
       P.ID as said,
       U.NICK_NAME as nickName,
@@ -25,12 +26,51 @@
       P.AXIS as axis,
       P.`LIKE` as likeCount,
       P.CREATE_TIME as createTime
-  </sql>
+    </sql>
 
-  <select id="getList" resultType="org.igetwell.system.planet.dto.PlanetDTO" parameterType="org.igetwell.system.planet.retrieve.PlanetQuery">
-    SELECT
-        <include refid="planetSql" />
-    FROM USER U, PLANET_SAID P
-    WHERE U.OPEN_ID = P.OPEN_ID ORDER BY P.CREATE_TIME DESC
-  </select>
+    <!-- 我的星球说Sql -->
+    <sql id="MyPlanetSql">
+        P.ID as said,
+        P.LABEL_NAME as labelName,
+        P.TEXT as text,
+        P.AXIS as axis,
+        P.CREATE_TIME as createTime
+    </sql>
+
+
+    <!-- 我的星球说详情Sql -->
+    <sql id="MyPlanetDetailSql">
+        P.OPEN_ID as openId,
+        P.ID as said,
+        P.LABEL_NAME as labelName,
+        P.TEXT as text,
+        P.AXIS as axis,
+        P.LIKE as likeCount,
+        P.CREATE_TIME as createTime
+    </sql>
+
+    <!-- 星球说列表 -->
+    <select id="getList" resultType="org.igetwell.system.planet.dto.PlanetDTO" parameterType="org.igetwell.system.planet.retrieve.PlanetQuery">
+        SELECT
+            <include refid="planetSql" />
+        FROM USER U, PLANET_SAID P
+        WHERE U.OPEN_ID = P.OPEN_ID ORDER BY P.CREATE_TIME DESC
+    </select>
+
+    <!-- 我的星球说列表 -->
+    <select id="getMyPlanet" resultType="org.igetwell.system.planet.dto.MyPlanetDTO" parameterType="org.igetwell.system.planet.retrieve.MyPlanetQuery" >
+        SELECT
+            <include refid="MyPlanetSql" />
+        FROM PLANET_SAID P
+        WHERE P.OPEN_ID = #{openId}
+        ORDER BY P.CREATE_TIME DESC
+    </select>
+
+    <!-- 我的星球说详情 -->
+    <select id="getMyPlanetDetail" resultType="org.igetwell.system.planet.dto.MyPlanetDetailDTO" parameterType="java.lang.Integer">
+        SELECT
+        <include refid="MyPlanetDetailSql" />
+        FROM PLANET_SAID P
+        WHERE P.ID = #{said}
+    </select>
 </mapper>

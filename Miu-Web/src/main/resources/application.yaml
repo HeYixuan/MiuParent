@@ -45,6 +45,11 @@ spring:
 
   jackson:
     date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+    serialization:
+      WRITE_DATES_AS_TIMESTAMPS: false
+    default-property-inclusion: non_empty
+    #deserialization: true
 
 
 
