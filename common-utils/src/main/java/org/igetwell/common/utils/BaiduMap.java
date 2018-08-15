@@ -21,7 +21,8 @@ public class BaiduMap {
     }
 
     public static String getCity(String axis){
-        String url = "https://restapi.amap.com/v3/geocode/regeo?key=abad114e8909387e6d99fb08418bff9b&location=113.937987,22.523392";
+        String url = "https://restapi.amap.com/v3/geocode/regeo?key=abad114e8909387e6d99fb08418bff9b&location=%s";
+        url = String.format(url, axis);
         String result = HttpClientUtils.getInstance().sendHttpsGet(url);
         String success = JSON.parseObject(result).get("info").toString();
         String infocode = JSON.parseObject(result).get("infocode").toString();
