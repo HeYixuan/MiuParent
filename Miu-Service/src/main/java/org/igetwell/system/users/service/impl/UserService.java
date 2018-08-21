@@ -1,9 +1,13 @@
 package org.igetwell.system.users.service.impl;
 
 import lombok.extern.slf4j.Slf4j;
+import org.igetwell.common.enums.HttpStatus;
 import org.igetwell.common.enums.LoginType;
+import org.igetwell.common.utils.GenerateUtils;
 import org.igetwell.common.utils.RedisUtils;
+import org.igetwell.common.utils.ResponseEntity;
 import org.igetwell.common.utils.WeChatUtils;
+import org.igetwell.system.users.create.MobileUser;
 import org.igetwell.system.users.service.IUserService;
 import org.igetwell.system.users.domain.User;
 import org.igetwell.system.users.mapper.UserMapper;
@@ -22,6 +26,10 @@ public class UserService implements IUserService {
     @Autowired
     private RedisUtils redis;
 
+    /**
+     * 微信授权登陆
+     * @param code
+     */
     @Transactional(rollbackFor = RuntimeException.class)
     public void WxAuthorizedLogin(String code) {
         try {
@@ -48,4 +56,38 @@ public class UserService implements IUserService {
 
     }
 
+    /**
+     * 检测手机号是否重复
+     * @param mobile
+     * @return
+     */
+    public ResponseEntity checkMobile(String mobile){
+        if (StringUtils.isEmpty(mobile)){
+            return new ResponseEntity(HttpStatus.BAD_REQUEST, "手机号不能为空");
+        }
+        int count = userMapper.checkMobile(mobile);
+        if (count > 0){
+            return new ResponseEntity(HttpStatus.BAD_REQUEST, "手机号重复");
+        }
+        return new ResponseEntity();
+    }
+
+
+    /**
+     * 手机号注册用户
+     * @param mobileUser
+     * @return
+     */
+    @Transactional(rollbackFor = RuntimeException.class)
+    public ResponseEntity mobileUser(MobileUser mobileUser){
+        if (!"1234".equals(mobileUser.getMessage())){
+            return new ResponseEntity(HttpStatus.BAD_REQUEST, "验证码错误");
+        }
+        User user = new User();
+        user.setOpenId(GenerateUtils.create(32));
+        user.setMobile(mobileUser.getMobile());
+        user.setLoginType(LoginType.WEB_LOGIN.getValue());
+        userMapper.insert(user);
+        return new ResponseEntity();
+    }
 }

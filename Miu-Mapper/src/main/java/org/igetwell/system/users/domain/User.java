@@ -56,8 +56,8 @@ public class User {
     /**
      * 手机号码
      */
-    @Column(name = "PHONE")
-    private String phone;
+    @Column(name = "MOBILE")
+    private String mobile;
 
     /**
      * 账户密码：手机账户注册时填写该字段
@@ -220,17 +220,17 @@ public class User {
      *
      * @return PHONE - 手机号码
      */
-    public String getPhone() {
-        return phone;
+    public String getMobile() {
+        return mobile;
     }
 
     /**
      * 设置手机号码
      *
-     * @param phone 手机号码
+     * @param mobile 手机号码
      */
-    public void setPhone(String phone) {
-        this.phone = phone == null ? null : phone.trim();
+    public void setMobile(String mobile) {
+        this.mobile = mobile == null ? null : mobile.trim();
     }
 
     /**
