@@ -28,7 +28,7 @@
         <sqlMapGenerator targetPackage="${sqlMapperPackage}" targetProject="${src_main_resources}"/>
         <javaClientGenerator targetPackage="${mapperPackage}" targetProject="${src_main_java}" type="XMLMAPPER"/>
         <!-- sql占位符，%表示所有的表 -->
-        <table tableName="PLANET_COMMENT">
+        <table tableName="USER_IMAGE">
             <generatedKey column="id" sqlStatement="Mysql" identity="true" />
         </table>
         <!-- <table schema="DB2ADMIN" tableName="ALLTYPES" domainObjectName="Customer">

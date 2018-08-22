@@ -1,13 +1,15 @@
 package org.igetwell.system.users.service.impl;
 
 import lombok.extern.slf4j.Slf4j;
+import org.igetwell.common.enums.CertType;
 import org.igetwell.common.enums.HttpStatus;
 import org.igetwell.common.enums.LoginType;
-import org.igetwell.common.utils.GenerateUtils;
-import org.igetwell.common.utils.RedisUtils;
-import org.igetwell.common.utils.ResponseEntity;
-import org.igetwell.common.utils.WeChatUtils;
+import org.igetwell.common.enums.SexType;
+import org.igetwell.common.utils.*;
+import org.igetwell.system.users.create.IDCert;
 import org.igetwell.system.users.create.MobileUser;
+import org.igetwell.system.users.domain.UserInfo;
+import org.igetwell.system.users.mapper.UserInfoMapper;
 import org.igetwell.system.users.service.IUserService;
 import org.igetwell.system.users.domain.User;
 import org.igetwell.system.users.mapper.UserMapper;
@@ -22,6 +24,9 @@ public class UserService implements IUserService {
 
     @Autowired
     private UserMapper userMapper;
+
+    @Autowired
+    private UserInfoMapper userInfoMapper;
 
     @Autowired
     private RedisUtils redis;
@@ -84,10 +89,47 @@ public class UserService implements IUserService {
             return new ResponseEntity(HttpStatus.BAD_REQUEST, "验证码错误");
         }
         User user = new User();
-        user.setOpenId(GenerateUtils.create(32));
+        String openId = GenerateUtils.create(32);
+        user.setOpenId(openId);
         user.setMobile(mobileUser.getMobile());
         user.setLoginType(LoginType.WEB_LOGIN.getValue());
-        userMapper.insert(user);
+        userMapper.insertSelective(user);
+        UserInfo info = new UserInfo();
+        info.setOpenId(openId);
+        userInfoMapper.insertSelective(info);
+        return new ResponseEntity();
+    }
+
+    /**
+     * 个人实名认证
+     * @param cert
+     * @return
+     */
+    @Transactional(rollbackFor = RuntimeException.class)
+    public ResponseEntity checkIDCert(IDCert cert){
+        UserInfo info = userInfoMapper.get(cert.getOpenId());
+        if (StringUtils.isEmpty(info)){
+            return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR, "用户基础信息查询异常");
+        }
+        User user = new User();//TODO:这里只是记录，免得下次用户又需要输入，不然用户体验贼差
+        user.setOpenId(cert.getOpenId());
+        user.setUserName(cert.getUserName());
+        user.setIdCard(cert.getIdCard());
+        userMapper.updateByOpenId(user);
+        boolean bool = IDCardUtils.isValidatedAllIdcard(cert.getIdCard());
+        if (!bool){
+            return new ResponseEntity(HttpStatus.BAD_REQUEST, "身份证号码错误");
+        }
+        String sex = IDCardUtils.getGenderByIdCard(cert.getIdCard());
+        if (SexType.M.value().equals(sex)){
+            user.setSex(sex);
+        }
+        if (SexType.F.value().equals(sex)){
+            user.setSex(sex);
+        }
+        userMapper.updateByOpenId(user);
+        info.setIdCert(CertType.AUTHORIZED.value());
+        userInfoMapper.updateByOpenId(info);
         return new ResponseEntity();
     }
 }

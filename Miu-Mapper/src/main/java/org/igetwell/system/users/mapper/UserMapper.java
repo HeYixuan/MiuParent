@@ -11,4 +11,10 @@ public interface UserMapper extends Mapper<User> {
      * @return
      */
     int checkMobile(String mobile);
+
+    /**
+     * 更新用户信息
+     * @param user
+     */
+    void updateByOpenId(User user);
 }

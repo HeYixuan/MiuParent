@@ -20,4 +20,69 @@
     <result column="PROPERTY_CERT" jdbcType="INTEGER" property="propertyCert" />
     <result column="VEHICLE_CERT" jdbcType="INTEGER" property="vehicleCert" />
   </resultMap>
+
+  <sql id="baseSql">
+    INFO.ID as id,
+    INFO.OPEN_ID as openId,
+    INFO.SCHOOL as school,
+    INFO.COMPANY_NAME as companyName,
+    INFO.EDUCATION as education,
+    INFO.MARITAL_STATUS as maritalStatus,
+    INFO.WAGE_STATUS as wageStatus,
+    INFO.ID_CERT as idCert,
+    INFO.EDUCATION_CERT as educationCert,
+    INFO.CORPORATE_CERT as corporateCert,
+    INFO.PROPERTY_CERT as propertyCert,
+    INFO.VEHICLE_CERT as vehicleCert
+  </sql>
+
+  <select id="get" resultType="org.igetwell.system.users.domain.UserInfo" parameterType="java.lang.String">
+    SELECT
+        <include refid="baseSql" />
+    FROM USER_INFO INFO
+    WHERE INFO.OPEN_ID = #{openId}
+  </select>
+
+  <update id="updateByOpenId" parameterType="org.igetwell.system.users.domain.UserInfo">
+    update user_info
+    <set>
+      <if test="school != null">
+        SCHOOL = #{school,jdbcType=VARCHAR},
+      </if>
+      <if test="companyName != null">
+        COMPANY_NAME = #{companyName,jdbcType=VARCHAR},
+      </if>
+      <if test="education != null">
+        EDUCATION = #{education,jdbcType=INTEGER},
+      </if>
+      <if test="height != null">
+        HEIGHT = #{height,jdbcType=INTEGER},
+      </if>
+      <if test="weight != null">
+        WEIGHT = #{weight,jdbcType=INTEGER},
+      </if>
+      <if test="maritalStatus != null">
+        MARITAL_STATUS = #{maritalStatus,jdbcType=INTEGER},
+      </if>
+      <if test="wageStatus != null">
+        WAGE_STATUS = #{wageStatus,jdbcType=INTEGER},
+      </if>
+      <if test="idCert != null">
+        ID_CERT = #{idCert,jdbcType=INTEGER},
+      </if>
+      <if test="educationCert != null">
+        EDUCATION_CERT = #{educationCert,jdbcType=INTEGER},
+      </if>
+      <if test="corporateCert != null">
+        CORPORATE_CERT = #{corporateCert,jdbcType=INTEGER},
+      </if>
+      <if test="propertyCert != null">
+        PROPERTY_CERT = #{propertyCert,jdbcType=INTEGER},
+      </if>
+      <if test="vehicleCert != null">
+        VEHICLE_CERT = #{vehicleCert,jdbcType=INTEGER},
+      </if>
+    </set>
+    where OPEN_ID = #{openId,jdbcType=VARCHAR}
+  </update>
 </mapper>

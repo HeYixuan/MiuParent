@@ -51,7 +51,7 @@ public class User {
      * 性别: 0未知 1男 2女
      */
     @Column(name = "SEX")
-    private Integer sex;
+    private String sex;
 
     /**
      * 手机号码
@@ -202,7 +202,7 @@ public class User {
      *
      * @return SEX - 性别: 0未知 1男 2女
      */
-    public Integer getSex() {
+    public String getSex() {
         return sex;
     }
 
@@ -211,14 +211,14 @@ public class User {
      *
      * @param sex 性别: 0未知 1男 2女
      */
-    public void setSex(Integer sex) {
-        this.sex = sex;
+    public void setSex(String sex) {
+        this.sex = sex == null ? null : sex.trim();
     }
 
     /**
      * 获取手机号码
      *
-     * @return PHONE - 手机号码
+     * @return MOBILE - 手机号码
      */
     public String getMobile() {
         return mobile;

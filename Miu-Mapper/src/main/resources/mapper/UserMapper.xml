@@ -12,7 +12,7 @@
     <result column="USER_NAME" jdbcType="VARCHAR" property="userName" />
     <result column="ID_CARD" jdbcType="VARCHAR" property="idCard" />
     <result column="BIRTH_DAY" jdbcType="VARCHAR" property="birthDay" />
-    <result column="SEX" jdbcType="INTEGER" property="sex" />
+    <result column="SEX" jdbcType="CHAR" property="sex" />
     <result column="MOBILE" jdbcType="VARCHAR" property="mobile" />
     <result column="SECRET" jdbcType="VARCHAR" property="secret" />
     <result column="LOGIN_TYPE" jdbcType="INTEGER" property="loginType" />
@@ -22,4 +22,40 @@
   <select id="checkMobile" resultType="java.lang.Integer" parameterType="java.lang.String">
     SELECT COUNT(ID) FROM USER WHERE MOBILE = #{mobile}
   </select>
+
+
+  <update id="updateByOpenId" parameterType="org.igetwell.system.users.domain.User">
+    update user
+    <set>
+      <if test="nickName != null">
+        NICK_NAME = #{nickName,jdbcType=VARCHAR},
+      </if>
+      <if test="avatar != null">
+        AVATAR = #{avatar,jdbcType=VARCHAR},
+      </if>
+      <if test="userName != null">
+        USER_NAME = #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="idCard != null">
+        ID_CARD = #{idCard,jdbcType=VARCHAR},
+      </if>
+      <if test="birthDay != null">
+        BIRTH_DAY = #{birthDay,jdbcType=VARCHAR},
+      </if>
+      <if test="sex != null">
+        SEX = #{sex,jdbcType=CHAR},
+      </if>
+      <if test="mobile != null">
+        MOBILE = #{mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="secret != null">
+        SECRET = #{secret,jdbcType=VARCHAR},
+      </if>
+      <if test="loginType != null">
+        LOGIN_TYPE = #{loginType,jdbcType=INTEGER},
+      </if>
+    </set>
+    where OPEN_ID = #{openId,jdbcType=VARCHAR}
+  </update>
+
 </mapper>

@@ -24,7 +24,7 @@ public class AliyunOss {
     //阿里云API的密钥Access Key Secret
     private static String ACCESS_KEY_SECRET;
     //阿里云API的bucket名称
-    private static String BUCKET_NAME;
+    public static String BUCKET_NAME;
     //初始化属性
     static{
         ENDPOINT = "oss-cn-beijing.aliyuncs.com";
