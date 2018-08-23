@@ -48,7 +48,7 @@ public class User {
     private String birthDay;
 
     /**
-     * 性别: 0未知 1男 2女
+     * 性别: N未知 M男 F女
      */
     @Column(name = "SEX")
     private String sex;

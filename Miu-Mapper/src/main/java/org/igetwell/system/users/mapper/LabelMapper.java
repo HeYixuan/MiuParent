@@ -8,5 +8,5 @@ import java.util.List;
 
 public interface LabelMapper extends Mapper<Label> {
 
-    List<String> getLables(UserLabelQuery query);
+    List<String> getLabels(UserLabelQuery query);
 }

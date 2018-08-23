@@ -3,6 +3,7 @@ package org.igetwell.system.users.service;
 import org.igetwell.common.utils.ResponseEntity;
 import org.igetwell.system.users.create.IDCert;
 import org.igetwell.system.users.create.MobileUser;
+import org.igetwell.system.users.create.UserAvatarUpload;
 
 public interface IUserService {
 
@@ -34,4 +35,12 @@ public interface IUserService {
      * @return
      */
     ResponseEntity checkIDCert(IDCert cert);
+
+
+    /**
+     * 用户头像上传
+     * @param avatarUpload
+     * @return
+     */
+    ResponseEntity uploadAvatar(UserAvatarUpload avatarUpload);
 }

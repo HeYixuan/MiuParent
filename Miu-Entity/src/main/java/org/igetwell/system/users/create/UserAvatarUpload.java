@@ -4,10 +4,10 @@ import lombok.Data;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 @Data
-public class UserImageUpload {
+public class UserAvatarUpload {
 
     /**
      * 用户OPEN_ID
@@ -16,8 +16,8 @@ public class UserImageUpload {
     private String openId;
 
     /**
-     * 用户相册多文件
+     * 用户头像
      */
-    @NotEmpty(message = "至少上传一个文件")
-    private MultipartFile[] multipartFiles;
+    @NotNull(message = "至少上传一个文件")
+    private MultipartFile multipartFile;
 }

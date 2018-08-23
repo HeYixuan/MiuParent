@@ -8,6 +8,7 @@ import org.igetwell.common.enums.SexType;
 import org.igetwell.common.utils.*;
 import org.igetwell.system.users.create.IDCert;
 import org.igetwell.system.users.create.MobileUser;
+import org.igetwell.system.users.create.UserAvatarUpload;
 import org.igetwell.system.users.domain.UserInfo;
 import org.igetwell.system.users.mapper.UserInfoMapper;
 import org.igetwell.system.users.service.IUserService;
@@ -17,6 +18,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 
 @Slf4j
 @Service
@@ -120,7 +124,9 @@ public class UserService implements IUserService {
         if (!bool){
             return new ResponseEntity(HttpStatus.BAD_REQUEST, "身份证号码错误");
         }
-        String sex = IDCardUtils.getGenderByIdCard(cert.getIdCard());
+        String sex = IDCardUtils.getGenderByIdCard(cert.getIdCard()); //性别
+        String birthDay = IDCardUtils.getBirthByIdCard(cert.getIdCard()); //出生日期
+        user.setBirthDay(birthDay);
         if (SexType.M.value().equals(sex)){
             user.setSex(sex);
         }
@@ -131,5 +137,48 @@ public class UserService implements IUserService {
         info.setIdCert(CertType.AUTHORIZED.value());
         userInfoMapper.updateByOpenId(info);
         return new ResponseEntity();
+    }
+
+
+    /**
+     * 用户头像上传
+     * @param avatarUpload
+     * @return
+     */
+    public ResponseEntity uploadAvatar(UserAvatarUpload avatarUpload){
+        if (StringUtils.isEmpty(avatarUpload.getOpenId())){
+            return new ResponseEntity(HttpStatus.BAD_REQUEST, "OPEN_ID应不为空");
+        }
+        if (avatarUpload.getMultipartFile() == null){
+            return new ResponseEntity(HttpStatus.BAD_REQUEST, "至少上传一个文件");
+        }
+
+        User user = userMapper.get(avatarUpload.getOpenId());
+        if (StringUtils.isEmpty(user)){
+            return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR, "用户信息查询异常");
+        }
+
+        //TODO:如果用户头像不为空,先删除再上传,以免占用OSS空间
+        if (!StringUtils.isEmpty(user.getAvatar())){
+            AliyunOss.delete(AliyunOss.ossClient(), AliyunOss.BUCKET_NAME, user.getAvatar());
+        }
+
+        if(avatarUpload.getMultipartFile() != null){
+            try {
+                MultipartFile file = avatarUpload.getMultipartFile();
+                String key = AliyunOss.multipartUpload(AliyunOss.ossClient(), AliyunOss.BUCKET_NAME, GenerateUtils.create(30), file.getOriginalFilename(), file.getInputStream(), file.getSize());
+                if (!StringUtils.isEmpty(key)){
+                    user.setOpenId(avatarUpload.getOpenId());
+                    user.setAvatar(key);
+                    userMapper.updateByOpenId(user);
+                    return new ResponseEntity();
+                }
+            } catch (IOException e) {
+                log.error("上传用户头像异常.", e);
+                throw new RuntimeException("上传用户头像异常", e);
+            }
+
+        }
+        return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR,"上传用户头像失败");
     }
 }

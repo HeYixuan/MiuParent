@@ -6,6 +6,13 @@ import tk.mybatis.mapper.common.Mapper;
 public interface UserMapper extends Mapper<User> {
 
     /**
+     * 根据OPEN_ID查询
+     * @param openId
+     * @return
+     */
+    User get(String openId);
+
+    /**
      * 检测手机号是否重复
      * @param mobile
      * @return

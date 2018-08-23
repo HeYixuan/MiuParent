@@ -529,7 +529,14 @@ public class IDCardUtils {
         } else if (len == CHINA_ID_MIN_LENGTH) {
             idCard = convertIdcarBy15bit(idCard);
         }
-        return idCard.substring(6, 14);
+        StringBuffer sb = new StringBuffer();
+        sb.append(idCard.substring(6, 10));
+        sb.append("-");
+        sb.append(idCard.substring(10, 12));
+        sb.append("-");
+        sb.append(idCard.substring(12, 14));
+        //idCard.substring(6, 14);
+        return sb.toString();
     }
 
     /**
@@ -655,6 +662,7 @@ public class IDCardUtils {
         }*/
 
         String idcard = "441324199503191621";//18位
+        System.err.println(getBirthByIdCard(idcard));
         if (isValidatedAllIdcard(idcard)){
             System.err.println(getProvinceByIdCard(idcard));
             String F = getGenderByIdCard(idcard);

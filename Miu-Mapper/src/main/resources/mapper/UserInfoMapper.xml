@@ -35,12 +35,41 @@
     INFO.PROPERTY_CERT as propertyCert,
     INFO.VEHICLE_CERT as vehicleCert
   </sql>
+  
+  <sql id="getInfoSql">
+    U.OPEN_ID as openId,
+    U.NICK_NAME as nickName,
+    U.AVATAR as avatar,
+    U.USER_NAME as userName,
+    U.ID_CARD as idCard,
+    U.BIRTH_DAY as birthDay,
+    U.SEX as sex,
+    U.MOBILE as mobile,
+    INFO.HEIGHT as height,
+    INFO.WEIGHT as weight,
+    INFO.SCHOOL as school,
+    INFO.EDUCATION as education,
+    INFO.EDUCATION_CERT as educationCert,
+    INFO.ID_CERT as idCert,
+    INFO.COMPANY_NAME as companyName,
+    INFO.CORPORATE_CERT as corporateCert,
+    INFO.PROPERTY_CERT as propertyCert,
+    INFO.VEHICLE_CERT as vehicleCert
+  </sql>
 
   <select id="get" resultType="org.igetwell.system.users.domain.UserInfo" parameterType="java.lang.String">
     SELECT
         <include refid="baseSql" />
     FROM USER_INFO INFO
     WHERE INFO.OPEN_ID = #{openId}
+  </select>
+
+  <select id="getInfo" resultType="org.igetwell.system.users.dto.UserInfoDTO" parameterType="java.lang.String">
+    SELECT
+        <include refid="getInfoSql" />
+    FROM USER U, USER_INFO INFO
+    WHERE U.OPEN_ID = INFO.OPEN_ID
+    AND U.OPEN_ID = #{openId}
   </select>
 
   <update id="updateByOpenId" parameterType="org.igetwell.system.users.domain.UserInfo">

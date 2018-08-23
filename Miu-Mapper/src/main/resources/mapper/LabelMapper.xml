@@ -15,11 +15,11 @@
   <select id="getLabels" resultType="java.lang.String" parameterType="org.igetwell.system.users.retrieve.UserLabelQuery">
     SELECT L.LABEL_NAME FROM USER_LABEL UL, LABEL L WHERE UL.LABEL_ID = L.ID
     <if test="openId != null and openId != ''">
-      AND UL.OPEN_ID = #{OPEN_ID};
+      AND UL.OPEN_ID = #{openId}
     </if>
 
     <if test="labelType != null">
-      AND L.LABEL_TYPE = #{labelType};
+      AND L.LABEL_TYPE = #{labelType}
     </if>
   </select>
 </mapper>

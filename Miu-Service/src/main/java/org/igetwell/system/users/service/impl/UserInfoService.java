@@ -5,10 +5,14 @@ import org.igetwell.common.enums.HttpStatus;
 import org.igetwell.common.local.LocalSnowflakeService;
 import org.igetwell.common.utils.AliyunOss;
 import org.igetwell.common.utils.GenerateUtils;
+import org.igetwell.common.utils.IDCardUtils;
 import org.igetwell.common.utils.ResponseEntity;
 import org.igetwell.system.users.create.UserImageUpload;
 import org.igetwell.system.users.domain.UserImage;
+import org.igetwell.system.users.dto.UserInfoDTO;
+import org.igetwell.system.users.mapper.LabelMapper;
 import org.igetwell.system.users.mapper.UserImageMapper;
+import org.igetwell.system.users.retrieve.UserLabelQuery;
 import org.igetwell.system.users.service.IUserInfoService;
 import org.igetwell.system.users.domain.UserInfo;
 import org.igetwell.system.users.mapper.UserInfoMapper;
@@ -21,6 +25,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.List;
 
 @Slf4j
 @Service
@@ -31,6 +36,9 @@ public class UserInfoService implements IUserInfoService {
 
     @Autowired
     private UserImageMapper userImageMapper;
+
+    @Autowired
+    private LabelMapper labelMapper;
 
     @Autowired
     private LocalSnowflakeService snowflakeService;
@@ -56,8 +64,8 @@ public class UserInfoService implements IUserInfoService {
             userInfoMapper.insert(userInfo);
             return new ResponseEntity();
         } catch (Exception e){
-            log.info("保存UserInfo对象失败. ", e);
-            throw new RuntimeException("保存UserInfo对象失败", e);
+            log.info("保存用户基础信息异常. ", e);
+            throw new RuntimeException("保存用户基础信息异常", e);
         }
     }
 
@@ -68,6 +76,13 @@ public class UserInfoService implements IUserInfoService {
      */
     @Transactional(rollbackFor = RuntimeException.class)
     public ResponseEntity uploadImage(UserImageUpload imageUpload) {
+        if (StringUtils.isEmpty(imageUpload.getOpenId())){
+            return new ResponseEntity(HttpStatus.BAD_REQUEST, "OPEN_ID应不为空");
+        }
+
+        if (imageUpload.getMultipartFiles() == null && imageUpload.getMultipartFiles().length <= 0){
+            return new ResponseEntity(HttpStatus.BAD_REQUEST, "至少上传一个文件");
+        }
         if(imageUpload.getMultipartFiles() != null && imageUpload.getMultipartFiles().length > 0){
             //循环获取file数组中得文件
             for(int i = 0;i<imageUpload.getMultipartFiles().length;i++){
@@ -75,10 +90,9 @@ public class UserInfoService implements IUserInfoService {
                     MultipartFile file = imageUpload.getMultipartFiles()[i];
                     String key = AliyunOss.multipartUpload(AliyunOss.ossClient(), AliyunOss.BUCKET_NAME, GenerateUtils.create(30), file.getOriginalFilename(), file.getInputStream(), file.getSize());
                     if (!StringUtils.isEmpty(key)){
-                        String url = AliyunOss.getUrl(AliyunOss.ossClient(), AliyunOss.BUCKET_NAME, key);
                         UserImage image = new UserImage();
                         image.setOpenId(imageUpload.getOpenId());
-                        image.setImgUrl(url);
+                        image.setImgUrl(key);
                         userImageMapper.insertSelective(image);
                         return new ResponseEntity();
                     }
@@ -89,5 +103,39 @@ public class UserInfoService implements IUserInfoService {
             }
         }
         return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR,"上传用户相册失败");
+    }
+
+
+    /**
+     * 用户基础信息
+     * @param openId
+     * @return
+     */
+    public ResponseEntity<UserInfoDTO> getInfo(String openId){
+        if (StringUtils.isEmpty(openId)){
+            return new ResponseEntity(HttpStatus.BAD_REQUEST, "OPEN_ID应不为空");
+        }
+        UserInfoDTO dto = userInfoMapper.getInfo(openId);
+        Integer age = IDCardUtils.getAgeByIdCard(dto.getIdCard());
+        dto.setAge(age);
+        UserLabelQuery labelQuery = new UserLabelQuery();
+        labelQuery.setOpenId(openId);
+        labelQuery.setLabelType(1);
+        List<String> movieTags = labelMapper.getLabels(labelQuery);
+        labelQuery.setLabelType(2);
+        List<String> musicTags = labelMapper.getLabels(labelQuery);
+        labelQuery.setLabelType(3);
+        List<String> sportTags = labelMapper.getLabels(labelQuery);
+        labelQuery.setLabelType(4);
+        List<String> foodTags = labelMapper.getLabels(labelQuery);
+        labelQuery.setLabelType(5);
+        List<String> liveTags = labelMapper.getLabels(labelQuery);
+
+        dto.setMovieTags(movieTags);
+        dto.setMusicTags(musicTags);
+        dto.setSportTags(sportTags);
+        dto.setFoodTags(foodTags);
+        dto.setLiveTags(liveTags);
+        return new ResponseEntity<UserInfoDTO>(dto);
     }
 }

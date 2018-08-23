@@ -3,7 +3,9 @@ package org.igetwell.web.system.user;
 import org.igetwell.common.utils.ResponseEntity;
 import org.igetwell.system.users.create.IDCert;
 import org.igetwell.system.users.create.MobileUser;
+import org.igetwell.system.users.create.UserAvatarUpload;
 import org.igetwell.system.users.create.UserImageUpload;
+import org.igetwell.system.users.dto.UserInfoDTO;
 import org.igetwell.system.users.service.IUserInfoService;
 import org.igetwell.system.users.service.IUserService;
 import org.igetwell.system.users.update.UserInfoUpdate;
@@ -11,6 +13,8 @@ import org.igetwell.web.BaseController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.constraints.NotBlank;
 
 @RestController
 @RequestMapping("/users")
@@ -62,6 +66,16 @@ public class UsersController extends BaseController {
         return userService.checkIDCert(cert);
     }
 
+    /**
+     * 用户头像上传
+     * @param avatarUpload
+     * @return
+     */
+    @PostMapping("/uploadAvatar")
+    @ResponseBody
+    public ResponseEntity uploadAvatar(@Validated UserAvatarUpload avatarUpload){
+        return userService.uploadAvatar(avatarUpload);
+    }
 
     /**
      * 用户相册上传
@@ -72,5 +86,17 @@ public class UsersController extends BaseController {
     @ResponseBody
     public ResponseEntity uploadImage(@Validated UserImageUpload imageUpload){
         return userInfoService.uploadImage(imageUpload);
+    }
+
+
+    /**
+     * 用户基础信息
+     * @param openId
+     * @return
+     */
+    @PostMapping("/getInfo")
+    @ResponseBody
+    public ResponseEntity<UserInfoDTO> getInfo(String openId){
+        return userInfoService.getInfo(openId);
     }
 }

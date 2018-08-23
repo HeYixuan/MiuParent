@@ -2,9 +2,8 @@ package org.igetwell.system.users.service;
 
 import org.igetwell.common.utils.ResponseEntity;
 import org.igetwell.system.users.create.UserImageUpload;
+import org.igetwell.system.users.dto.UserInfoDTO;
 import org.igetwell.system.users.update.UserInfoUpdate;
-
-import java.io.IOException;
 
 public interface IUserInfoService {
 
@@ -21,4 +20,11 @@ public interface IUserInfoService {
      * @return
      */
     ResponseEntity uploadImage(UserImageUpload imageUpload);
+
+    /**
+     * 用户基础信息
+     * @param openId
+     * @return
+     */
+    ResponseEntity<UserInfoDTO> getInfo(String openId);
 }

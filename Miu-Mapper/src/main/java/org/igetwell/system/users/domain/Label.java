@@ -21,7 +21,7 @@ public class Label {
     private String labelName;
 
     /**
-     * 标签类型: 1爱好标签 2兴趣标签
+     * 标签类型： 1电影标签 2音乐标签 3运动标签 4美食标签 5个性标签
      */
     @Column(name = "LABEL_TYPE")
     private Integer labelType;

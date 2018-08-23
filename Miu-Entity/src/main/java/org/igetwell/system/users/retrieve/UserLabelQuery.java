@@ -10,7 +10,7 @@ public class UserLabelQuery {
      */
     private String openId;
     /**
-     * 标签类型：1兴趣爱好 2个性标签
+     * 标签类型： 1电影标签 2音乐标签 3运动标签 4美食标签 5个性标签
      */
     private Integer labelType;
 }

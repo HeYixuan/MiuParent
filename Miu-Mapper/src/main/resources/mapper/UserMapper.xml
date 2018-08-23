@@ -17,7 +17,27 @@
     <result column="SECRET" jdbcType="VARCHAR" property="secret" />
     <result column="LOGIN_TYPE" jdbcType="INTEGER" property="loginType" />
   </resultMap>
-  
+
+  <sql id="baseSql">
+    U.ID as id,
+    U.OPEN_ID as openId,
+    U.NICK_NAME as nickName,
+    U.AVATAR as avatar,
+    U.USER_NAME as userName,
+    U.ID_CARD as idCard,
+    U.BIRTH_DAY as birthDay,
+    U.SEX as sex,
+    U.MOBILE as mobile,
+    U.LOGIN_TYPE as loginType
+  </sql>
+
+
+  <select id="get" resultType="org.igetwell.system.users.domain.User" parameterType="java.lang.String">
+    SELECT
+        <include refid="baseSql" />
+    FROM USER U
+    WHERE U.OPEN_ID = #{openId}
+  </select>
   
   <select id="checkMobile" resultType="java.lang.Integer" parameterType="java.lang.String">
     SELECT COUNT(ID) FROM USER WHERE MOBILE = #{mobile}
