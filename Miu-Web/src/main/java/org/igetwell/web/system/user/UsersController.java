@@ -71,7 +71,6 @@ public class UsersController extends BaseController {
     @PostMapping("/uploadImage")
     @ResponseBody
     public ResponseEntity uploadImage(@Validated UserImageUpload imageUpload){
-        System.err.println(imageUpload);
         return userInfoService.uploadImage(imageUpload);
     }
 }

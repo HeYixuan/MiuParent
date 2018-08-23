@@ -28,8 +28,8 @@ public class AliyunOss {
     //初始化属性
     static{
         ENDPOINT = "oss-cn-beijing.aliyuncs.com";
-        ACCESS_KEY_ID = "";
-        ACCESS_KEY_SECRET = "";
+        ACCESS_KEY_ID = "LTAICSp5la4eeaSw";
+        ACCESS_KEY_SECRET = "rOanyypDu84lOYyagtsKvfNvO2RxIv";
         BUCKET_NAME = "oss-fit";
     }
 
@@ -147,7 +147,7 @@ public class AliyunOss {
      * @param length
      * @return
      */
-    public static boolean multipartUpload(OSSClient client, String bucketName, String key, String fileName, InputStream inputStream, long length){
+    public static String multipartUpload(OSSClient client, String bucketName, String key, String fileName, InputStream inputStream, long length){
         try{
             ObjectMetadata objectMetadata = new ObjectMetadata();
             objectMetadata.setContentLength(length);
@@ -157,7 +157,7 @@ public class AliyunOss {
             objectMetadata.setContentDisposition("inline;filename=" + fileName);
             client.putObject(bucketName, key, inputStream, objectMetadata);
             log.info("上传文件到阿里云成功：" + key);
-            return true;
+            return key;
         } catch (Exception e){
             log.error("上传文件到阿里云异常 OSSException:" + e);
         } finally {
@@ -169,7 +169,7 @@ public class AliyunOss {
                 }
             }
         }
-        return false;
+        return null;
     }
 
     /**
@@ -353,11 +353,11 @@ public class AliyunOss {
      * @param key 上传文件的key
      * @return
      */
-    public static String getUrl(OSSClient ossClient, String key) {
+    public static String getUrl(OSSClient ossClient, String bucketName, String key) {
         // 设置URL过期时间为2天
         Date expiration = new Date(new Date().getTime() + 3600l * 1000 * 24 * 2);
         // 生成URL
-        String url = ossClient.generatePresignedUrl(BUCKET_NAME, key, expiration).toString();
+        String url = ossClient.generatePresignedUrl(bucketName, key, expiration).toString();
         return url;
     }
 
@@ -373,21 +373,21 @@ public class AliyunOss {
         OSSClient client = ossClient();
         String bucketName = createBucketName(client, BUCKET_NAME);
         String key = "abcd.jpg";
-        // file = new File("D://17594241441223.jpg");
+        File file = new File("C://Users//Administrator//Desktop//banner.png");
         //String keyName = multipartUpload(key, file, client, bucketName);
         //System.err.println("keyName:" +keyName);
         //PutObjectResult result = multipartUpload(client, bucketName, key, file);
         //System.err.println("result:" + result.getETag());
-        //InputStream inputStream = new FileInputStream(file);
-        //boolean bool  = multipartUpload(client, bucketName, key, file.getName(), inputStream, file.length());
-        //System.err.println(bool);
+        InputStream inputStream = new FileInputStream(file);
+        String name  = multipartUpload(client, bucketName, key, file.getName(), inputStream, file.length());
+        System.err.println(name);
 
-        String url = getUrl(client, key);
+        String url = getUrl(client, BUCKET_NAME, key);
         System.err.println(url);
         //测试下载
-        File downloadLocalFile = new File("D://jack.png");
+        /*File downloadLocalFile = new File("D://jack.png");
         File checkPointFile = new File("D://jack.ucp");
-        download(client, key, bucketName, downloadLocalFile.getPath(), checkPointFile.getPath());
+        download(client, key, bucketName, downloadLocalFile.getPath(), checkPointFile.getPath());*/
         //download(client, key, BUCKET_NAME, downloadLocalFile);
     }
 }
