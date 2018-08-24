@@ -1,17 +1,16 @@
 package org.igetwell.system.users.service.impl;
 
 import lombok.extern.slf4j.Slf4j;
+import org.igetwell.common.constans.OSSClientContstants;
 import org.igetwell.common.enums.HttpStatus;
-import org.igetwell.common.local.LocalSnowflakeService;
-import org.igetwell.common.utils.AliyunOss;
-import org.igetwell.common.utils.GenerateUtils;
-import org.igetwell.common.utils.IDCardUtils;
-import org.igetwell.common.utils.ResponseEntity;
+import org.igetwell.common.utils.*;
 import org.igetwell.system.users.create.UserImageUpload;
+import org.igetwell.system.users.domain.User;
 import org.igetwell.system.users.domain.UserImage;
 import org.igetwell.system.users.dto.UserInfoDTO;
 import org.igetwell.system.users.mapper.LabelMapper;
 import org.igetwell.system.users.mapper.UserImageMapper;
+import org.igetwell.system.users.mapper.UserMapper;
 import org.igetwell.system.users.retrieve.UserLabelQuery;
 import org.igetwell.system.users.service.IUserInfoService;
 import org.igetwell.system.users.domain.UserInfo;
@@ -32,6 +31,8 @@ import java.util.List;
 public class UserInfoService implements IUserInfoService {
 
     @Autowired
+    private UserMapper userMapper;
+    @Autowired
     private UserInfoMapper userInfoMapper;
 
     @Autowired
@@ -39,9 +40,6 @@ public class UserInfoService implements IUserInfoService {
 
     @Autowired
     private LabelMapper labelMapper;
-
-    @Autowired
-    private LocalSnowflakeService snowflakeService;
 
     /**
      * 注册时修改用户基础信息
@@ -51,17 +49,19 @@ public class UserInfoService implements IUserInfoService {
     @Transactional(rollbackFor = RuntimeException.class)
     public ResponseEntity updateUserInfo(@Validated UserInfoUpdate info) {
         try {
-            String openId = String.valueOf(snowflakeService.nextId());
+            String city = BaiduMap.getCity(info.getLocation());
             UserInfo userInfo = new UserInfo();
-            userInfo.setOpenId(openId);
-            userInfo.setSchool(info.getSchool());
-            userInfo.setCompanyName(info.getCompanyName());
-            userInfo.setEducation(info.getEducation());
+            userInfo.setOpenId(info.getOpenId());
             userInfo.setHeight(info.getHeight());
             userInfo.setWeight(info.getWeight());
+            userInfo.setLocation(city);
             userInfo.setMaritalStatus(info.getMaritalStatus());
             userInfo.setWageStatus(info.getWageStatus());
-            userInfoMapper.insert(userInfo);
+            userInfoMapper.updateByOpenId(userInfo);
+            User user = new User();
+            user.setOpenId(info.getOpenId());
+            user.setNickName(info.getNickName());
+            userMapper.updateByOpenId(user);
             return new ResponseEntity();
         } catch (Exception e){
             log.info("保存用户基础信息异常. ", e);
@@ -84,11 +84,14 @@ public class UserInfoService implements IUserInfoService {
             return new ResponseEntity(HttpStatus.BAD_REQUEST, "至少上传一个文件");
         }
         if(imageUpload.getMultipartFiles() != null && imageUpload.getMultipartFiles().length > 0){
+
+            String folder = AliyunOss.createFolder(AliyunOss.ossClient(),AliyunOss.BUCKET_NAME, OSSClientContstants.IMG_FOLDER);
+
             //循环获取file数组中得文件
             for(int i = 0;i<imageUpload.getMultipartFiles().length;i++){
                 try {
                     MultipartFile file = imageUpload.getMultipartFiles()[i];
-                    String key = AliyunOss.multipartUpload(AliyunOss.ossClient(), AliyunOss.BUCKET_NAME, GenerateUtils.create(30), file.getOriginalFilename(), file.getInputStream(), file.getSize());
+                    String key = AliyunOss.multipartUpload(AliyunOss.ossClient(), AliyunOss.BUCKET_NAME, folder, GenerateUtils.create(30), file.getOriginalFilename(), file.getInputStream(), file.getSize());
                     if (!StringUtils.isEmpty(key)){
                         UserImage image = new UserImage();
                         image.setOpenId(imageUpload.getOpenId());
@@ -116,6 +119,10 @@ public class UserInfoService implements IUserInfoService {
             return new ResponseEntity(HttpStatus.BAD_REQUEST, "OPEN_ID应不为空");
         }
         UserInfoDTO dto = userInfoMapper.getInfo(openId);
+        if (!StringUtils.isEmpty(dto.getAvatar())){
+            String url = AliyunOss.getUrl(AliyunOss.ossClient(), AliyunOss.BUCKET_NAME, dto.getAvatar());
+            dto.setAvatar(url);
+        }
         Integer age = IDCardUtils.getAgeByIdCard(dto.getIdCard());
         dto.setAge(age);
         UserLabelQuery labelQuery = new UserLabelQuery();

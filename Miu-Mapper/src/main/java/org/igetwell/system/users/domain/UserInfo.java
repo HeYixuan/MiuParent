@@ -49,6 +49,12 @@ public class UserInfo {
     private Integer weight;
 
     /**
+     * 定位城市
+     */
+    @Column(name = "LOCATION")
+    private String location;
+
+    /**
      * 婚姻状况:1未婚 2离异
      */
     @Column(name = "MARITAL_STATUS")
@@ -214,6 +220,25 @@ public class UserInfo {
      */
     public void setWeight(Integer weight) {
         this.weight = weight;
+    }
+
+
+    /**
+     * 获取定位城市
+     *
+     * @return LOCATION - 定位城市
+     */
+    public String getLocation() {
+        return location;
+    }
+
+    /**
+     * 设置定位城市
+     *
+     * @param location 定位城市
+     */
+    public void setLocation(String location) {
+        this.location = location;
     }
 
     /**

@@ -49,6 +49,7 @@ spring:
     serialization:
       WRITE_DATES_AS_TIMESTAMPS: false
     default-property-inclusion: non_empty
+    joda-date-time-format: yyyy-MM-dd HH:mm:ss
     #deserialization: true
 
 

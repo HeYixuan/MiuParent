@@ -78,6 +78,11 @@ public class UserInfoDTO {
     private Integer weight;
 
     /**
+     * 定位城市
+     */
+    private String location;
+
+    /**
      * 个人认证:0未认证 1已认证 2认证失败
      */
     private Integer idCert;

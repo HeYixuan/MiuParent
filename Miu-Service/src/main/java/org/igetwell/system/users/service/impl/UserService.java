@@ -1,6 +1,7 @@
 package org.igetwell.system.users.service.impl;
 
 import lombok.extern.slf4j.Slf4j;
+import org.igetwell.common.constans.OSSClientContstants;
 import org.igetwell.common.enums.CertType;
 import org.igetwell.common.enums.HttpStatus;
 import org.igetwell.common.enums.LoginType;
@@ -165,8 +166,9 @@ public class UserService implements IUserService {
 
         if(avatarUpload.getMultipartFile() != null){
             try {
+                String folder = AliyunOss.createFolder(AliyunOss.ossClient(),AliyunOss.BUCKET_NAME, OSSClientContstants.AVATAR_FOLDER);
                 MultipartFile file = avatarUpload.getMultipartFile();
-                String key = AliyunOss.multipartUpload(AliyunOss.ossClient(), AliyunOss.BUCKET_NAME, GenerateUtils.create(30), file.getOriginalFilename(), file.getInputStream(), file.getSize());
+                String key = AliyunOss.multipartUpload(AliyunOss.ossClient(), AliyunOss.BUCKET_NAME, folder, GenerateUtils.create(30), file.getOriginalFilename(), file.getInputStream(), file.getSize());
                 if (!StringUtils.isEmpty(key)){
                     user.setOpenId(avatarUpload.getOpenId());
                     user.setAvatar(key);

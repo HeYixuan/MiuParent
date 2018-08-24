@@ -52,6 +52,7 @@ dependencies {
     compile "com.thoughtworks.xstream:xstream:1.4.10"
     compile 'com.aliyun.oss:aliyun-sdk-oss:2.8.3'
     compile "com.alibaba:fastjson:1.2.38"
+//    compile 'com.google.code.gson:gson:2.8.5'
     compile 'org.redisson:redisson:3.7.5'
     compile 'com.jfinal:jfinal-weixin:2.1'
 }

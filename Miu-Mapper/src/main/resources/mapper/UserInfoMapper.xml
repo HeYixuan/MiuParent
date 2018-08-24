@@ -12,6 +12,7 @@
     <result column="EDUCATION" jdbcType="INTEGER" property="education" />
     <result column="HEIGHT" jdbcType="INTEGER" property="height" />
     <result column="WEIGHT" jdbcType="INTEGER" property="weight" />
+    <result column="LOCATION" jdbcType="VARCHAR" property="location" />
     <result column="MARITAL_STATUS" jdbcType="INTEGER" property="maritalStatus" />
     <result column="WAGE_STATUS" jdbcType="INTEGER" property="wageStatus" />
     <result column="ID_CERT" jdbcType="INTEGER" property="idCert" />
@@ -47,6 +48,7 @@
     U.MOBILE as mobile,
     INFO.HEIGHT as height,
     INFO.WEIGHT as weight,
+    INFO.LOCATION as location,
     INFO.SCHOOL as school,
     INFO.EDUCATION as education,
     INFO.EDUCATION_CERT as educationCert,
@@ -89,6 +91,9 @@
       </if>
       <if test="weight != null">
         WEIGHT = #{weight,jdbcType=INTEGER},
+      </if>
+      <if test="location != null">
+        LOCATION = #{location,jdbcType=VARCHAR},
       </if>
       <if test="maritalStatus != null">
         MARITAL_STATUS = #{maritalStatus,jdbcType=INTEGER},

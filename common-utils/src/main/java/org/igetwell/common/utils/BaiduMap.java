@@ -20,9 +20,14 @@ public class BaiduMap {
         return province;
     }
 
-    public static String getCity(String axis){
+    /**
+     * 高德地图根据坐标获取城市
+     * @param location 坐标
+     * @return
+     */
+    public static String getCity(String location){
         String url = "https://restapi.amap.com/v3/geocode/regeo?key=abad114e8909387e6d99fb08418bff9b&location=%s";
-        url = String.format(url, axis);
+        url = String.format(url, location);
         String result = HttpClientUtils.getInstance().sendHttpsGet(url);
         String success = JSON.parseObject(result).get("info").toString();
         String infocode = JSON.parseObject(result).get("infocode").toString();

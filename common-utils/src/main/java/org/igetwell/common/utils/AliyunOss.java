@@ -5,6 +5,7 @@ import com.aliyun.oss.OSSClient;
 import com.aliyun.oss.OSSException;
 import com.aliyun.oss.model.*;
 import lombok.extern.slf4j.Slf4j;
+import org.igetwell.common.constans.OSSClientContstants;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -25,12 +26,16 @@ public class AliyunOss {
     private static String ACCESS_KEY_SECRET;
     //阿里云API的bucket名称
     public static String BUCKET_NAME;
+    //阿里云API的文件夹名称
+    public static String FOLDER;
+
     //初始化属性
     static{
-        ENDPOINT = "oss-cn-beijing.aliyuncs.com";
-        ACCESS_KEY_ID = "LTAICSp5la4eeaSw";
-        ACCESS_KEY_SECRET = "rOanyypDu84lOYyagtsKvfNvO2RxIv";
-        BUCKET_NAME = "oss-fit";
+        ENDPOINT = OSSClientContstants.ENDPOINT;
+        ACCESS_KEY_ID = OSSClientContstants.ACCESS_KEY_ID;
+        ACCESS_KEY_SECRET = OSSClientContstants.ACCESS_KEY_SECRET;
+        BUCKET_NAME = OSSClientContstants.BUCKET_NAME;
+        FOLDER = OSSClientContstants.FOLDER;
     }
 
     /**
@@ -57,6 +62,29 @@ public class AliyunOss {
             return bucket.getName();
         }
         return bucketNames;
+    }
+
+    /**
+     * 创建模拟文件夹
+     *
+     * @param ossClient  oss连接
+     * @param bucketName 存储空间
+     * @param folder     文件夹名
+     * @return 文件夹名
+     */
+    public static String createFolder(OSSClient ossClient, String bucketName, String folder) {
+        //文件夹名
+        //final String folderName = folder;
+        //判断文件夹是否存在，不存在则创建
+        if (!ossClient.doesObjectExist(bucketName, folder)) {
+            //创建文件夹
+            ossClient.putObject(bucketName, folder, new ByteArrayInputStream(new byte[0]));
+            log.info("创建文件夹成功");
+            //得到文件夹名
+            OSSObject object = ossClient.getObject(bucketName, folder);
+            return object.getKey();
+        }
+        return folder;
     }
 
     /**
@@ -147,7 +175,7 @@ public class AliyunOss {
      * @param length
      * @return
      */
-    public static String multipartUpload(OSSClient client, String bucketName, String key, String fileName, InputStream inputStream, long length){
+    public static String multipartUpload(OSSClient client, String bucketName, String folder, String key, String fileName, InputStream inputStream, long length){
         try{
             ObjectMetadata objectMetadata = new ObjectMetadata();
             objectMetadata.setContentLength(length);
@@ -155,6 +183,7 @@ public class AliyunOss {
             objectMetadata.setHeader("Pragma", "no-cache");
             objectMetadata.setContentType(getContentType(fileName));
             objectMetadata.setContentDisposition("inline;filename=" + fileName);
+            key = folder + key;
             client.putObject(bucketName, key, inputStream, objectMetadata);
             log.info("上传文件到阿里云成功：" + key);
             return key;
@@ -179,7 +208,7 @@ public class AliyunOss {
      * @return 上传后的文件名
      * @throws IOException
      */
-    public static String multipartUpload(String key, File partFile, OSSClient client,String bucketName) throws IOException {
+    public static String multipartUpload(String key, File partFile, OSSClient client, String bucketName) throws IOException {
         // 开始Multipart Upload
         InitiateMultipartUploadRequest initiateMultipartUploadRequest = new InitiateMultipartUploadRequest(bucketName, key);
         InitiateMultipartUploadResult initiateMultipartUploadResult = client.initiateMultipartUpload(initiateMultipartUploadRequest);
@@ -379,7 +408,7 @@ public class AliyunOss {
         //PutObjectResult result = multipartUpload(client, bucketName, key, file);
         //System.err.println("result:" + result.getETag());
         InputStream inputStream = new FileInputStream(file);
-        String name  = multipartUpload(client, bucketName, key, file.getName(), inputStream, file.length());
+        String name  = multipartUpload(client, bucketName, FOLDER, key, file.getName(), inputStream, file.length());
         System.err.println(name);
 
         String url = getUrl(client, BUCKET_NAME, key);
