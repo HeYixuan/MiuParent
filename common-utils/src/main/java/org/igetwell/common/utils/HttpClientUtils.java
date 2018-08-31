@@ -23,7 +23,9 @@ import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 import java.io.File;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.net.URL;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -245,8 +247,29 @@ public class HttpClientUtils {
     public String sendHttpsGet(String httpUrl) {    
         HttpGet httpGet = new HttpGet(httpUrl);// 创建get请求    
         return sendHttpsGet(httpGet);    
-    }    
-        
+    }
+
+    /**
+     * 发送 get请求Https
+     * @param httpUrl
+     */
+    public String sendHttpsGet(String httpUrl, Map<String, Object> params) throws IOException {
+        if (params != null && params.size() > 0) {
+            Set<String> keys = params.keySet();
+            // 创建参数队列
+            List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
+            for (String key : params.keySet()) {
+                nameValuePairs.add(new BasicNameValuePair(key, params.get(key).toString()));
+            }
+            httpUrl +="?"+EntityUtils.toString(new UrlEncodedFormEntity(nameValuePairs),"UTF-8");
+
+        }
+        HttpGet httpGet = new HttpGet(httpUrl);// 创建get请求
+        return sendHttpsGet(httpGet);
+    }
+
+
+
     /**  
      * 发送Get请求  
      * @param httpGet
@@ -281,7 +304,7 @@ public class HttpClientUtils {
             }    
         }    
         return responseContent;    
-    }    
+    }
         
     /**  
      * 发送Get请求Https  

@@ -1,6 +1,7 @@
 package org.igetwell.common.utils;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.codec.binary.Base64;
@@ -25,13 +26,19 @@ public class FacePlus {
     private static String ACCESS_KEY_SECRET;
     //Face++ API的美颜和美白地址
     private static String BEAUTIFY_URL;
+    //Face++ API的人脸检测和人脸分析地址
+    private static String DETECT_URL;
+    //Face++ API的颜值评分地址
+    private static String FACE_ANALYZE_URL;
+
 
     //初始化属性
     static{
-        BEAUTIFY_URL = "oss-cn-beijing.aliyuncs.com";
         ACCESS_KEY_ID = "pbJrwcxVxmy3lrESlEFobFQctGjCdpVL";
         ACCESS_KEY_SECRET = "ja5S6VHY9riKbDtHQ_l0QZ2p8SqSFB2-";
-        BEAUTIFY_URL = "oss-fit";
+        BEAUTIFY_URL = "https://api-cn.faceplusplus.com/facepp/beta/beautify";
+        DETECT_URL = "https://api-cn.faceplusplus.com/facepp/v3/detect";
+        FACE_ANALYZE_URL = "https://api-cn.faceplusplus.com/facepp/v3/face/analyze";
     }
 
     /**
@@ -94,26 +101,57 @@ public class FacePlus {
             params.put("api_secret", ACCESS_KEY_SECRET);
             params.put("whitening", whitening);
             params.put("smoothing", smoothing);
-            /*String str = HttpClientUtil.getInstance().multipartFile(BEAUTIFY_URL, file.getPath(), "image_file", params);
+            Map<String, File> fileMap = new HashMap<>();
+            fileMap.put("image_file", file);
+            String str = HttpClientUtils.getInstance().multipartFile(BEAUTIFY_URL, params, fileMap, "UTF-8");
             json = JSON.parseObject(str);
             if (!json.containsKey("result")){
                 throw new RuntimeException(str);
             }
-            return json;*/
+            return json;
         } catch (Exception e){
             log.error("调用Face+美颜功能失败！", e);
         }
         return null;
     }
 
+    public static String detect(File file){
+        Map<String, String> params = new HashMap<>();
+        params.put("api_key", ACCESS_KEY_ID);
+        params.put("api_secret", ACCESS_KEY_SECRET);
+        params.put("return_landmark", "2");
+        params.put("return_attributes", "beauty");
+        Map<String, File> fileMap = new HashMap<>();
+        fileMap.put("image_file", file);
+        String result = HttpClientUtils.getInstance().multipartFile(DETECT_URL, params, fileMap, "UTF-8");
+        return result;
+    }
+
+
+
+
+
     public static void main(String [] args) throws IOException {
-        File file = new File("D://微信图片_20180723153217.jpg");
+        /*File file = new File("D://微信图片_20180723153217.jpg");
         File filea = new File("D://c.jpg"); //创建美颜后临时文件
         JSONObject json = getBeautify(file, "100", "100");
 
         Files.write(Paths.get(filea.getCanonicalPath()), Base64.decodeBase64(json.getString("result")),StandardOpenOption.CREATE_NEW);
 
-        System.err.println(json);
+        */
+
+        File file = new File("D://IMG_3.JPG");
+        String result = detect(file);
+        JSONObject jsonResult = JSONObject.parseObject(result);
+        JSONObject object = jsonResult.getJSONArray("faces").getJSONObject(0);
+        float womenScore = object.getJSONObject("attributes").getJSONObject("beauty").getFloatValue("female_score");
+        float menScore = object.getJSONObject("attributes").getJSONObject("beauty").getFloatValue("male_score");
+        Map<String,Object> params = new HashMap<>();
+        params.put("womenScore", womenScore);
+        params.put("menScore", menScore);
+        System.err.println(params.toString());
+        System.err.println(result);
+
     }
 
 }
