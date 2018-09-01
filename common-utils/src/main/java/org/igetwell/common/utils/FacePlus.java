@@ -127,6 +127,17 @@ public class FacePlus {
         return result;
     }
 
+    public static String analyze(String faceTokens){
+        Map<String, String> params = new HashMap<>();
+        params.put("api_key", ACCESS_KEY_ID);
+        params.put("api_secret", ACCESS_KEY_SECRET);
+        params.put("face_tokens", faceTokens);
+        params.put("return_landmark", "2");
+        params.put("return_attributes", "beauty");
+        String result = HttpClientUtils.getInstance().sendHttpPost(FACE_ANALYZE_URL, params, "UTF-8");
+        return result;
+    }
+
 
 
 
@@ -140,17 +151,23 @@ public class FacePlus {
 
         */
 
-        File file = new File("D://IMG_3.JPG");
+        File file = new File("D://IMG_4938.JPG");
         String result = detect(file);
         JSONObject jsonResult = JSONObject.parseObject(result);
         JSONObject object = jsonResult.getJSONArray("faces").getJSONObject(0);
-        float womenScore = object.getJSONObject("attributes").getJSONObject("beauty").getFloatValue("female_score");
+        /*float womenScore = object.getJSONObject("attributes").getJSONObject("beauty").getFloatValue("female_score");
         float menScore = object.getJSONObject("attributes").getJSONObject("beauty").getFloatValue("male_score");
         Map<String,Object> params = new HashMap<>();
         params.put("womenScore", womenScore);
         params.put("menScore", menScore);
-        System.err.println(params.toString());
+        System.err.println(params.toString());*/
         System.err.println(result);
+
+        String faceToken = object.getString("face_token");
+
+        String result2 = analyze(faceToken);
+        System.err.println(result2);
+        System.err.println(faceToken);
 
     }
 
