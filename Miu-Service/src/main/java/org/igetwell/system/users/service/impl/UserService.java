@@ -1,6 +1,17 @@
 package org.igetwell.system.users.service.impl;
 
+import com.alibaba.fastjson.JSONObject;
+import com.alipay.api.AlipayApiException;
+import com.alipay.api.AlipayClient;
+import com.alipay.api.AlipayConstants;
+import com.alipay.api.DefaultAlipayClient;
+import com.alipay.api.domain.AlipayContract;
+import com.alipay.api.request.AlipayOpenAuthTokenAppRequest;
+import com.alipay.api.request.AlipayUserUserinfoShareRequest;
+import com.alipay.api.response.AlipayOpenAuthTokenAppResponse;
+import com.alipay.api.response.AlipayUserUserinfoShareResponse;
 import lombok.extern.slf4j.Slf4j;
+import org.igetwell.common.constans.AliPayConstants;
 import org.igetwell.common.constans.OSSClientContstants;
 import org.igetwell.common.enums.CertType;
 import org.igetwell.common.enums.HttpStatus;
@@ -22,6 +33,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+
 
 @Slf4j
 @Service
@@ -61,9 +73,42 @@ public class UserService implements IUserService {
             }
         } catch (Exception e){
             log.error("微信授权登陆异常", e);
-            throw new RuntimeException("授权登陆异常", e);
+            throw new RuntimeException("微信授权登陆异常", e);
         }
 
+    }
+
+
+    /**
+     * 支付宝授权登录
+     * @param code
+     */
+    public void AliPayAuthorizedLogin(String code){
+
+        try {
+            AlipayClient alipayClient = new DefaultAlipayClient(AliPayConstants.GATEWAY, AliPayUtils.APP_ID, AliPayUtils.APP_PRIVATE_KEY, "json", "UTF-8", AliPayUtils.ALIPAY_PUBLIC_KEY, "RSA2");
+            AlipayOpenAuthTokenAppRequest request = new AlipayOpenAuthTokenAppRequest();
+
+            JSONObject object = new JSONObject();
+            object.put("grant_type", "authorization_code");
+            object.put("code", code);
+
+            request.setBizContent(object.toString());
+            AlipayOpenAuthTokenAppResponse response = alipayClient.execute(request);
+            if (response.isSuccess()){
+                response.getUserId();
+                response.getAppAuthToken();
+                log.info("支付宝授权信息：{}", response.toString());
+                AlipayUserUserinfoShareRequest userInfoRequest = new AlipayUserUserinfoShareRequest();
+                AlipayUserUserinfoShareResponse userInfo = alipayClient.execute(userInfoRequest, response.getAppAuthToken());
+                System.out.println(userInfo.getBody());
+            } else {
+                log.error("获取支付宝授权登录失败.{}", response);
+            }
+        } catch (AlipayApiException e) {
+            log.error("获取支付宝授权登录异常.", e);
+            throw new RuntimeException("获取支付宝授权登录异常", e);
+        }
     }
 
     /**

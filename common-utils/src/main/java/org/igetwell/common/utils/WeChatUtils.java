@@ -186,7 +186,7 @@ public class WeChatUtils {
             redirectUrl = URLEncoder.encode(redirectUrl, "UTF-8");
             return String.format(API_AUTHORIZE_URL, APP_ID, redirectUrl);
         } catch (UnsupportedEncodingException e) {
-            LOG.error("获得微信JS API Ticket异常", e);
+            LOG.error("获得微信授权登录AccessToken异常", e);
             throw e;
         }
 
