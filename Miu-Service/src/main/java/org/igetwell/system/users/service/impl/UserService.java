@@ -1,6 +1,18 @@
 package org.igetwell.system.users.service.impl;
 
+import com.alibaba.fastjson.JSONObject;
+import com.alipay.api.AlipayClient;
+import com.alipay.api.DefaultAlipayClient;
+import com.alipay.api.request.AlipayOpenAuthTokenAppRequest;
+import com.alipay.api.request.AlipaySystemOauthTokenRequest;
+import com.alipay.api.request.AlipayUserInfoAuthRequest;
+import com.alipay.api.request.AlipayUserInfoShareRequest;
+import com.alipay.api.response.AlipayOpenAuthTokenAppResponse;
+import com.alipay.api.response.AlipaySystemOauthTokenResponse;
+import com.alipay.api.response.AlipayUserInfoAuthResponse;
+import com.alipay.api.response.AlipayUserInfoShareResponse;
 import lombok.extern.slf4j.Slf4j;
+import org.igetwell.common.constans.AliPayConstants;
 import org.igetwell.common.constans.OSSClientContstants;
 import org.igetwell.common.enums.CertType;
 import org.igetwell.common.enums.HttpStatus;
@@ -22,6 +34,10 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+
+import static org.igetwell.common.utils.AliPayUtils.ALIPAY_PUBLIC_KEY;
+import static org.igetwell.common.utils.AliPayUtils.APP_ID;
+import static org.igetwell.common.utils.AliPayUtils.APP_PRIVATE_KEY;
 
 @Slf4j
 @Service
@@ -64,6 +80,81 @@ public class UserService implements IUserService {
             throw new RuntimeException("授权登陆异常", e);
         }
 
+    }
+
+
+
+    /**
+     * 支付宝授权登陆
+     * @param code
+     */
+    public void AliPayAuthorizedLogin(String code){
+        try {
+            if (StringUtils.isEmpty(code)){
+                log.error("支付宝授权登陆异常, code不能为空!");
+                return;
+            }
+
+
+            /*//APP授权登陆
+            AlipayClient alipayClient = new DefaultAlipayClient(AliPayConstants.GATEWAY, APP_ID, APP_PRIVATE_KEY, "json", "UTF-8", ALIPAY_PUBLIC_KEY, "RSA2");
+            AlipaySystemOauthTokenRequest request = new AlipaySystemOauthTokenRequest();
+            request.setCode(code);
+            request.setGrantType("authorization_code");
+            AlipaySystemOauthTokenResponse oauthTokenResponse = alipayClient.execute(request);
+            System.out.println(oauthTokenResponse.getAccessToken());
+            if (oauthTokenResponse.isSuccess()){
+                AlipayUserInfoShareRequest userInfoRequest = new AlipayUserInfoShareRequest();
+                AlipayUserInfoShareResponse userInfoShareResponse = alipayClient.execute(userInfoRequest, oauthTokenResponse.getAccessToken());
+                if (userInfoShareResponse.isSuccess()){
+                    log.info(userInfoShareResponse.getBody());
+                }
+            }*/
+
+            //第三方授权登陆
+            AlipayClient alipayClient = new DefaultAlipayClient(AliPayConstants.GATEWAY, APP_ID, APP_PRIVATE_KEY, "json", "UTF-8", ALIPAY_PUBLIC_KEY, "RSA2");
+            AlipayOpenAuthTokenAppRequest request = new AlipayOpenAuthTokenAppRequest();
+            JSONObject object = new JSONObject();
+            object.put("grant_type","authorization_code");
+            object.put("code",code);
+
+            request.setBizContent(object.toString());
+            AlipayOpenAuthTokenAppResponse response = alipayClient.execute(request);
+            if (response.isSuccess()){
+                response.getAppAuthToken();
+                response.getUserId();
+                AlipayUserInfoShareRequest userInfoRequest = new AlipayUserInfoShareRequest();
+                AlipayUserInfoShareResponse userInfoShareResponse = alipayClient.execute(userInfoRequest, response.getAppAuthToken());
+                log.error(userInfoShareResponse.toString());
+                if (userInfoShareResponse.isSuccess()){
+                    log.info(userInfoShareResponse.getBody());
+                }
+
+            }
+
+
+           /* AlipayClient alipayClient = new DefaultAlipayClient(AliPayConstants.GATEWAY, APP_ID, APP_PRIVATE_KEY, "json", "UTF-8", ALIPAY_PUBLIC_KEY, "RSA2");
+            AlipayOpenAuthTokenAppRequest request = new AlipayOpenAuthTokenAppRequest();
+            JSONObject object = new JSONObject();
+            object.put("grant_type","authorization_code");
+            object.put("code",code);
+
+            request.setBizContent(object.toString());
+            AlipayOpenAuthTokenAppResponse response = alipayClient.execute(request);
+            if (response.isSuccess()){
+                response.getAppAuthToken();
+                response.getUserId();
+                AlipayUserInfoShareRequest userInfoRequest = new AlipayUserInfoShareRequest();
+                AlipayUserInfoShareResponse userInfoShareResponse = alipayClient.execute(userInfoRequest, response.getAppAuthToken());
+                if (userInfoShareResponse.isSuccess()){
+                    log.info(userInfoShareResponse.getBody());
+                }
+
+            }*/
+        } catch (Exception e){
+            log.error("支付宝授权登陆异常", e);
+            throw new RuntimeException("支付宝授权登陆异常", e);
+        }
     }
 
     /**
