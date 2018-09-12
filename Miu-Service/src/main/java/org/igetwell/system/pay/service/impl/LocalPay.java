@@ -158,7 +158,7 @@ public class LocalPay {
 
 
     /**
-     * 微信H5、APP内调起支付
+     * 微信H5、APP、NATIVE调起支付
      * @param request
      * @param jsApiType
      * @param productName
