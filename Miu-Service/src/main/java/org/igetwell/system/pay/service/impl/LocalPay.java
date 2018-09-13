@@ -24,6 +24,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+/**
+ * 微信支付
+ */
 @Component
 public class LocalPay {
 
@@ -155,7 +158,7 @@ public class LocalPay {
 
 
     /**
-     * 微信H5、APP内调起支付
+     * 微信H5、APP、NATIVE调起支付
      * @param request
      * @param jsApiType
      * @param productName
@@ -279,7 +282,7 @@ public class LocalPay {
         params.put("total_fee", hashMap.get("fee")); // 订单总金额，单位为分
         params.put("spbill_create_ip", hashMap.get("clientIp")); // APP和网页支付提交用户端ip，Native支付填调用微信支付API的机器IP
         params.put("trade_type", hashMap.get("tradeType")); // JSAPI--公众号支付、NATIVE--原生扫码支付、APP--app支付
-        params.put("notify_url", "http://" + domain + hashMap.get("notifyUrl")); // 通知地址，接收微信支付异步通知回调地址，通知url必须为直接可访问的url，不能携带参数。
+        params.put("notify_url", domain + hashMap.get("notifyUrl")); // 通知地址，接收微信支付异步通知回调地址，通知url必须为直接可访问的url，不能携带参数。
         params.put("product_id", hashMap.get("productId"));
 
         String sign = SignUtils.createSign(params, paterKey, signType);

@@ -14,10 +14,11 @@ public interface IUserService {
     void WxAuthorizedLogin(String code);
 
     /**
-     * 支付宝授权登录
+     * 支付宝授权登陆
      * @param code
      */
     void AliPayAuthorizedLogin(String code);
+
 
     /**
      * 检测手机号是否重复

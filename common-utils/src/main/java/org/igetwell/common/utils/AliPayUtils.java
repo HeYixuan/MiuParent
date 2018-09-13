@@ -13,37 +13,36 @@ public class AliPayUtils {
      */
     public static final String APP_ID = "2018090761263694";
 
-    /**
-     * App Secret 应用密钥
-     */
-    public static final String APP_PRIVATE_KEY = "MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCw+mzVW46bDn1n\n" +
-            "awhtC7WPfl96h8V9/Q30ALLX7livyuK9sHRpzGbjNMf+WgtQ2DygtTiBdWEh2HOc\n" +
-            "RgWycdQvoM1suTeWOuV0blZ1VbBs5TLykfKakbVhHgb9hjWa7JGWc2g4qTEK69ko\n" +
-            "u7Z7XO4zT/yyY+0brUn5S8NBGDSt47MUlLSToQPqgWOdm4lMlvqDmLbHQPNSp9AR\n" +
-            "WjjvnITi9JuSR3rptnLut0Yc8RzcYNT5sUYwrOMHxfhidS1VQqjywKFpOcgkGayC\n" +
-            "eqw/UpT0Fy0vhuY08e6D4ddkcl5lgFVMw7zne5gzztaNDzZwo883wrAvb9LDQOM8\n" +
-            "sGINcFWpAgMBAAECggEAaNxIhfZUvZzNQuyRNoM8lYQMMH6nzqmUjeGoFfccRzSQ\n" +
-            "OlKF93Xr9G1+nj9d+w3Uhmg5zcLtxW8JuStoDr4ROhMuBGCOBg5pjB4gTi9ydGMt\n" +
-            "V7qQI3N4I8312FugAWZwMNO6ie/9pfnuVos6aUe7v12CXXSFteNsNDDmxPgBppGK\n" +
-            "X8nrGsPWgLQRrNbD44Bm6nmDBHsNDDxVzZZYY2firuLeF0+RZAVtLm++93h0E9do\n" +
-            "rmFteBP3Fly1JL6apxe/BsDFCNEsH17YzAXetv/cu+X2Hwth3dVu8v9as02dTQQr\n" +
-            "1eJCu2T/hIqmFFK72fO5Xf13PqihmX068ud8aJw9bQKBgQDbDN9Rc2SXYMuWIY9q\n" +
-            "dWsZ7Q2PsJRMk/sVr/IckA1D1XA4PzEx2nDayqaj1x8ZFOaNSzhsJ5i2Vd/5Dr3V\n" +
-            "ghV8T+lIAnaI4xTwoDeukpUqkOeMu5Tt04G5EMcob3uvct98dLcImJB9meFp8ruI\n" +
-            "iJM+L/QlevlFoo4bnB54htjynwKBgQDO1Mc6SVJqVRjNZJMUsVB6ICZJxc06lWU+\n" +
-            "U6PksXcSVQEieKXSrzK0eHHutOyDgPCAv8ORQyGJbo4+3uwOMYBzwtmXlhIA50yN\n" +
-            "qdmze1FDusc9AJ90+w1aZhGKmA6/zsLVT1Y3E4Aa/kesfhrZbvJsOAo15V/7nQ6Z\n" +
-            "gQcbqZFatwKBgQCMafH06j0+9CNMt3KRUXc4BUa+JvjJJcq7mi9es9Bs/TKUO52z\n" +
-            "UU0qUuEDAXDDySwIwoEGg1NW/jE2G4cAiARxzV/CcyG8maPgozNOSlQoFv72rX/H\n" +
-            "+96Z3PFtMBle3An6Y264qeNlP/DI03n3CWUpZd/g7rU/N/ZUKH030WjcDQKBgEGj\n" +
-            "98KAyJ4keaWduKwFhhPsJhqdov9nsGTyaH5I8BAqWBzXi1Ds9zudShNG6hTmE+3Y\n" +
-            "bjmow3j5VD2Rw/rRLQIQIbxhDT+qKHqBIC09AtJq8ZZjnzeiAV/iKskAbxXiiaTm\n" +
-            "8+aw0qQ+dQLCVsUQ1/EOa/ck36xb8Ok4sMfPrejLAoGAFzW9IFuJyOCGVm+yubix\n" +
-            "2AEwgDPEbiBX1jFs7Q2sgGmkF8uA6ZKkejHCa9jHwMNVdB/gjvAQ08GmiYpVxL5u\n" +
-            "m7P3HuQnzUmv+/as1AC5Gafr6DmKVfigdlKzgqzfkz7zG7aR32xO+1+t2KZczqy9\n" +
-            "hC7eFFmMysN39q3ZPTVN1WA=";
+    public static final String APP_PRIVATE_KEY = "MIIEwAIBADANBgkqhkiG9w0BAQEFAASCBKowggSmAgEAAoIBAQDUqZBGYLCIPi8Y\n" +
+            "1OzZthC+BiKM+JUXZb080LAPXifl0i8ItpG74PkBuuGb4ihDrWxTAglBEfaC+OZX\n" +
+            "2c5+IJ8Q4Ukr4p8629t9Le9GcELlSym0El5b8CujcDlSVJk9zjnLSbFX/fpNXSx1\n" +
+            "cEoWlBKUEwjSKWC1IXRmvxHbYbOInfghXaiWipDSjtOM9w1LC2uLCqNG7HYX++Ac\n" +
+            "IIb1r7I4cHnezB0+C+t0v7l7823PyPR+hmV/MFWstkxf1RT/tNdUk/CAiKza9Xu1\n" +
+            "4ioimF/fvYHpO798zsDlxG0nUp1iP2rgTMllTMDSkjz77QoCpgVQK8Anz5TY3e7y\n" +
+            "w1amhtJzAgMBAAECggEBAM24sm7CfkNuFFVrNSxuqceJW8cPefrGWsgIASj8po/2\n" +
+            "QbWmF1iui3OW+0S3BMhjbZTnNViTLesJKJr3goAUwourxAMGGY7wvGVeGEgFtVDm\n" +
+            "4xLlag56SVyz5V+1owBdDR+QzFQYxxgr+CQrWiB5YXeI6lGT4Y+XK2lxkK6u1uRi\n" +
+            "WQVimncBpHlsnd8zt05tpK/nYFnG7hW3yMyIkw9ynKXPE88u0GhGUiHpIpGuzzhh\n" +
+            "M8cHOnX70WdgS2DU7Y1zOtdghOP4I6ua/CG0B+3LFuSRXSWBorP2TQdGd+BzxM6r\n" +
+            "5RbBO1P0WuuCU54mFNcOwE12TKb7XowR67s9GLVGYyECgYEA6l4YK/SgE1PaA23j\n" +
+            "0Ybx9yZhWaQliMgjbxy14DgOu1mkbJoshzu9RHaRLSDuVEswmY/scyvG/qXCXDZB\n" +
+            "ivq22yG9R5+Zqrl4TYA5Hi6tX7S3HrQ13sn6EVVvoD2XDukVIF9j5mqxbkALubLe\n" +
+            "F5bN/EcT07XfgcQmKy73s6QgTjkCgYEA6EqYBAcRJuZwCniRCe28OrNJ4p9MmdYL\n" +
+            "V5TVInLCALJx6uM7mV9Onk1en18DD5Z5PvbLXY/JSO4GCpk7vmghJ6Dw0yFPoXA1\n" +
+            "+c1JMc45LFhQXVD0XkHYEMzUkMzGDut0EvJFTsGG726v9lNZL3BLnv9LfPm1+EmC\n" +
+            "LnW0ovm/JgsCgYEAolV+hKOyZPDFp25sSGsiGkCZWY/a97043fOS/rWVbquOujKn\n" +
+            "+Rul41AFCq8upXBXP2ZzLur5sNR7pYdnKq6yDWJ3Sq7/r0M8UuInrgJC0HHKDRhh\n" +
+            "3+kirvLwmJtQkGFd4shv19+6+lSeSofcUZaBIubQkun84FNO5MZpiCJ8xfECgYEA\n" +
+            "n30f1JwZjbDoOng/dSayd0dEMoIXcQRCc1av4+ARDbN3fcOY1xxV+WC72Aa/LkOt\n" +
+            "aaq/RLUFibpLkZlWKMyL/w6EayHS79AAb0wgtj6WiLj2LKv5rIHe3OIWDHlcfz/w\n" +
+            "SVXoekNr5xcDX8goUubyNO+qH9u/sgKejFGqvb9mG7MCgYEAk2eckNViqRrLbmIx\n" +
+            "rQeSAVFgI0suoEGKahrGZwanIJ2YbPveawPnNdB6Le3Cl0CwcMHRVQbJB9hyn+oh\n" +
+            "zH5HrWZoUD8CT+crCb2bqK/UbbfqP/GNi9UYu2wvcTa6RQkYGBmZkVFLR/nMevxW\n" +
+            "9U2buAL0DXTyq0Xo7JuVGhYQnFM=";
 
     public static final String ALIPAY_PUBLIC_KEY = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAnnuQBJsOA86f0v0YBo3doKIHuKslWS6987HsbQbE27cQcMiR3l6BL4/elQ/teFL+D4YMkfx2zWdxP/ynatUFVhfXjRI5McGaqXTgoPhm+aCk6I8SxReYVaR4/jJsqBECkZDwt8a0iobyeroXgSBl2sFTgJ9W1nmvIRs0wGqF3RfZeuMShZdoinu5wxx36pOC0ixw23YT0JMkuORMMfakOV+yMLCHW+OFAhP6KJGW4tS7ijvOmSarKacBNm1WhRmMHHCgcW0N7lMw/lbzgbhlifdKLCfXo8jyPjqVQoaJO/hUivqozKb0fW5NzfVR7pLzwC/u1GhYG7RWf+kXZVqrYwIDAQAB";
+
+
 
     /**
      * 支付宝授权登录获取code
@@ -51,20 +50,11 @@ public class AliPayUtils {
      * %s redirect_uri
      * %s scope
      */
-    private static final String API_AUTHORIZE_URL = "https://openauth.alipay.com/oauth2/appToAppAuth.htm?app_id=%s&scope=auth_userinfo,auth_base&redirect_uri=%s";
-
-
-    /**
-     * 支付授权登录根据code获取Access Token
-     * %s appid
-     * %s secret
-     * %s code
-     */
-    private static final String API_AUTHORIZE_ACCESS_TOKEN = "http://example.com/doc/toAuthPage.html?app_id=%s&app_auth_code=%s";
-
+    //private static final String API_AUTHORIZE_URL = "https://openauth.alipay.com/oauth2/publicAppAuthorize.htm?app_id=%s&scope=auth_user&redirect_uri=%s&state=state";  //APP授权登陆
+    private static final String API_AUTHORIZE_URL = "https://openauth.alipay.com/oauth2/appToAppAuth.htm?app_id=%s&redirect_uri=%s";   //第三方授权登陆
 
     /**
-     * 获取微信网页授权登录
+     * 获取支付宝网页授权登录
      * @param redirectUrl
      * @return
      */
@@ -73,7 +63,7 @@ public class AliPayUtils {
             redirectUrl = URLEncoder.encode(redirectUrl, "UTF-8");
             return String.format(API_AUTHORIZE_URL, APP_ID, redirectUrl);
         } catch (UnsupportedEncodingException e) {
-            log.error("获得支付宝授权登录AccessToken异常", e);
+            log.error("获得支付宝网页授权登录地址异常", e);
             throw e;
         }
 

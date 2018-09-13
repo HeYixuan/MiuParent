@@ -28,7 +28,7 @@ spring:
     driver-class-name: com.mysql.jdbc.Driver
     username: root
     password: sfOPFwf$#%^&*
-    url: jdbc:mysql://rm-2ze1oz4pi4woc067syo.mysql.rds.aliyuncs.com:3306/miu?useUnicode=true&characterEncoding=UTF8&zeroDateTimeBehavior=
+    url: jdbc:mysql://rm-2ze1oz4pi4woc067syo.mysql.rds.aliyuncs.com:3306/miu?useUnicode=true&characterEncoding=UTF8&zeroDateTimeBehavior=convertToNull
 
 
   redis:
@@ -53,13 +53,24 @@ spring:
     #deserialization: true
 
 
-
+#微信支付
 defaultAppId: wx097eb9f69920db49
 paterKey: 123fdsaJHYUTREWQOKLJGCCBNM654389
 mchId: 1503679961
 attach: stg
-domain: insdate.free.ngrok.cc
+domain: http://insdate.free.idcfengye.com
 
+#支付宝
+aliPay:
+  appId: 2018090761263694
+  privateKey:
+  publicKey:
+  notifyUrl: /AliPay/aliPayNotify
+  returnUrl: /AliPay/aliPayReturn
+  gatewayUrl: https://openapi.alipay.com/gateway.do
+  signType: RSA2
+
+#阿里云OSS
 aliyun:
   oss:
     endpoint: oss-cn-beijing.aliyuncs.com

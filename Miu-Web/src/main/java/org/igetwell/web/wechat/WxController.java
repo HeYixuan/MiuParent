@@ -44,7 +44,7 @@ public class WxController extends BaseController {
     }
 
 
-    //62df0725f11697cb
+    //de1ac07e2182f698
     //http://insdate.free.ngrok.cc
     @PostMapping("/callback")
     public void callback(String signature, String echostr, String timestamp, String nonce) {
