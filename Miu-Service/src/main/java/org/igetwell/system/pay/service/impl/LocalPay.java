@@ -1,5 +1,6 @@
 package org.igetwell.system.pay.service.impl;
 
+import org.igetwell.common.constans.WXPayConstants;
 import org.igetwell.common.enums.LoginType;
 import org.igetwell.common.enums.JsApiType;
 import org.igetwell.common.enums.PayStatus;
@@ -87,7 +88,7 @@ public class LocalPay {
             String returnCode = resultXml.get("return_code");
             String resultCode = resultXml.get("result_code");
             String codeUrl = resultXml.get("code_url");
-            boolean isSuccess = "SUCCESS".equals(returnCode) && "SUCCESS".equals(resultCode);
+            boolean isSuccess = WXPayConstants.SUCCESS.equals(returnCode) && WXPayConstants.SUCCESS.equals(resultCode);
             if (!isSuccess) {
                 throw new RuntimeException("统一支付失败！" +
                         "return_code:" + resultXml.get("return_code") + " " +
@@ -131,7 +132,7 @@ public class LocalPay {
             Map<String, String> resultXml = this.prePay(paraMap, SignType.MD5);
             String returnCode = resultXml.get("return_code");
             String resultCode = resultXml.get("result_code");
-            boolean isSuccess = "SUCCESS".equals(returnCode) && "SUCCESS".equals(resultCode);
+            boolean isSuccess = WXPayConstants.SUCCESS.equals(returnCode) && WXPayConstants.SUCCESS.equals(resultCode);
             if (!isSuccess) {
                 throw new RuntimeException("统一支付失败！" +
                         "return_code:" + resultXml.get("return_code") + " " +
@@ -297,8 +298,8 @@ public class LocalPay {
      * @return
      */
     private static String pushOrder(Map<String, String> params) {
-        final String unifiedOrderUrl = "https://api.mch.weixin.qq.com/pay/unifiedorder";
-        return HttpClientUtils.getInstance().sendHttpPost(unifiedOrderUrl, BeanUtils.mapBean2Xml(params), "UTF-8");
+        //final String unifiedOrderUrl = "https://api.mch.weixin.qq.com/pay/unifiedorder";
+        return HttpClientUtils.getInstance().sendHttpPost(WXPayConstants.DOMAIN_API + WXPayConstants.UNIFIED_ORDER, BeanUtils.mapBean2Xml(params), "UTF-8");
     }
 
     /**
@@ -309,7 +310,7 @@ public class LocalPay {
     private static String parseXml(Map<String, String> resultXml){
         String returnCode = resultXml.get("return_code");
         String resultCode = resultXml.get("result_code");
-        boolean isSuccess = "SUCCESS".equalsIgnoreCase(returnCode) && "SUCCESS".equalsIgnoreCase(resultCode);
+        boolean isSuccess = WXPayConstants.SUCCESS.equalsIgnoreCase(returnCode) && WXPayConstants.SUCCESS.equalsIgnoreCase(resultCode);
         if (!isSuccess) {
             throw new RuntimeException("统一支付失败！" +
                     "return_code:" + resultXml.get("return_code") + " " +
@@ -351,7 +352,7 @@ public class LocalPay {
             }
             String returnCode = resultXml.get("return_code");
             String resultCode = resultXml.get("result_code");
-            boolean isSuccess = "SUCCESS".equalsIgnoreCase(returnCode) && "SUCCESS".equalsIgnoreCase(resultCode);
+            boolean isSuccess = WXPayConstants.SUCCESS.equalsIgnoreCase(returnCode) && WXPayConstants.SUCCESS.equalsIgnoreCase(resultCode);
             if (isSuccess){
 
                 //TODO:需要做数据库记录交易订单号

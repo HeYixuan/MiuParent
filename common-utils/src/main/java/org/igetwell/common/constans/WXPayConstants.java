@@ -4,10 +4,10 @@ package org.igetwell.common.constans;
  * 常量
  */
 public class WXPayConstants {
-    public static final String DOMAIN_API = "api.mch.weixin.qq.com";
-    public static final String DOMAIN_API2 = "api2.mch.weixin.qq.com";
-    public static final String DOMAIN_APIHK = "apihk.mch.weixin.qq.com";
-    public static final String DOMAIN_APIUS = "apius.mch.weixin.qq.com";
+    public static final String DOMAIN_API = "https://api.mch.weixin.qq.com";
+    public static final String DOMAIN_API2 = "https://api2.mch.weixin.qq.com";
+    public static final String DOMAIN_APIHK = "https://apihk.mch.weixin.qq.com";
+    public static final String DOMAIN_APIUS = "https://apius.mch.weixin.qq.com";
 
     public static final String FAIL     = "FAIL";
     public static final String SUCCESS  = "SUCCESS";
