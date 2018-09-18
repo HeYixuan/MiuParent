@@ -56,4 +56,6 @@ dependencies {
 //    compile 'com.google.code.gson:gson:2.8.5'
     compile 'org.redisson:redisson:3.7.5'
     compile 'com.jfinal:jfinal-weixin:2.1'
+    compile 'org.bouncycastle:bcprov-jdk16:1.46'
+
 }
