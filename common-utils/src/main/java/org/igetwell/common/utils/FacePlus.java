@@ -155,12 +155,12 @@ public class FacePlus {
         String result = detect(file);
         JSONObject jsonResult = JSONObject.parseObject(result);
         JSONObject object = jsonResult.getJSONArray("faces").getJSONObject(0);
-        /*float womenScore = object.getJSONObject("attributes").getJSONObject("beauty").getFloatValue("female_score");
+        float womenScore = object.getJSONObject("attributes").getJSONObject("beauty").getFloatValue("female_score");
         float menScore = object.getJSONObject("attributes").getJSONObject("beauty").getFloatValue("male_score");
         Map<String,Object> params = new HashMap<>();
         params.put("womenScore", womenScore);
         params.put("menScore", menScore);
-        System.err.println(params.toString());*/
+        System.err.println(params.toString());
         System.err.println(result);
 
         String faceToken = object.getString("face_token");
