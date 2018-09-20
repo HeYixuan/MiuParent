@@ -56,6 +56,11 @@ dependencies {
 //    compile 'com.google.code.gson:gson:2.8.5'
     compile 'org.redisson:redisson:3.7.5'
     compile 'com.jfinal:jfinal-weixin:2.1'
+    //微信小程序获取手机号SDK
     compile 'org.bouncycastle:bcprov-jdk16:1.46'
+    //阿里大鱼短信SDK
+    compile 'com.aliyun:aliyun-java-sdk-core:4.0.6'
+    compile 'com.aliyun:aliyun-java-sdk-dysmsapi:1.1.0'
+
 
 }
