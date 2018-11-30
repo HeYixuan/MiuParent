@@ -25,7 +25,8 @@ public class GenerateUtils {
                 'X', 'Y' ,'Z', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' };
         int count=0;
         while(count < len){
-            rdGet = Math.abs(rd.nextInt(maxNum));//生成的数最大为62-1
+            //生成的数最大为62-1
+            rdGet = Math.abs(rd.nextInt(maxNum));
             if (rdGet >= 0 && rdGet < str.length) {
                 sb.append(str[rdGet]);
                 count ++;
@@ -44,7 +45,6 @@ public class GenerateUtils {
         return tempInt;
     }
     public static void main(String[] args){
-        GenerateUtils pwc = new GenerateUtils();
-        System.out.println(pwc.create(36));
+        System.out.println(GenerateUtils.create(36));
     }
 }

@@ -42,7 +42,7 @@ public class MessageUtils {
         eventMessage.setFromUserName(toUserName);
         eventMessage.setToUserName(fromUserName);
         eventMessage.setMsgType(MESSAGE_TEXT);
-        eventMessage.setCreateTime(new Date().getTime());
+        eventMessage.setCreateTime(System.currentTimeMillis());
         eventMessage.setContent(content);
         return object2Xml(eventMessage);
     }
