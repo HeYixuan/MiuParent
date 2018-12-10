@@ -260,13 +260,11 @@ public class DateUtils {
      */
     public static Date lastDayOfMonth() {
         Calendar cal = calendar();
-        cal.set(Calendar.DAY_OF_MONTH, 0); // M月置零
+        cal.set(Calendar.DAY_OF_MONTH, cal.getActualMaximum(Calendar.DAY_OF_MONTH)); // M月置零
         cal.set(Calendar.HOUR_OF_DAY, 0);// H置零
         cal.set(Calendar.MINUTE, 0);// m置零
         cal.set(Calendar.SECOND, 0);// s置零
         cal.set(Calendar.MILLISECOND, 0);// S置零
-        cal.set(Calendar.MONTH, cal.get(Calendar.MONTH) + 1);// 月份+1
-        cal.set(Calendar.MILLISECOND, -1);// 毫秒-1
         return cal.getTime();
     }
 
