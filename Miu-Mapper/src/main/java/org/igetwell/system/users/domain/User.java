@@ -60,12 +60,6 @@ public class User {
     private String mobile;
 
     /**
-     * 账户密码：手机账户注册时填写该字段
-     */
-    @Column(name = "SECRET")
-    private String secret;
-
-    /**
      * 登陆类型：1微信  2支付宝 3手机号登陆
      */
     @Column(name = "LOGIN_TYPE")
@@ -231,24 +225,6 @@ public class User {
      */
     public void setMobile(String mobile) {
         this.mobile = mobile == null ? null : mobile.trim();
-    }
-
-    /**
-     * 获取账户密码：手机账户注册时填写该字段
-     *
-     * @return SECRET - 账户密码：手机账户注册时填写该字段
-     */
-    public String getSecret() {
-        return secret;
-    }
-
-    /**
-     * 设置账户密码：手机账户注册时填写该字段
-     *
-     * @param secret 账户密码：手机账户注册时填写该字段
-     */
-    public void setSecret(String secret) {
-        this.secret = secret == null ? null : secret.trim();
     }
 
     /**
