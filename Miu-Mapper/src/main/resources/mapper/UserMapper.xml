@@ -14,7 +14,6 @@
     <result column="BIRTH_DAY" jdbcType="VARCHAR" property="birthDay" />
     <result column="SEX" jdbcType="CHAR" property="sex" />
     <result column="MOBILE" jdbcType="VARCHAR" property="mobile" />
-    <result column="SECRET" jdbcType="VARCHAR" property="secret" />
     <result column="LOGIN_TYPE" jdbcType="INTEGER" property="loginType" />
   </resultMap>
 
@@ -67,9 +66,6 @@
       </if>
       <if test="mobile != null">
         MOBILE = #{mobile,jdbcType=VARCHAR},
-      </if>
-      <if test="secret != null">
-        SECRET = #{secret,jdbcType=VARCHAR},
       </if>
       <if test="loginType != null">
         LOGIN_TYPE = #{loginType,jdbcType=INTEGER},
