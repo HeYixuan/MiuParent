@@ -11,7 +11,7 @@ public interface IUserService {
      * 微信授权登陆
      * @param code
      */
-    void WxAuthorizedLogin(String code);
+    void wxAuthorized(String code);
 
     /**
      * 支付宝授权登陆

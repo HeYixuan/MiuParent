@@ -53,7 +53,7 @@ public class UserService implements IUserService {
      * @param code
      */
     @Transactional(rollbackFor = RuntimeException.class)
-    public void WxAuthorizedLogin(String code) {
+    public void wxAuthorized(String code) {
         try {
             if (StringUtils.isEmpty(code)){
                 log.error("微信授权登陆异常, code不能为空!");
