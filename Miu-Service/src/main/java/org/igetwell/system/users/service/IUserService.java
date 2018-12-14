@@ -17,7 +17,7 @@ public interface IUserService {
      * 支付宝授权登陆
      * @param code
      */
-    void AliPayAuthorizedLogin(String code);
+    void aliAuthorized(String code);
 
 
     /**
