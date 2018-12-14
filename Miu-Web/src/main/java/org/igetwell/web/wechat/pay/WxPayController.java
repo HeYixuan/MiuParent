@@ -12,7 +12,14 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import java.util.Map;
 
-
+/**
+ * @ClassName: WxPayController
+ * @ProjectName MiuParent
+ * @Description: 微信支付
+ * @Author 何壹轩
+ * @Date 2018/12/14 15:12
+ * @Version 1.0
+ */
 @RestController
 @RequestMapping("/WxPay")
 public class WxPayController extends BaseController {
