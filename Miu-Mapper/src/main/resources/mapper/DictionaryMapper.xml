@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.igetwell.system.dict.mapper.DictionaryMapper">
+  <resultMap id="BaseResultMap" type="org.igetwell.system.dict.domain.Dictionary">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="k" jdbcType="VARCHAR" property="k" />
+    <result column="v" jdbcType="VARCHAR" property="v" />
+    <result column="description" jdbcType="VARCHAR" property="description" />
+  </resultMap>
+
+  <sql id="baseSql">
+    DICT.K as k,
+    DICT.V as v
+  </sql>
+  
+  <select id="getByKey" resultType="org.igetwell.system.dict.dto.DictionaryDTO" parameterType="java.lang.String">
+    SELECT
+    <include refid="baseSql" />
+    FROM DICTIONARY as DICT
+    WHERE DICT.K = #{key}
+  </select>
+</mapper>

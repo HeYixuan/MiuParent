@@ -43,7 +43,7 @@ public class AliPayController extends BaseController {
     @ResponseBody
     public void AliPayAuthorizedLogin(String app_auth_code) {
         try {
-            userService.AliPayAuthorizedLogin(app_auth_code);
+            userService.aliAuthorized(app_auth_code);
             String uri = "http://www.igetwell.org/";
             response.get().sendRedirect(uri);
         } catch (Exception e) {
