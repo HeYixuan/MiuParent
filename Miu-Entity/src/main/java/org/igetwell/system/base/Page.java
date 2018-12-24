@@ -3,7 +3,7 @@ package org.igetwell.system.base;
 import lombok.Data;
 
 @Data
-public class BaseQuery {
+public class Page {
     /**
      * 页码
      */

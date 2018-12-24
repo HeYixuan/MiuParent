@@ -1,6 +1,6 @@
 package org.igetwell.system.planet.retrieve;
 
-import org.igetwell.system.base.BaseQuery;
+import org.igetwell.system.base.Page;
 
-public class PlanetQuery extends BaseQuery {
+public class PlanetQuery extends Page {
 }

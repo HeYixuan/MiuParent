@@ -1,18 +1,16 @@
 package org.igetwell.interceptor;
 
 import lombok.extern.slf4j.Slf4j;
-import org.apache.ibatis.executor.Executor;
 import org.apache.ibatis.executor.parameter.ParameterHandler;
 import org.apache.ibatis.executor.statement.StatementHandler;
 import org.apache.ibatis.mapping.MappedStatement;
 import org.apache.ibatis.plugin.*;
 import org.apache.ibatis.reflection.MetaObject;
 import org.apache.ibatis.reflection.SystemMetaObject;
-import org.apache.ibatis.session.ResultHandler;
-import org.apache.ibatis.session.RowBounds;
+import org.igetwell.system.base.Page;
 
 import java.sql.Connection;
-import java.util.Map;
+import java.sql.PreparedStatement;
 import java.util.Properties;
 
 /**
@@ -24,8 +22,10 @@ import java.util.Properties;
  * @Version 1.0
  */
 @Slf4j
-//@Intercepts({ @Signature(method = "prepare", type = StatementHandler.class, args = { Connection.class }) })
-@Intercepts({@Signature(type = Executor.class, method = "query", args = {MappedStatement.class, Object.class, RowBounds.class, ResultHandler.class})})
+@Intercepts({
+        @Signature(type = StatementHandler.class, method = "prepare", args = {Connection.class, Integer.class})
+})
+//@Intercepts({@Signature(type = Executor.class, method = "query", args = {MappedStatement.class, Object.class, RowBounds.class, ResultHandler.class})})
 public class PageInterceptor implements Interceptor {
 
     @Override
@@ -39,18 +39,30 @@ public class PageInterceptor implements Interceptor {
         MappedStatement mappedStatement = (MappedStatement) MetaObjectHandler.getValue("delegate.mappedStatement");
         String mapId = mappedStatement.getId();
         //拦截以.ByPage结尾的请求，分页功能的统一实现
-        if (mapId.matches("getList")) {
+        if (mapId.endsWith("List")) {
             //获取进行数据库操作时管理参数的handler
             ParameterHandler parameterHandler = (ParameterHandler) MetaObjectHandler.getValue("delegate.parameterHandler");
             //获取请求时的参数
-            Map<String, Object> paraObject = (Map<String, Object>) parameterHandler.getParameterObject();
+            Object paraObject = parameterHandler.getParameterObject();
             //也可以这样获取
-            //paraObject = (Map<String, Object>) statementHandler.getBoundSql().getParameterObject();
+            //Map<String, Object> paraObject = (Map<String, Object>) statementHandler.getBoundSql().getParameterObject();
 
-            String sql = (String) MetaObjectHandler.getValue("delegate.boundSql.sql");
-            //也可以通过statementHandler直接获取
-            //sql = statementHandler.getBoundSql().getSql();
-            log.info("mybatis intercept sql:{}", sql);
+            if (paraObject instanceof Page){
+                Page page = (Page) paraObject;
+                String sql = (String) MetaObjectHandler.getValue("delegate.boundSql.sql");
+                //也可以通过statementHandler直接获取
+                //sql = statementHandler.getBoundSql().getSql();
+                log.info("mybatis intercept sql:{}", sql);
+
+                String countSql = "select count(*) from (" + sql + ") a";
+                Connection connection = (Connection) invocation.getArgs()[0];
+                PreparedStatement preparedStatement = connection.prepareStatement(countSql);
+                parameterHandler.setParameters(preparedStatement);
+                String pageSql = sql + " limit " + (page.getPageNo()-1) * page.getPageSize() + ", " + page.getPageSize();
+                MetaObjectHandler.setValue("delegate.boundSql.sql", pageSql);
+            }
+
+
 
             //将构建完成的分页sql语句赋值个体'delegate.boundSql.sql'，偷天换日
             //MetaObjectHandler.setValue("delegate.boundSql.sql", limitSql);
@@ -67,7 +79,7 @@ public class PageInterceptor implements Interceptor {
     @Override
     public Object plugin(Object target) {
         //生成object对象的动态代理对象
-        if (target instanceof Executor) {
+        if (target instanceof StatementHandler) {
             return Plugin.wrap(target, this);
         } else {
             return target;

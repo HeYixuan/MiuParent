@@ -28,7 +28,7 @@ spring:
     driver-class-name: com.mysql.jdbc.Driver
     username: root
     password: sfOPFwf$#%^&*
-    url: jdbc:mysql://rm-2ze1oz4pi4woc067syo.mysql.rds.aliyuncs.com:3306/miu?useUnicode=true&characterEncoding=UTF8&zeroDateTimeBehavior=convertToNull
+    url: jdbc:mysql://rm-2ze1oz4pi4woc067syo.mysql.rds.aliyuncs.com:3306/miu?useUnicode=true&characterEncoding=UTF8&zeroDateTimeBehavior=convertToNull&&useSSL=false
 
 
   redis:
