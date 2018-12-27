@@ -1,7 +1,7 @@
 package org.igetwell.common.constans;
 
 /**
- * 常量
+ * 微信支付常量
  */
 public class WXPayConstants {
     public static final String DOMAIN_API = "https://api.mch.weixin.qq.com";
