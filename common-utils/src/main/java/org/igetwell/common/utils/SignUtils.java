@@ -1,5 +1,6 @@
 package org.igetwell.common.utils;
 
+import org.apache.commons.codec.binary.Hex;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.igetwell.common.enums.SignType;
@@ -129,6 +130,7 @@ public class SignUtils {
         SecretKeySpec secret_key = new SecretKeySpec(key.getBytes("UTF-8"), "HmacSHA256");
         sha256_HMAC.init(secret_key);
         byte[] array = sha256_HMAC.doFinal(message.getBytes("UTF-8"));
+        //return Hex.encodeHexString(array).toUpperCase();
         StringBuilder sb = new StringBuilder();
         for (byte item : array) {
             sb.append(Integer.toHexString((item & 0xFF) | 0x100).substring(1, 3));
