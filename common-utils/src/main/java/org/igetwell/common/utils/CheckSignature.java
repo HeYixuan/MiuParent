@@ -4,13 +4,13 @@ import org.apache.commons.codec.digest.DigestUtils;
 
 import java.util.Arrays;
 
-public class CheckoutUtil {
+public class CheckSignature {
 
     // 与接口配置信息中的Token要一致
     private static String TOKEN = "HeYixuan";
 
     /**
-     * 验证签名
+     * 微信验证签名
      *
      * @param signature
      * @param timestamp

@@ -1,6 +1,5 @@
 package org.igetwell.common.utils;
 
-import java.util.Date;
 
 public class WxNotifyBean {
 
