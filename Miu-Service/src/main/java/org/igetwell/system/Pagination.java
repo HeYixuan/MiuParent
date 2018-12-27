@@ -29,6 +29,10 @@ public class Pagination<T> {
             this.index = getFirstIndex();
             this.setRows(page);
         }
+
+        if (rows instanceof ArrayList){
+            System.err.println("rows as arrayList");
+        }
     }
 
     /**

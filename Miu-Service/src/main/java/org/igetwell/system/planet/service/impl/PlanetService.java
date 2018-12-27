@@ -32,7 +32,7 @@ public class PlanetService implements IPlanetService {
      * 查询星球说列表(分页)
      */
     public ResponseEntity<Pagination<PlanetDTO>> getList(PlanetQuery query){
-//        PageHelper.startPage(query.getPageNo(), query.getPageSize());
+        PageHelper.startPage(query.getPageNo(), query.getPageSize());
         Collection<PlanetDTO> dtos = planetSaidMapper.getList(query);
         Pagination<PlanetDTO> pagination = new Pagination<PlanetDTO>(dtos);
         return new ResponseEntity<Pagination<PlanetDTO>>(pagination);
