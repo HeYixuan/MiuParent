@@ -2,7 +2,7 @@ package org.igetwell.common.enums;
 
 public enum PayType {
 
-    AUTH(1, "认证费用"),ACTIVITY(2, "活动费"),OTHER(3, "其他");
+    AUTH(1, "认证费用"), ACTIVITY(2, "活动费"), OTHER(3, "其他");
 
 
     private final int value;

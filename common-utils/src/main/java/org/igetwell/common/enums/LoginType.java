@@ -2,19 +2,21 @@ package org.igetwell.common.enums;
 
 public enum LoginType {
 
-    WECHAT(1), ALI_PAY(2), WEB_LOGIN(3);
+    WECHAT(1,"微信"), WEB_LOGIN(2,"网站");
 
-    LoginType(int value) {
+    LoginType(int value, String message) {
         this.value = value;
+        this.message = message;
     }
 
-    private int value;
+    private final int value;
+    private final String message;
 
-    public int getValue() {
-        return value;
+    public int value() {
+        return this.value;
     }
 
-    public void setValue(int value) {
-        this.value = value;
+    public String message() {
+        return this.message;
     }
 }
