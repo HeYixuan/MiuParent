@@ -1,6 +1,8 @@
 package org.igetwell.common.utils;
 
 import com.alibaba.fastjson.JSONObject;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -8,6 +10,9 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
+import org.igetwell.common.bean.WXOauth2Token;
+import org.igetwell.common.bean.WeChatCache;
+import org.igetwell.common.bean.WeChatInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -78,7 +83,7 @@ public class WeChatUtils {
 
     private static WeChatCache cache = new WeChatCache();
     public static WXOauth2Token oauth2Token = new WXOauth2Token();
-    public static WeChatInfo WeChatInfo = new WeChatInfo();
+    public static WeChatInfo weChatInfo = new WeChatInfo();
 
     /**
      * 获得通用接口访问令牌
@@ -232,11 +237,9 @@ public class WeChatUtils {
 
 
     public static void getUserInfo(String accessToken, String openId) throws Exception{
-
         try {
             String responseData = HttpClientUtils.getInstance().sendHttpGet(String.format(API_USER_INFO, accessToken, openId));
             LOG.debug("获得微信UserInfo responseData: {}", responseData);
-
             JSONObject data = JSONObject.parseObject(responseData);
             String openid = data.getString("openid");
             String nickName = data.getString("nickname");
@@ -247,19 +250,18 @@ public class WeChatUtils {
             String city = data.getString("city");
             String unionId = data.getString("unionid");
 
-            WeChatInfo.setOpenId(openid);
-            WeChatInfo.setNickName(nickName);
-            WeChatInfo.setAvatar(avatar);
-            WeChatInfo.setSex(sex);
-            WeChatInfo.setCountry(country);
-            WeChatInfo.setProvince(province);
-            WeChatInfo.setCity(city);
-            WeChatInfo.setUnionId(unionId);
+            weChatInfo.setOpenId(openid);
+            weChatInfo.setNickName(nickName);
+            weChatInfo.setAvatar(avatar);
+            weChatInfo.setSex(sex);
+            weChatInfo.setCountry(country);
+            weChatInfo.setProvince(province);
+            weChatInfo.setCity(city);
+            weChatInfo.setUnionId(unionId);
         } catch (Exception e) {
             LOG.error("获得微信用户信息异常", e);
             throw e;
         }
-
     }
 
 
