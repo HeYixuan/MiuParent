@@ -1,6 +1,5 @@
 package org.igetwell.web;
 
-import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -13,7 +12,6 @@ import java.io.IOException;
 /**
  * 基础类控制器
  */
-@Slf4j
 public class BaseController {
 
     protected final Logger logger = LoggerFactory.getLogger(getClass());

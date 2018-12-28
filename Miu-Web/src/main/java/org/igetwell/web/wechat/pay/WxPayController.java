@@ -54,7 +54,7 @@ public class WxPayController extends BaseController {
     /**
      * 微信支付返回通知
      */
-    @PostMapping(value = "payNotify", produces = {"application/xml"})
+    @PostMapping(value = "/payNotify", produces = {"application/xml"})
     public void payNotify(){
         try {
             String xmlStr = HttpKit.readData(request.get());

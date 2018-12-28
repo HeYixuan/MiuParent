@@ -1,7 +1,7 @@
 package org.igetwell.web.wechat;
 
 import lombok.extern.slf4j.Slf4j;
-import org.igetwell.common.utils.CheckoutUtil;
+import org.igetwell.common.utils.CheckSignature;
 import org.igetwell.common.utils.WeChatUtils;
 import org.igetwell.system.users.service.IUserService;
 import org.igetwell.web.BaseController;
@@ -72,7 +72,7 @@ public class WeChatController extends BaseController {
         if (StringUtils.isEmpty(signature) || StringUtils.isEmpty(echostr) || StringUtils.isEmpty(timestamp) || StringUtils.isEmpty(nonce)){
             return;
         }
-        boolean bool = CheckoutUtil.checkSignature(signature, timestamp, nonce);
+        boolean bool = CheckSignature.checkSignature(signature, timestamp, nonce);
         if (bool){
             try {
                 response.get().getWriter().write(echostr);
