@@ -59,7 +59,7 @@ public class WxPayController extends BaseController {
         try {
             String xmlStr = HttpKit.readData(request.get());
             String resultXml = localPay.notifyMethod(xmlStr);
-            renderReturn(resultXml);
+            renderXml(resultXml);
         } catch (Exception e){
             logger.error("支付回调异常！", e);
         }
