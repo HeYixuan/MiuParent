@@ -1,5 +1,6 @@
 package org.igetwell.common.local;
 
+import org.igetwell.common.bean.WxNotifyBean;
 import org.igetwell.common.enums.JsApiType;
 import org.igetwell.common.enums.SignType;
 import org.igetwell.common.utils.*;
@@ -163,7 +164,7 @@ public class LocalPay {
                 .put("timestamp",timestamp)
                 .put("clientIp", clientIp)
                 .put("tradeType", jsApiType.toString())
-                .put("notifyUrl","//WxPay/payNotify")
+                .put("notifyUrl","/WxPay/payNotify")
                 .getData();
         try {
             Map<String, String> resultXml = this.prePay(paraMap, SignType.MD5);
@@ -249,7 +250,7 @@ public class LocalPay {
         params.put("total_fee", hashMap.get("fee")); // 订单总金额，单位为分
         params.put("spbill_create_ip", hashMap.get("clientIp")); // APP和网页支付提交用户端ip，Native支付填调用微信支付API的机器IP
         params.put("trade_type", hashMap.get("tradeType")); // JSAPI--公众号支付、NATIVE--原生扫码支付、APP--app支付
-        params.put("notify_url", "http://" + domain + hashMap.get("notifyUrl")); // 通知地址，接收微信支付异步通知回调地址，通知url必须为直接可访问的url，不能携带参数。
+        params.put("notify_url", domain + hashMap.get("notifyUrl")); // 通知地址，接收微信支付异步通知回调地址，通知url必须为直接可访问的url，不能携带参数。
         params.put("product_id", hashMap.get("productId"));
 
         String sign = SignUtils.createSign(params, paterKey, signType);
