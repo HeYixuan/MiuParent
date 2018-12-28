@@ -1,4 +1,4 @@
-package org.igetwell.common.utils;
+package org.igetwell.common.bean;
 
 /**
  * 网页授权信息

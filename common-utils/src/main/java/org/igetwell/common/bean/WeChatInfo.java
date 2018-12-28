@@ -1,4 +1,4 @@
-package org.igetwell.common.utils;
+package org.igetwell.common.bean;
 
 public class WeChatInfo {
 
