@@ -1,5 +1,6 @@
 package org.igetwell.system.pay.service.impl;
 
+import org.igetwell.common.bean.WxNotifyBean;
 import org.igetwell.common.constans.WXPayConstants;
 import org.igetwell.common.enums.LoginType;
 import org.igetwell.common.enums.JsApiType;
@@ -125,7 +126,7 @@ public class LocalPay {
                 .put("timestamp",timestamp)
                 .put("clientIp", clientIp)
                 .put("tradeType", "APP")
-                .put("notifyUrl","//WxPay/payNotify")
+                .put("notifyUrl","/WxPay/payNotify")
                 .getData();
         try {
 
@@ -197,7 +198,7 @@ public class LocalPay {
             payment.setTradeNo(tradeNo);
             payment.setPrepayId(prepayId);
             payment.setFee(Integer.valueOf(fee));
-            payment.setLoginType(LoginType.WECHAT.getValue());
+            payment.setLoginType(LoginType.WECHAT.value());
             payment.setPayStatus(PayStatus.WAITPAY.value());
             payment.setPayType(payType.value());
             paymentMapper.insert(payment);
@@ -354,33 +355,27 @@ public class LocalPay {
             String resultCode = resultXml.get("result_code");
             boolean isSuccess = WXPayConstants.SUCCESS.equalsIgnoreCase(returnCode) && WXPayConstants.SUCCESS.equalsIgnoreCase(resultCode);
             if (isSuccess){
-
                 //TODO:需要做数据库记录交易订单号
                 PaymentQuery paymentQuery = new PaymentQuery();
                 paymentQuery.setOpenId(notifyBean.getOpenId());
                 paymentQuery.setTradeNo(notifyBean.getTradeNo());
                 paymentQuery.setPayStatus(PayStatus.WAITPAY.value());
-
                 Payment payment = paymentMapper.get(paymentQuery);
                 if (!StringUtils.isEmpty(payment)){
                     payment.setPaymentNo(notifyBean.getTransactionId());
-                    payment.setPayStatus(PayStatus.PAY.value());
+                    payment.setPayStatus(PayStatus.PAID.value());
                     payment.setPayTime(notifyBean.getPayTime());
                     paymentMapper.updateByPrimaryKey(payment);
                     logger.info("用户公众ID：{} , 订单号：{} , 交易号：{} 微信支付成功！",
                             notifyBean.getOpenId(), notifyBean.getTradeNo(), notifyBean.getTransactionId());
-                }else{
-                    logger.error("调用微信支付回调方法异常,商户订单号：{}. 微信支付订单号：{}. ", notifyBean.getTradeNo(), notifyBean.getTransactionId());
-                    throw new RuntimeException("调用微信支付回调方法异常！");
                 }
                 return successXml;
             }
+            return failXml;
         } catch (Exception e) {
             logger.error("调用微信支付回调方法异常,商户订单号：{}. 微信支付订单号：{}. ", notifyBean.getTradeNo(), notifyBean.getTransactionId(), e);
             throw new RuntimeException("调用微信支付回调方法异常！", e);
         }
-
-        return successXml;
     }
 
 }

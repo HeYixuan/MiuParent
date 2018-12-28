@@ -121,7 +121,7 @@ public class ActivityService implements IActivityService {
             if (null != payment.getPayStatus() && PayStatus.WAITPAY.value() == payment.getPayStatus()){
                 return new ResponseEntity<>(HttpStatus.ACCEPTED, "有待支付订单,请尽快处理.");
             }
-            if (null != payment.getPayStatus() && PayStatus.PAY.value() == payment.getPayStatus()){
+            if (null != payment.getPayStatus() && PayStatus.PAID.value() == payment.getPayStatus()){
                 //防止已支付,没有报名成功处理
                 return this.applyEnroll(enroll);
             }
