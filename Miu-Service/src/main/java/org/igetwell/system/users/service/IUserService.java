@@ -14,13 +14,6 @@ public interface IUserService {
     void wxAuthorized(String code);
 
     /**
-     * 支付宝授权登陆
-     * @param code
-     */
-    void aliAuthorized(String code);
-
-
-    /**
      * 检测手机号是否重复
      * @param mobile
      * @return
@@ -40,7 +33,7 @@ public interface IUserService {
      * @param cert
      * @return
      */
-    ResponseEntity checkIDCert(IDCert cert);
+    ResponseEntity authorizedName(IDCert cert);
 
 
     /**

@@ -1,14 +1,6 @@
 package org.igetwell.system.users.service.impl;
 
-import com.alibaba.fastjson.JSONObject;
-import com.alipay.api.AlipayClient;
-import com.alipay.api.DefaultAlipayClient;
-import com.alipay.api.request.AlipayOpenAuthTokenAppRequest;
-import com.alipay.api.request.AlipayUserInfoShareRequest;
-import com.alipay.api.response.AlipayOpenAuthTokenAppResponse;
-import com.alipay.api.response.AlipayUserInfoShareResponse;
 import lombok.extern.slf4j.Slf4j;
-import org.igetwell.common.constans.AliPayConstants;
 import org.igetwell.common.constans.OSSClientContstants;
 import org.igetwell.common.enums.CertType;
 import org.igetwell.common.enums.HttpStatus;
@@ -30,10 +22,6 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-
-import static org.igetwell.common.utils.AliPayUtils.ALIPAY_PUBLIC_KEY;
-import static org.igetwell.common.utils.AliPayUtils.APP_ID;
-import static org.igetwell.common.utils.AliPayUtils.APP_PRIVATE_KEY;
 
 @Slf4j
 @Service
@@ -62,12 +50,12 @@ public class UserService implements IUserService {
             WeChatUtils.getAccessToken(code);
             if (null != WeChatUtils.oauth2Token){
                 WeChatUtils.getUserInfo(WeChatUtils.oauth2Token.getAccessToken(), WeChatUtils.oauth2Token.getOpenId());
-                if (null != WeChatUtils.WeChatInfo){
+                if (null != WeChatUtils.weChatInfo){
                     User user = new User();
-                    user.setOpenId(WeChatUtils.WeChatInfo.getOpenId());
-                    user.setNickName(WeChatUtils.WeChatInfo.getNickName());
-                    user.setAvatar(WeChatUtils.WeChatInfo.getAvatar());
-                    user.setLoginType(LoginType.WECHAT.getValue());
+                    user.setOpenId(WeChatUtils.weChatInfo.getOpenId());
+                    user.setNickName(WeChatUtils.weChatInfo.getNickName());
+                    user.setAvatar(WeChatUtils.weChatInfo.getAvatar());
+                    user.setLoginType(LoginType.WECHAT.value());
                     userMapper.insert(user);
                 }
             }
@@ -78,23 +66,6 @@ public class UserService implements IUserService {
 
     }
 
-
-
-    /**
-     * 支付宝授权登陆
-     * @param code
-     */
-    public void aliAuthorized(String code){
-        try {
-            if (StringUtils.isEmpty(code)){
-                log.error("支付宝授权登陆异常, code不能为空!");
-                return;
-            }
-        } catch (Exception e){
-            log.error("支付宝授权登陆异常", e);
-            throw new RuntimeException("支付宝授权登陆异常", e);
-        }
-    }
 
     /**
      * 检测手机号是否重复
@@ -127,7 +98,7 @@ public class UserService implements IUserService {
         String openId = GenerateUtils.create(32);
         user.setOpenId(openId);
         user.setMobile(mobileUser.getMobile());
-        user.setLoginType(LoginType.WEB_LOGIN.getValue());
+        user.setLoginType(LoginType.WEB_LOGIN.value());
         userMapper.insertSelective(user);
         UserInfo info = new UserInfo();
         info.setOpenId(openId);
@@ -141,7 +112,7 @@ public class UserService implements IUserService {
      * @return
      */
     @Transactional(rollbackFor = RuntimeException.class)
-    public ResponseEntity checkIDCert(IDCert cert){
+    public ResponseEntity authorizedName(IDCert cert){
         UserInfo info = userInfoMapper.get(cert.getOpenId());
         if (StringUtils.isEmpty(info)){
             return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR, "用户基础信息查询异常");
@@ -149,14 +120,16 @@ public class UserService implements IUserService {
         User user = new User();//TODO:这里只是记录，免得下次用户又需要输入，不然用户体验贼差
         user.setOpenId(cert.getOpenId());
         user.setUserName(cert.getUserName());
-        user.setIdCard(cert.getIdCard());
+        user.setCardNo(cert.getCardNo());
         userMapper.updateByOpenId(user);
-        boolean bool = IDCardUtils.isValidatedAllIdcard(cert.getIdCard());
+        boolean bool = IDCardUtils.isValidatedAllIdcard(cert.getCardNo());
         if (!bool){
             return new ResponseEntity(HttpStatus.BAD_REQUEST, "身份证号码错误");
         }
-        String sex = IDCardUtils.getGenderByIdCard(cert.getIdCard()); //性别
-        String birthDay = IDCardUtils.getBirthByIdCard(cert.getIdCard()); //出生日期
+        //获取性别
+        String sex = IDCardUtils.getGenderByIdCard(cert.getCardNo());
+        //获取出生日期
+        String birthDay = IDCardUtils.getBirthByIdCard(cert.getCardNo());
         user.setBirthDay(birthDay);
         if (SexType.M.value().equals(sex)){
             user.setSex(sex);
