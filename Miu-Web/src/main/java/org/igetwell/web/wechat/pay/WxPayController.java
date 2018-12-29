@@ -47,7 +47,7 @@ public class WxPayController extends BaseController {
     @PostMapping("/preOrder")
     @ResponseBody
     public Map<String, String> preOrder() {
-        return localPay.preOrder(request.get(), "ojhc61KyGnCepGMIpcZI-YCPce30", JsApiType.NATIVE, PayType.AUTH,"官网费用","GW201807162055","1");
+        return localPay.preOrder(request.get(), "ojhc61KyGnCepGMIpcZI-YCPce30", JsApiType.MWEB, PayType.AUTH,"官网费用","GW201807162055","1");
     }
 
 

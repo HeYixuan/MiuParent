@@ -58,7 +58,7 @@ defaultAppId: wx097eb9f69920db49
 paterKey: 123fdsaJHYUTREWQOKLJGCCBNM654389
 mchId: 1503679961
 attach: stg
-domain: http://insdate.free.idcfengye.com
+domain: http://testwepay.free.idcfengye.com
 
 #支付宝
 aliPay:
