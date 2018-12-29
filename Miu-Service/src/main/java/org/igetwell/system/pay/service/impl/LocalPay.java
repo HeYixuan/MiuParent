@@ -160,7 +160,7 @@ public class LocalPay {
 
 
     /**
-     * 微信H5、APP、NATIVE调起支付
+     * 微信JSAPI、H5、APP、NATIVE调起支付
      * @param request
      * @param jsApiType
      * @param productName
@@ -219,6 +219,17 @@ public class LocalPay {
                 packageMap.put("appid", defaultAppId);
                 packageMap.put("timeStamp", timestamp);
                 packageMap.put("nonceStr", nonceStr);
+                packageMap.put("package", "prepay_id=" + prepayId);
+                packageMap.put("signType", "MD5");
+                String sign = SignUtils.createSign(packageMap, paterKey, SignType.MD5);
+                packageMap.put("paySign", sign);
+            }
+
+            if (JsApiType.MWEB.equals(jsApiType)){
+                packageMap.put("appid", defaultAppId);
+                packageMap.put("mch_id", mchId);
+                packageMap.put("prepayid", prepayId);
+                packageMap.put("mweb_url", nonceStr);
                 packageMap.put("package", "prepay_id=" + prepayId);
                 packageMap.put("signType", "MD5");
                 String sign = SignUtils.createSign(packageMap, paterKey, SignType.MD5);
