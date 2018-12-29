@@ -60,10 +60,10 @@ public class UsersController extends BaseController {
      * @param cert
      * @return
      */
-    @PostMapping("/checkIDCert")
+    @PostMapping("/authorizedName")
     @ResponseBody
-    public ResponseEntity checkIDCert(@RequestBody @Validated IDCert cert){
-        return userService.checkIDCert(cert);
+    public ResponseEntity authorizedName(@RequestBody @Validated IDCert cert){
+        return userService.authorizedName(cert);
     }
 
     /**
