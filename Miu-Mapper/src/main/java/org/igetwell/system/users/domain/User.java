@@ -38,8 +38,8 @@ public class User {
     /**
      * 身份证号
      */
-    @Column(name = "ID_CARD")
-    private String idCard;
+    @Column(name = "CARD_NO")
+    private String cardNo;
 
     /**
      * 出生日期
@@ -158,19 +158,19 @@ public class User {
     /**
      * 获取身份证号
      *
-     * @return ID_CARD - 身份证号
+     * @return CARD_NO - 身份证号
      */
-    public String getIdCard() {
-        return idCard;
+    public String getCardNo() {
+        return cardNo;
     }
 
     /**
      * 设置身份证号
      *
-     * @param idCard 身份证号
+     * @param cardNo 身份证号
      */
-    public void setIdCard(String idCard) {
-        this.idCard = idCard == null ? null : idCard.trim();
+    public void setCardNo(String cardNo) {
+        this.cardNo = cardNo == null ? null : cardNo.trim();
     }
 
     /**
