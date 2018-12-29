@@ -226,14 +226,7 @@ public class LocalPay {
             }
 
             if (JsApiType.MWEB.equals(jsApiType)){
-                packageMap.put("appid", defaultAppId);
-                packageMap.put("mch_id", mchId);
-                packageMap.put("prepayid", prepayId);
-                packageMap.put("mweb_url", nonceStr);
-                packageMap.put("package", "prepay_id=" + prepayId);
-                packageMap.put("signType", "MD5");
-                String sign = SignUtils.createSign(packageMap, paterKey, SignType.MD5);
-                packageMap.put("paySign", sign);
+                packageMap.put("webUrl", resultXml.get("mweb_url"));
             }
 
             if (JsApiType.NATIVE.equals(jsApiType)){
