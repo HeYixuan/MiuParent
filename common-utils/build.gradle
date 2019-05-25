@@ -62,5 +62,7 @@ dependencies {
     compile 'com.aliyun:aliyun-java-sdk-core:4.0.6'
     compile 'com.aliyun:aliyun-java-sdk-dysmsapi:1.1.0'
 
+    compile 'com.google.code.gson:gson:2.8.5'
+
 
 }

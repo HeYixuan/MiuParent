@@ -120,16 +120,16 @@ public class UserService implements IUserService {
         User user = new User();//TODO:这里只是记录，免得下次用户又需要输入，不然用户体验贼差
         user.setOpenId(cert.getOpenId());
         user.setUserName(cert.getUserName());
-        user.setCardNo(cert.getCardNo());
+        user.setCardNo(cert.getIdCard());
         userMapper.updateByOpenId(user);
-        boolean bool = IDCardUtils.isValidatedAllIdcard(cert.getCardNo());
+        boolean bool = IDCardUtils.isValidatedAllIdcard(cert.getIdCard());
         if (!bool){
             return new ResponseEntity(HttpStatus.BAD_REQUEST, "身份证号码错误");
         }
         //获取性别
-        String sex = IDCardUtils.getGenderByIdCard(cert.getCardNo());
+        String sex = IDCardUtils.getGenderByIdCard(cert.getIdCard());
         //获取出生日期
-        String birthDay = IDCardUtils.getBirthByIdCard(cert.getCardNo());
+        String birthDay = IDCardUtils.getBirthByIdCard(cert.getIdCard());
         user.setBirthDay(birthDay);
         if (SexType.M.value().equals(sex)){
             user.setSex(sex);

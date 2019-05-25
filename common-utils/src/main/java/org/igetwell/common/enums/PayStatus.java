@@ -2,7 +2,7 @@ package org.igetwell.common.enums;
 
 public enum PayStatus {
 
-    WAITPAY(0, "未支付"),PAY(1, "已支付");
+    WAITPAY(0, "未支付"),PAID(1, "已支付");
 
 
     private final int value;
