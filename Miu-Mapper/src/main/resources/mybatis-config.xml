@@ -24,16 +24,11 @@
     </settings>
 
     <!-- 分表配置 -->
-    <plugins>
+    <!--<plugins>
         <plugin interceptor="org.igetwell.interceptor.PageInterceptor">
-            <!-- 所有分表表名，逗号分隔 -->
-            <!--<property name="shardingTableRule" value="shop_order,shop_order_coupon,shop_order_detail,shop_order_goods,shop_order_trade,shop_order_trade_log,idx_shop_order_member,idx_shop_order_merchant,idx_shop_order_no" />-->
-            <!-- 每日分表表名，逗号分隔 -->
-           <!-- <property name="shardingByDateTableRule" value="shop_order,shop_order_coupon,shop_order_detail,shop_order_goods,shop_order_trade,shop_order_trade_log" />-->
-            <!-- 扩展分页方法匹配正则 -->
-            <!--<property name="paginationRegular" value=".*ListPage.*" />-->
-            <!-- 历史小精灵订单方法匹配正则 -->
-            <!--<property name="historyOldOrderRegular" value=".*HistoryOld.*" />-->
+            &lt;!&ndash; 所有分表表名，逗号分隔 &ndash;&gt;
+            &lt;!&ndash; 扩展分页方法匹配正则 &ndash;&gt;
+            &lt;!&ndash;<property name="paginationRegular" value=".*ListPage.*" />&ndash;&gt;
         </plugin>
-    </plugins>
+    </plugins>-->
 </configuration>

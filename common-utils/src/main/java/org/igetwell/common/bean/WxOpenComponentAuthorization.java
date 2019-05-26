@@ -14,7 +14,7 @@ import java.util.List;
 public class WxOpenComponentAuthorization {
     private String authorizerAppid;
     private String authorizerAccessToken;
-    private int expiresIn;
+    private long expiresIn;
     private String authorizerRefreshToken;
     private List<Integer> funcInfo;
 }

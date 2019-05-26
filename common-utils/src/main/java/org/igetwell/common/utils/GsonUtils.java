@@ -3,6 +3,7 @@
  */
 package org.igetwell.common.utils;
 
+import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonParseException;
@@ -13,7 +14,7 @@ import java.lang.reflect.Type;
  * Json工具类.
  */
 public class GsonUtils {
-    private static Gson gson = new GsonBuilder().create();
+    private static Gson gson = new GsonBuilder().setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES).create();
 
     public static String toJson(Object value) {
         return gson.toJson(value);

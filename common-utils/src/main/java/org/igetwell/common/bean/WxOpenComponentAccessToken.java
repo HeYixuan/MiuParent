@@ -15,6 +15,7 @@ public class WxOpenComponentAccessToken {
      */
     private String componentAccessToken;
 
+
     /**
      * 有效期
      */

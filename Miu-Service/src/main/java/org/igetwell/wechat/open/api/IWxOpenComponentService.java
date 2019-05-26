@@ -1,6 +1,11 @@
 package org.igetwell.wechat.open.api;
 
+import com.jfinal.weixin.sdk.encrypt.AesException;
 import org.igetwell.common.bean.WxOpenComponentAccessToken;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 /**
  * 微信开放平台接口
@@ -86,10 +91,21 @@ public interface IWxOpenComponentService {
      */
     void getQueryAuth(String authorizationCode) throws Exception;
 
+
     /**
-     * 更新第三方平台access_token
-     * @param componentAccessToken
+     * 微信开放平台处理授权事件的推送
+     *
+     * @param request
+     * @throws IOException
+     * @throws AesException
      */
-    public void updateComponentAccessToken(WxOpenComponentAccessToken componentAccessToken);
+    public void processAuthorizeEvent(HttpServletRequest request, String nonce, String timestamp, String msgSignature) throws IOException, AesException;
+
+    /**
+     * 全网发布接入检测消息
+     * @param request
+     *
+     */
+    public void checkWechatAllNetwork(HttpServletRequest request, HttpServletResponse response, String nonce, String timestamp, String msgSignature) throws AesException;
 
 }

@@ -1,5 +1,5 @@
 server:
-  port: 9090
+  port: 80
   tomcat:
     max-threads: 2000
     max-connections: 2000
@@ -51,7 +51,17 @@ spring:
     default-property-inclusion: non_empty
     joda-date-time-format: yyyy-MM-dd HH:mm:ss
     #deserialization: true
+  mvc:
+    static-path-pattern: /**
+  resources:
+    static-locations: classpath:/static,classpath:/public,classpath:/resources,classpath:/META-INF/resources
 
+#微信开放平台
+componentAppId: wx81aa03f442e8d692
+componentAppSecret: dd8063fc89b412d9f88d1f3cb2c8a1d3
+componentVerifyTicket:
+componentMessageToken: fsrtyuiopfghjksadfe3232a
+componentAesKey: sdfaererit3423828343jeriooweqwqqwq22wwwfdgs
 
 #微信支付
 defaultAppId: wx097eb9f69920db49
@@ -90,3 +100,5 @@ pagehelper:
 #log
 logging:
   config: classpath:logback.xml
+
+

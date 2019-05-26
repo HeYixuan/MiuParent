@@ -56,6 +56,7 @@ dependencies {
     compile 'com.google.zxing:core:3.3.3'
     compile 'org.redisson:redisson:3.7.5'
     compile 'com.jfinal:jfinal-weixin:2.1'
+    compile 'com.jfinal:jfinal:4.0'
     //微信小程序获取手机号SDK
     compile 'org.bouncycastle:bcprov-jdk16:1.46'
     //阿里大鱼短信SDK
