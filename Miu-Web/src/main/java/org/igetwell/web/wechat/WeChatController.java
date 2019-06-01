@@ -11,6 +11,7 @@ import org.igetwell.wechat.open.api.IWxOpenComponentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.BufferedReader;
@@ -126,13 +127,18 @@ public class WeChatController extends BaseController {
     }
 
     @GetMapping("/preAuth")
-    public void preAuth(String redirectUri){
+    public ModelAndView preAuth(String redirectUri){
         try {
-            String redirectUrl = wxOpenComponentService.getPreAuthUrl(redirectUri, "2", null);
-            response.get().sendRedirect(redirectUrl);
+            String redirectUrl = wxOpenComponentService.getPreAuthUrl(redirectUri, "3", null);
+            //response.get().sendRedirect(redirectUrl);//不能直接返回很坑的
+            ModelAndView modelAndView = new ModelAndView();
+            modelAndView.addObject("authUrl", redirectUrl);
+            modelAndView.setViewName("/index");
+            return modelAndView;
         } catch (Exception e) {
             log.error("获取预授权失败.", e);
         }
+        return null;
     }
 
 }

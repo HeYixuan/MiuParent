@@ -35,7 +35,7 @@ dependencies {
     // 依赖 common-utils 模块
     compile project(":common-utils")
     compile project(":Miu-Service")
-
+    compile "org.springframework.boot:spring-boot-starter-thymeleaf:$springBootVersion"
     testCompile "org.springframework.boot:spring-boot-starter-test:$springBootVersion"
 
 }

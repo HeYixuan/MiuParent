@@ -56,6 +56,13 @@ spring:
   resources:
     static-locations: classpath:/static,classpath:/public,classpath:/resources,classpath:/META-INF/resources
 
+  thymeleaf:
+    prefix: classpath:/templates/
+    suffix: .html
+    mode: HTML5
+    encoding: UTF-8
+    cache: false
+
 #微信开放平台
 componentAppId: wx81aa03f442e8d692
 componentAppSecret: dd8063fc89b412d9f88d1f3cb2c8a1d3
