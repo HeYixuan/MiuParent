@@ -21,15 +21,14 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
+import org.springframework.util.CollectionUtils;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.nio.charset.Charset;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * HttpClient工具类
@@ -110,9 +109,12 @@ public class HttpClientUtils {
      */
     public String sendHttpPost(String httpUrl, Map<String, String> headers, Map<String, Object> params, String charset){
         HttpPost httpPost = new HttpPost(httpUrl);// 创建httpPost
-        for(Map.Entry<String, String> entry : headers.entrySet()){
-            httpPost.setHeader(entry.getKey(), entry.getValue());
+        if (!CollectionUtils.isEmpty(headers)){
+            for(Map.Entry<String, String> entry : headers.entrySet()){
+                httpPost.setHeader(entry.getKey(), entry.getValue());
+            }
         }
+
         if (params.isEmpty()){
             log.error("请求参数不能为空!");
             return null;

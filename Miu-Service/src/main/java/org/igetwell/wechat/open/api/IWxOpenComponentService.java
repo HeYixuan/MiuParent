@@ -1,7 +1,11 @@
 package org.igetwell.wechat.open.api;
 
 import com.jfinal.weixin.sdk.encrypt.AesException;
+import org.apache.http.Header;
+import org.apache.http.entity.ContentType;
+import org.apache.http.message.BasicHeader;
 import org.igetwell.common.bean.WxOpenComponentAccessToken;
+import org.springframework.http.HttpHeaders;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -12,9 +16,12 @@ import java.io.IOException;
  */
 public interface IWxOpenComponentService {
 
+    Header APPLICATION_JSON = new BasicHeader(HttpHeaders.CONTENT_TYPE, ContentType.APPLICATION_JSON.toString());
+    Header APPLICATION_XML = new BasicHeader(HttpHeaders.CONTENT_TYPE,ContentType.APPLICATION_XML.toString());
+
     String API_COMPONENT_TOKEN_URL = "https://api.weixin.qq.com/cgi-bin/component/api_component_token";
     String API_CREATE_PREAUTHCODE_URL = "https://api.weixin.qq.com/cgi-bin/component/api_create_preauthcode?component_access_token=%s";
-    String API_QUERY_AUTH_URL = "https://api.weixin.qq.com/cgi-bin/component/api_query_auth";
+    String API_QUERY_AUTH_URL = "https://api.weixin.qq.com/cgi-bin/component/api_query_auth?component_access_token=%s";
     String API_AUTHORIZER_TOKEN_URL = "https://api.weixin.qq.com/cgi-bin/component/api_authorizer_token";
     String API_GET_AUTHORIZER_INFO_URL = "https://api.weixin.qq.com/cgi-bin/component/api_get_authorizer_info";
     String API_GET_AUTHORIZER_OPTION_URL = "https://api.weixin.qq.com/cgi-bin/component/api_get_authorizer_option";
@@ -49,11 +56,18 @@ public interface IWxOpenComponentService {
 
 
     /**
+     * 客服接口-发消息
+     */
+    String API_SEND_MESSAGE_URL = "https://api.weixin.qq.com/cgi-bin/message/custom/send?access_token=%s";
+
+    /**
      * 获取第三方平台access_token
      * @param forceRefresh
      * @return
      */
-    String getComponentAccessToken(boolean forceRefresh);
+    String getComponentAccessToken(boolean forceRefresh) throws Exception;
+
+    String getApiCommentToken(boolean forceRefresh) throws Exception;
 
     /**
      * 获取用户授权页URL（来路URL和成功跳转URL 的域名都需要为三方平台设置的 登录授权的发起页域名）
@@ -89,7 +103,7 @@ public interface IWxOpenComponentService {
      * 使用授权码换取公众号的授权信息
      * @param authorizationCode  授权code
      */
-    void getQueryAuth(String authorizationCode) throws Exception;
+    void getQueryAuth(String authorizationCode);
 
 
     /**
@@ -99,7 +113,7 @@ public interface IWxOpenComponentService {
      * @throws IOException
      * @throws AesException
      */
-    public void processAuthorizeEvent(HttpServletRequest request, String nonce, String timestamp, String msgSignature) throws IOException, AesException;
+    public void processAuthorizeEvent(HttpServletRequest request, String nonce, String timestamp, String msgSignature) throws Exception;
 
     /**
      * 全网发布接入检测消息

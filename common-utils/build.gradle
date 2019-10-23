@@ -64,6 +64,7 @@ dependencies {
     compile 'com.aliyun:aliyun-java-sdk-dysmsapi:1.1.0'
 
     compile 'com.google.code.gson:gson:2.8.5'
+    compile 'org.dom4j:dom4j:2.1.1'
 
 
 }

@@ -33,6 +33,11 @@ public class RedisKey {
     public static final String COMPONENT_AUTHORIZATION = "COMPONENT_AUTHORIZATION";
 
     /**
+     * 第三方平台授权码
+     */
+    public static final String COMPONENT_AUTHORIZATION_CODE = "COMPONENT_AUTHORIZATION_CODE";
+
+    /**
      * 第三方平台预授权码
      */
     public static final String COMPONENT_PRE_AUTH_CODE = "COMPONENT_PRE_AUTH_CODE";

@@ -88,7 +88,8 @@ subprojects {
 //        compile 'mysql:mysql-connector-java:8.0.12'
         compile 'mysql:mysql-connector-java:5.1.42'
 
-        compileOnly 'org.projectlombok:lombok:1.18.2'
+        compile 'org.projectlombok:lombok:1.18.2'
+        //providedCompile group: 'org.projectlombok', name: 'lombok', version: '1.18.8'
 
         //        compile group: 'io.springside', name: 'springside-utils', version: '5.0.0-RC1'
         //compile group: 'org.springframework.boot', name: 'spring-boot-starter-log4j2', version: '1.5.4.RELEASE'

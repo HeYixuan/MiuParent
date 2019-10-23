@@ -1,7 +1,5 @@
 package org.igetwell.web.wechat;
 
-import com.jfinal.weixin.sdk.encrypt.AesException;
-import com.jfinal.weixin.sdk.encrypt.WXBizMsgCrypt;
 import lombok.extern.slf4j.Slf4j;
 import org.igetwell.common.utils.CheckSignature;
 import org.igetwell.common.utils.WeChatUtils;
@@ -14,7 +12,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.BufferedReader;
 import java.io.IOException;
 
 
@@ -67,7 +64,7 @@ public class WeChatController extends BaseController {
     }
 
 
-    //de1ac07e2182f698
+    //15c261bc8d1e2723
     //http://insdate.free.ngrok.cc
     /**
      * 校验微信服务器回调
@@ -102,8 +99,8 @@ public class WeChatController extends BaseController {
     @RequestMapping(value = "/event/authorize")
     public void acceptAuthorizeEvent(HttpServletRequest request, String nonce, String timestamp, String msg_signature){
         try {
-            render("success");
             wxOpenComponentService.processAuthorizeEvent(request, nonce, timestamp, msg_signature);
+            render("success");
         } catch (Exception e) {
             log.error("微信开放平台处理授权事件推送Ticket失败.", e);
         }
@@ -122,8 +119,9 @@ public class WeChatController extends BaseController {
     }
 
     @GetMapping("/getComponentAccessToken")
-    public void getComponentAccessToken(){
-        wxOpenComponentService.getComponentAccessToken(true);
+    public void getComponentAccessToken() throws Exception{
+        //wxOpenComponentService.getComponentAccessToken(true);
+        wxOpenComponentService.getApiCommentToken(true);
     }
 
     @GetMapping("/preAuth")

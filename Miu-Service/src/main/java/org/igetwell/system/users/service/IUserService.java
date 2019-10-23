@@ -35,6 +35,8 @@ public interface IUserService {
      */
     ResponseEntity authorizedName(IDCert cert);
 
+    public void testAddUser();
+
 
     /**
      * 用户头像上传

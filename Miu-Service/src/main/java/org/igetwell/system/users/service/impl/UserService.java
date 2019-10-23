@@ -11,7 +11,9 @@ import org.igetwell.system.users.create.IDCert;
 import org.igetwell.system.users.create.MobileUser;
 import org.igetwell.system.users.create.UserAvatarUpload;
 import org.igetwell.system.users.domain.UserInfo;
+import org.igetwell.system.users.domain.Userable;
 import org.igetwell.system.users.mapper.UserInfoMapper;
+import org.igetwell.system.users.mapper.UserableMapper;
 import org.igetwell.system.users.service.IUserService;
 import org.igetwell.system.users.domain.User;
 import org.igetwell.system.users.mapper.UserMapper;
@@ -32,6 +34,9 @@ public class UserService implements IUserService {
 
     @Autowired
     private UserInfoMapper userInfoMapper;
+
+    @Autowired
+    private UserableMapper userableMapper;
 
     @Autowired
     private RedisUtils redis;
@@ -185,5 +190,17 @@ public class UserService implements IUserService {
 
         }
         return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR,"上传用户头像失败");
+    }
+
+    public void testAddUser(){
+        Userable userable = new Userable();
+        userable.setName("ab");
+        userable.setAge(1);
+        userableMapper.insertSelective(userable);
+        int i = 1/0;
+        Userable userable2 = new Userable();
+        userable.setName("ab2");
+        userable.setAge(12);
+        userableMapper.insertSelective(userable2);
     }
 }

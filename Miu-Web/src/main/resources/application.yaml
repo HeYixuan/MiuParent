@@ -66,9 +66,8 @@ spring:
 #微信开放平台
 componentAppId: wx81aa03f442e8d692
 componentAppSecret: dd8063fc89b412d9f88d1f3cb2c8a1d3
-componentVerifyTicket:
-componentMessageToken: fsrtyuiopfghjksadfe3232a
-componentAesKey: sdfaererit3423828343jeriooweqwqqwq22wwwfdgs
+componentToken: fsrtyuiopfghjksadfe3232a
+encodingAesKey: sdfaererit3423828343jeriooweqwqqwq22wwwfdgs
 
 #微信支付
 defaultAppId: wx097eb9f69920db49
